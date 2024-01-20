@@ -1,3 +1,4 @@
+import NavBar from "@/components/NavBar";
 import SideBar from "@/components/SideBar";
 
 export default function RootLayout({
@@ -10,7 +11,10 @@ export default function RootLayout({
             <body>
                 <div className="flex flex-row w-full">
                     <SideBar />
-                    {children}
+                    <div className="w-full flex flex-col">
+                        <NavBar />
+                        {children}
+                    </div>
                 </div>
             </body>
         </html>
