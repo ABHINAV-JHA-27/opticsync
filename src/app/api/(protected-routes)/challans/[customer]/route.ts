@@ -2,22 +2,22 @@ import dbConnection from "@/lib/dbConnect";
 import Challan from "@/models/challan";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextRequest) {
+export async function GET(
+    req: NextRequest,
+    { params }: { params: { customer: string } }
+) {
     await dbConnection();
-    const data = await req.json();
+    const challans = await Challan.find({ customer: params.customer });
 
-    if (!data) {
+    if (!challans) {
         return NextResponse.json({
-            message: "No data provided",
-            status: 400,
+            message: "No data found",
+            status: 204,
         });
     }
 
-    const challan = new Challan(data);
-    await challan.save();
-
     return NextResponse.json({
-        data: challan,
+        data: challans,
         status: 200,
     });
 }

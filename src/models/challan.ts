@@ -7,18 +7,27 @@ const ChallanSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "User",
     },
-    products: [
+    orders: [
         {
             type: Schema.Types.ObjectId,
-            ref: "Product",
+            ref: "Order",
         },
     ],
-    status: {
-        type: String,
-        enum: ["pending", "completed"],
-        default: "pending",
+    total: {
+        type: Number,
+        required: true,
+    },
+    customer: {
+        type: Schema.Types.ObjectId,
+        ref: "Customer",
+    },
+    date: {
+        type: Date,
+        required: true,
     },
 });
 
 const Challan =
-    mongoose.model("Challans") || mongoose.model("Challans", ChallanSchema);
+    mongoose.models.Challan || mongoose.model("Challans", ChallanSchema);
+
+export default Challan;
