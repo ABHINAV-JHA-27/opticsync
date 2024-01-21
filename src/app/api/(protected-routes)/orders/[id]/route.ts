@@ -9,6 +9,14 @@ export async function PUT(
     await dbConnection();
 
     const data = await req.json();
+
+    if (!data) {
+        return NextResponse.json({
+            data: "No data provided",
+            status: 400,
+        });
+    }
+
     const order = await Order.findByIdAndUpdate(params.id, data);
 
     if (!order) {
