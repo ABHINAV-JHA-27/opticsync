@@ -1,7 +1,7 @@
 import NavBar from "@/components/NavBar";
 import SideBar from "@/components/SideBar";
 
-export default function RootLayout({
+export default async function RootLayout({
     children,
 }: {
     children: React.ReactNode;
@@ -9,7 +9,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body>
-                <div className="flex flex-row w-full">
+                <div className="flex flex-row w-full bg-[#E9EAE7]">
                     <SideBar />
                     <div className="w-full flex flex-col">
                         <NavBar />
