@@ -15,16 +15,18 @@ export default async function RootLayout({
     }
 
     return (
-        <html lang="en">
-            <body>
-                <div className="flex flex-row w-full bg-[#E9EAE7]">
-                    <SideBar />
-                    <div className="w-full flex flex-col">
-                        <NavBar />
-                        {children}
-                    </div>
-                </div>
-            </body>
-        </html>
+        <div
+            className="flex flex-row w-full"
+            style={{
+                background:
+                    "linear-gradient(109.6deg,rgb(120, 143, 251) 11.2%,rgb(133, 235, 255) 91.1%)",
+            }}
+        >
+            <SideBar />
+            <div className="w-full flex flex-col">
+                <NavBar />
+                {children}
+            </div>
+        </div>
     );
 }
