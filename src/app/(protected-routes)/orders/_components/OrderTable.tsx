@@ -11,9 +11,12 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { useState } from "react";
+import AddUpdateOrderModal from "./AddUpdateOrderModal";
 
 const OrderTable = () => {
     const [orderData, setOrderData] = useState([]);
+
+    const [openAddOrderModal, setOpenAddOrderModal] = useState(false);
 
     return (
         <>
@@ -23,7 +26,14 @@ const OrderTable = () => {
                     className="px-3 py-2 w-80"
                     placeholder="Search..."
                 />
-                <Button className="w-[15%]">Add +</Button>
+                <Button
+                    className="w-[15%]"
+                    onClick={() => {
+                        setOpenAddOrderModal(true);
+                    }}
+                >
+                    Add +
+                </Button>
             </div>
             <ScrollArea className="w-full h-[50vh] mt-4 rounded-md">
                 <Table>
@@ -47,6 +57,12 @@ const OrderTable = () => {
                     </TableBody>
                 </Table>
             </ScrollArea>
+            <AddUpdateOrderModal
+                isOpen={openAddOrderModal}
+                onClose={() => {
+                    setOpenAddOrderModal(false);
+                }}
+            />
         </>
     );
 };

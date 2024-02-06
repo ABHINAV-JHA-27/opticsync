@@ -11,6 +11,7 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { useState } from "react";
+import AddUpdateProductModal from "./AddUpdateProductModal";
 
 const ProductTable = () => {
     const [productsData, setProductsData] = useState([
@@ -166,6 +167,8 @@ const ProductTable = () => {
         },
     ]);
 
+    const [openAddProductModal, setOpenAddProductModal] = useState(false);
+
     return (
         <>
             <div className="flex items-center justify-between mt-5">
@@ -174,7 +177,14 @@ const ProductTable = () => {
                     className="px-3 py-2 w-80"
                     placeholder="Search..."
                 />
-                <Button className="w-[15%]">Add +</Button>
+                <Button
+                    className="w-[15%]"
+                    onClick={() => {
+                        setOpenAddProductModal(true);
+                    }}
+                >
+                    Add +
+                </Button>
             </div>
             <ScrollArea className="w-full h-[50vh] mt-4 rounded-md">
                 <Table>
@@ -198,6 +208,12 @@ const ProductTable = () => {
                     </TableBody>
                 </Table>
             </ScrollArea>
+            <AddUpdateProductModal
+                isOpen={openAddProductModal}
+                onClose={() => {
+                    setOpenAddProductModal(false);
+                }}
+            />
         </>
     );
 };

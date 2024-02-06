@@ -11,6 +11,7 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { useState } from "react";
+import AddUpdateCustomerModal from "./AddUpdateCUstomerModal";
 
 const CustomerTable = () => {
     const [customersData, setCustomersData] = useState([
@@ -118,6 +119,8 @@ const CustomerTable = () => {
         },
     ]);
 
+    const [openAddCustomerModal, setOpenAddCustomerModal] = useState(false);
+
     return (
         <>
             <div className="flex items-center justify-between mt-5">
@@ -126,7 +129,14 @@ const CustomerTable = () => {
                     className="px-3 py-2 w-80"
                     placeholder="Search..."
                 />
-                <Button className="w-[15%]">Add +</Button>
+                <Button
+                    className="w-[15%]"
+                    onClick={() => {
+                        setOpenAddCustomerModal(true);
+                    }}
+                >
+                    Add +
+                </Button>
             </div>
             <ScrollArea className="w-full h-[50vh] mt-4 rounded-md">
                 <Table>
@@ -150,6 +160,10 @@ const CustomerTable = () => {
                     </TableBody>
                 </Table>
             </ScrollArea>
+            <AddUpdateCustomerModal
+                isOpen={openAddCustomerModal}
+                onClose={() => setOpenAddCustomerModal(false)}
+            />
         </>
     );
 };
