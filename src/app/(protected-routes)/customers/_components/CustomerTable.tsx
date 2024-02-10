@@ -11,7 +11,7 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { useState } from "react";
-import AddUpdateCustomerModal from "./AddUpdateCUstomerModal";
+import AddUpdateCustomerModal from "./AddUpdateCustomerModal";
 
 const CustomerTable = () => {
     const [customersData, setCustomersData] = useState([
