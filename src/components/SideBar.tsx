@@ -1,9 +1,12 @@
 import Link from "next/link";
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
+import Styles from "./CommonStyles.module.css";
 
 const SideBar = () => {
     return (
-        <div className="flex flex-col bg-white shadow w-[20vw] h-[96vh] sticky top-0 p-4 m-[2vh] rounded-md justify-between">
+        <div
+            className={`flex flex-col shadow w-[20vw] h-[96vh] sticky top-0 p-4 m-[2vh] rounded-md justify-between ${Styles.glassmorphism}`}
+        >
             <div className="space-y-3">
                 <div className="flex items-center justify-center">
                     <h2 className="text-xl font-bold">OpticSync</h2>
