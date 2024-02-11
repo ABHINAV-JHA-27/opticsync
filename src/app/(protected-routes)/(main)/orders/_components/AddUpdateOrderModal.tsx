@@ -14,6 +14,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createOrder, updateOrder } from "@/services/order";
 
 type AddUpdateOrderModalProps = {
     isOpen: boolean;
@@ -22,6 +24,35 @@ type AddUpdateOrderModalProps = {
 };
 
 const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
+    const queryClient = useQueryClient();
+    const {
+        mutate: create,
+        isPending: isPendingCreate,
+        isSuccess: isSuccessCreate,
+        isError: isErrorCreate,
+    } = useMutation({
+        mutationFn: createOrder,
+        mutationKey: ["product"],
+        onSuccess: () => {
+            console.log("Product Added");
+            // queryClient.invalidateQueries("products");
+        },
+    });
+
+    const {
+        mutate: update,
+        isPending: isPendingUpdate,
+        isSuccess: isSuccessUpdate,
+        isError: isErrorUpdate,
+    } = useMutation({
+        mutationFn: updateOrder,
+        mutationKey: ["product"],
+        onSuccess: () => {
+            console.log("Product Updated");
+            // queryClient.invalidateQueries("products");
+        },
+    });
+
     const [rSph, setRSph] = useState(props.data ? props.data.r.sph : "");
     const [rCyl, setRCyl] = useState(props.data ? props.data.r.cyl : "");
     const [rAxis, setRAxis] = useState(props.data ? props.data.r.axis : "");
@@ -42,23 +73,48 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
 
     const handleOrderSave = () => {
         if (props.data) {
-            // Update Order
+            update({
+                id: props.data.id,
+                r: {
+                    sph: rSph,
+                    cyl: rCyl,
+                    axis: rAxis,
+                    add: rAdd,
+                },
+                l: {
+                    sph: lSph,
+                    cyl: lCyl,
+                    axis: lAxis,
+                    add: lAdd,
+                },
+                status: status,
+                products: product,
+                customer: customer,
+            });
         } else {
-            // Add Order
+            create({
+                r: {
+                    sph: rSph,
+                    cyl: rCyl,
+                    axis: rAxis,
+                    add: rAdd,
+                },
+                l: {
+                    sph: lSph,
+                    cyl: lCyl,
+                    axis: lAxis,
+                    add: lAdd,
+                },
+                status: status,
+                products: product,
+                customer: customer,
+            });
         }
-        console.log({
-            rSph,
-            rCyl,
-            rAxis,
-            rAdd,
-            lSph,
-            lCyl,
-            lAxis,
-            lAdd,
-            status,
-            product,
-            customer,
-        });
+        if (isSuccessCreate || isSuccessUpdate) {
+            props.onClose();
+        } else if (isErrorCreate || isErrorUpdate) {
+            console.log("Error");
+        }
     };
 
     return (
@@ -228,7 +284,11 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
                                     className="bg-primary text-white px-4 py-2 rounded-md"
                                     onClick={handleOrderSave}
                                 >
-                                    {props.data ? "Update" : "Add"} Order
+                                    {isPendingCreate || isPendingUpdate
+                                        ? "Saving..."
+                                        : props.data
+                                        ? "Update Order"
+                                        : "Add Order"}
                                 </button>
                             </div>
                         </div>

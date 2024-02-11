@@ -12,9 +12,18 @@ import {
 } from "@/components/ui/table";
 import { useState } from "react";
 import AddUpdateOrderModal from "./AddUpdateOrderModal";
+import { useQuery } from "@tanstack/react-query";
+import { getOrder } from "@/services/order";
 
 const OrderTable = () => {
-    const [orderData, setOrderData] = useState([]);
+    const {
+        data: orderData,
+        isLoading,
+        error,
+    } = useQuery({
+        queryKey: ["orders"],
+        queryFn: getOrder,
+    });
 
     const [openAddOrderModal, setOpenAddOrderModal] = useState(false);
 
@@ -35,28 +44,34 @@ const OrderTable = () => {
                     Add +
                 </Button>
             </div>
-            <ScrollArea className="w-full h-[50vh] mt-4 rounded-md">
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            {/* <TableHead>Name</TableHead>
+            {isLoading && <p>Loading...</p>}
+            {error && <p>Error: {error.message}</p>}
+            {orderData && orderData.length > 0 ? (
+                <ScrollArea className="w-full h-[50vh] mt-4 rounded-md">
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                {/* <TableHead>Name</TableHead>
                             <TableHead>Company</TableHead>
                             <TableHead>WLP</TableHead>
                             <TableHead>SRP</TableHead> */}
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {orderData.map((item) => (
-                            <TableRow>
-                                {/* <TableCell>{item.name}</TableCell>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {orderData.map((item: any) => (
+                                <TableRow>
+                                    {/* <TableCell>{item.name}</TableCell>
                                 <TableCell>{item.company}</TableCell>
                                 <TableCell>{item.wlp}</TableCell>
                                 <TableCell>{item.srp}</TableCell> */}
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </ScrollArea>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </ScrollArea>
+            ) : (
+                <div>No data</div>
+            )}
             <AddUpdateOrderModal
                 isOpen={openAddOrderModal}
                 onClose={() => {
