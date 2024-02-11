@@ -14,18 +14,22 @@ const CustomerSchema = new Schema(
         },
         addressLine1: {
             type: String,
+            required: true,
         },
         addressLine2: {
             type: String,
         },
         city: {
             type: String,
+            required: true,
         },
         state: {
             type: String,
+            required: true,
         },
         pincode: {
             type: String,
+            required: true,
         },
         phone: {
             type: String,
@@ -40,6 +44,10 @@ const CustomerSchema = new Schema(
         gstNumber: {
             type: String,
             required: true,
+        },
+        user: {
+            type: Schema.Types.ObjectId,
+            ref: "User",
         },
     },
     {
