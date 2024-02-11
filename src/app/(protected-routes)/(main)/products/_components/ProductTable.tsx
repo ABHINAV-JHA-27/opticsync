@@ -10,16 +10,19 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import { getProducts } from "@/services/product";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import AddUpdateProductModal from "./AddUpdateProductModal";
-import { useQuery } from "@tanstack/react-query";
 
 const ProductTable = () => {
-    const [productsData, setProductsData] = useState([]);
-
-    const { data , isLoading ,error } = useQuery({
+    const {
+        data: productsData,
+        isLoading,
+        error,
+    } = useQuery({
         queryKey: ["products"],
-        queryFn: 
+        queryFn: getProducts,
     });
 
     const [openAddProductModal, setOpenAddProductModal] = useState(false);
@@ -41,28 +44,34 @@ const ProductTable = () => {
                     Add +
                 </Button>
             </div>
-            <ScrollArea className="w-full h-[50vh] mt-4 rounded-md">
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead>Name</TableHead>
-                            <TableHead>Company</TableHead>
-                            <TableHead>WLP</TableHead>
-                            <TableHead>SRP</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {productsData.map((item) => (
+            {isLoading && <p>Loading...</p>}
+            {error && <p>Error: {error.message}</p>}
+            {productsData && productsData.length > 0 ? (
+                <ScrollArea className="w-full h-[50vh] mt-4 rounded-md">
+                    <Table>
+                        <TableHeader>
                             <TableRow>
-                                <TableCell>{item.name}</TableCell>
-                                <TableCell>{item.company}</TableCell>
-                                <TableCell>{item.wlp}</TableCell>
-                                <TableCell>{item.srp}</TableCell>
+                                <TableHead>Name</TableHead>
+                                <TableHead>Company</TableHead>
+                                <TableHead>WLP</TableHead>
+                                <TableHead>SRP</TableHead>
                             </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </ScrollArea>
+                        </TableHeader>
+                        <TableBody>
+                            {productsData.map((item: any) => (
+                                <TableRow>
+                                    <TableCell>{item.name}</TableCell>
+                                    <TableCell>{item.company}</TableCell>
+                                    <TableCell>{item.wlp}</TableCell>
+                                    <TableCell>{item.srp}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </ScrollArea>
+            ) : (
+                <p>No products available</p>
+            )}
             <AddUpdateProductModal
                 isOpen={openAddProductModal}
                 onClose={() => {

@@ -6,6 +6,8 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { createProduct, updateProduct } from "@/services/product";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
 type AddProductModalProps = {
@@ -15,6 +17,35 @@ type AddProductModalProps = {
 };
 
 const AddUpdateProductModal = (props: AddProductModalProps) => {
+    const queryClient = useQueryClient();
+    const {
+        mutate: create,
+        isPending: isPendingCreate,
+        isSuccess: isSuccessCreate,
+        isError: isErrorCreate,
+    } = useMutation({
+        mutationFn: createProduct,
+        mutationKey: ["product"],
+        onSuccess: () => {
+            console.log("Product Added");
+            // queryClient.invalidateQueries("products");
+        },
+    });
+
+    const {
+        mutate: update,
+        isPending: isPendingUpdate,
+        isSuccess: isSuccessUpdate,
+        isError: isErrorUpdate,
+    } = useMutation({
+        mutationFn: updateProduct,
+        mutationKey: ["product"],
+        onSuccess: () => {
+            console.log("Product Updated");
+            // queryClient.invalidateQueries("products");
+        },
+    });
+
     const [productName, setProductName] = useState(
         props.data ? props.data.name : ""
     );
@@ -30,16 +61,26 @@ const AddUpdateProductModal = (props: AddProductModalProps) => {
 
     const handleProductSave = () => {
         if (props.data) {
-            // Update Product
+            update({
+                id: props.data.id,
+                name: productName,
+                company: productCompany,
+                srp: productSrp,
+                wlp: productWlp,
+            });
         } else {
-            // Add Product
+            create({
+                name: productName,
+                company: productCompany,
+                srp: productSrp,
+                wlp: productWlp,
+            });
         }
-        console.log({
-            productName,
-            productCompany,
-            productSrp,
-            productWlp,
-        });
+        if (isSuccessCreate || isSuccessUpdate) {
+            props.onClose();
+        } else if (isErrorCreate || isErrorUpdate) {
+            console.log("Error");
+        }
     };
 
     return (
@@ -107,9 +148,11 @@ const AddUpdateProductModal = (props: AddProductModalProps) => {
                                     className="bg-primary text-white px-4 py-2 rounded-md"
                                     onClick={handleProductSave}
                                 >
-                                    {props.data
-                                        ? "Update Product"
-                                        : "Add Product"}
+                                    {isPendingCreate || isPendingUpdate
+                                        ? "Saving..."
+                                        : props.data
+                                        ? "Update"
+                                        : "Save"}
                                 </button>
                             </div>
                         </div>
