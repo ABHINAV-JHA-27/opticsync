@@ -25,10 +25,11 @@ const AddUpdateCustomerModal = (props: AddUpdateCustomerModalProps) => {
         isError: isErrorCreate,
     } = useMutation({
         mutationFn: createCustomer,
-        mutationKey: ["product"],
+        mutationKey: ["customers"],
         onSuccess: () => {
-            console.log("Product Added");
-            // queryClient.invalidateQueries("products");
+            queryClient.invalidateQueries({
+                queryKey: ["customers"],
+            });
         },
     });
 
@@ -39,10 +40,11 @@ const AddUpdateCustomerModal = (props: AddUpdateCustomerModalProps) => {
         isError: isErrorUpdate,
     } = useMutation({
         mutationFn: updateCustomer,
-        mutationKey: ["product"],
+        mutationKey: ["customers"],
         onSuccess: () => {
-            console.log("Product Updated");
-            // queryClient.invalidateQueries("products");
+            queryClient.invalidateQueries({
+                queryKey: ["customers"],
+            });
         },
     });
 
