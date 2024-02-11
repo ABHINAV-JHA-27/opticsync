@@ -6,6 +6,8 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { createCustomer, updateCustomer } from "@/services/customer";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
 type AddUpdateCustomerModalProps = {
@@ -15,6 +17,35 @@ type AddUpdateCustomerModalProps = {
 };
 
 const AddUpdateCustomerModal = (props: AddUpdateCustomerModalProps) => {
+    const queryClient = useQueryClient();
+    const {
+        mutate: create,
+        isPending: isPendingCreate,
+        isSuccess: isSuccessCreate,
+        isError: isErrorCreate,
+    } = useMutation({
+        mutationFn: createCustomer,
+        mutationKey: ["product"],
+        onSuccess: () => {
+            console.log("Product Added");
+            // queryClient.invalidateQueries("products");
+        },
+    });
+
+    const {
+        mutate: update,
+        isPending: isPendingUpdate,
+        isSuccess: isSuccessUpdate,
+        isError: isErrorUpdate,
+    } = useMutation({
+        mutationFn: updateCustomer,
+        mutationKey: ["product"],
+        onSuccess: () => {
+            console.log("Product Updated");
+            // queryClient.invalidateQueries("products");
+        },
+    });
+
     const [customerName, setCustomerName] = useState(
         props.data ? props.data.name : ""
     );
@@ -48,22 +79,38 @@ const AddUpdateCustomerModal = (props: AddUpdateCustomerModalProps) => {
 
     const handleCustomerSave = () => {
         if (props.data) {
-            // Update Customer
+            update({
+                id: props.data.id,
+                name: customerName,
+                phone: customerPhone,
+                addressLine1: customerAddressLine1,
+                addressLine2: customerAddressLine2,
+                city: customerCity,
+                state: customerState,
+                pincode: customerPincode,
+                shopName: customerShopName,
+                alternatePhone: customerAlternatePhone,
+                gstNumber: customerGstNumber,
+            });
         } else {
-            // Add Customer
+            create({
+                name: customerName,
+                phone: customerPhone,
+                addressLine1: customerAddressLine1,
+                addressLine2: customerAddressLine2,
+                city: customerCity,
+                state: customerState,
+                pincode: customerPincode,
+                shopName: customerShopName,
+                alternatePhone: customerAlternatePhone,
+                gstNumber: customerGstNumber,
+            });
         }
-        console.log({
-            customerName,
-            customerPhone,
-            customerAddressLine1,
-            customerAddressLine2,
-            customerCity,
-            customerState,
-            customerPincode,
-            customerShopName,
-            customerAlternatePhone,
-            customerGstNumber,
-        });
+        if (isSuccessCreate || isSuccessUpdate) {
+            props.onClose();
+        } else if (isErrorCreate || isErrorUpdate) {
+            console.log("Error");
+        }
     };
 
     return (
@@ -213,7 +260,9 @@ const AddUpdateCustomerModal = (props: AddUpdateCustomerModalProps) => {
                                     className="bg-primary text-white px-4 py-2 rounded-md"
                                     onClick={handleCustomerSave}
                                 >
-                                    {props.data
+                                    {isPendingCreate || isPendingUpdate
+                                        ? "Saving..."
+                                        : props.data
                                         ? "Update Customer"
                                         : "Add Customer"}
                                 </button>

@@ -12,112 +12,18 @@ import {
 } from "@/components/ui/table";
 import { useState } from "react";
 import AddUpdateCustomerModal from "./AddUpdateCustomerModal";
+import { useQuery } from "@tanstack/react-query";
+import { getCustomers } from "@/services/customer";
 
 const CustomerTable = () => {
-    const [customersData, setCustomersData] = useState([
-        {
-            name: "Sanjay",
-            shop: "Sanjay Opticals",
-            location: "Motijheel Pull ke pass, Muzaffarpur, Bihar, India",
-            current_dues: "3,00,000",
-        },
-        {
-            name: "Sanjay",
-            shop: "Sanjay Opticals",
-            location: "Motijheel Pull ke pass, Muzaffarpur, Bihar, India",
-            current_dues: "3,00,000",
-        },
-        {
-            name: "Sanjay",
-            shop: "Sanjay Opticals",
-            location: "Motijheel Pull ke pass, Muzaffarpur, Bihar, India",
-            current_dues: "3,00,000",
-        },
-        {
-            name: "Sanjay",
-            shop: "Sanjay Opticals",
-            location: "Motijheel Pull ke pass, Muzaffarpur, Bihar, India",
-            current_dues: "3,00,000",
-        },
-        {
-            name: "Sanjay",
-            shop: "Sanjay Opticals",
-            location: "Motijheel Pull ke pass, Muzaffarpur, Bihar, India",
-            current_dues: "3,00,000",
-        },
-        {
-            name: "Sanjay",
-            shop: "Sanjay Opticals",
-            location: "Motijheel Pull ke pass, Muzaffarpur, Bihar, India",
-            current_dues: "3,00,000",
-        },
-        {
-            name: "Sanjay",
-            shop: "Sanjay Opticals",
-            location: "Motijheel Pull ke pass, Muzaffarpur, Bihar, India",
-            current_dues: "3,00,000",
-        },
-        {
-            name: "Sanjay",
-            shop: "Sanjay Opticals",
-            location: "Motijheel Pull ke pass, Muzaffarpur, Bihar, India",
-            current_dues: "3,00,000",
-        },
-        {
-            name: "Sanjay",
-            shop: "Sanjay Opticals",
-            location: "Motijheel Pull ke pass, Muzaffarpur, Bihar, India",
-            current_dues: "3,00,000",
-        },
-        {
-            name: "Sanjay",
-            shop: "Sanjay Opticals",
-            location: "Motijheel Pull ke pass, Muzaffarpur, Bihar, India",
-            current_dues: "3,00,000",
-        },
-        {
-            name: "Sanjay",
-            shop: "Sanjay Opticals",
-            location: "Motijheel Pull ke pass, Muzaffarpur, Bihar, India",
-            current_dues: "3,00,000",
-        },
-        {
-            name: "Sanjay",
-            shop: "Sanjay Opticals",
-            location: "Motijheel Pull ke pass, Muzaffarpur, Bihar, India",
-            current_dues: "3,00,000",
-        },
-        {
-            name: "Sanjay",
-            shop: "Sanjay Opticals",
-            location: "Motijheel Pull ke pass, Muzaffarpur, Bihar, India",
-            current_dues: "3,00,000",
-        },
-        {
-            name: "Sanjay",
-            shop: "Sanjay Opticals",
-            location: "Motijheel Pull ke pass, Muzaffarpur, Bihar, India",
-            current_dues: "3,00,000",
-        },
-        {
-            name: "Sanjay",
-            shop: "Sanjay Opticals",
-            location: "Motijheel Pull ke pass, Muzaffarpur, Bihar, India",
-            current_dues: "3,00,000",
-        },
-        {
-            name: "Sanjay",
-            shop: "Sanjay Opticals",
-            location: "Motijheel Pull ke pass, Muzaffarpur, Bihar, India",
-            current_dues: "3,00,000",
-        },
-        {
-            name: "Sanjay",
-            shop: "Sanjay Opticals",
-            location: "Motijheel Pull ke pass, Muzaffarpur, Bihar, India",
-            current_dues: "3,00,000",
-        },
-    ]);
+    const {
+        data: customersData,
+        isLoading,
+        error,
+    } = useQuery({
+        queryKey: ["customers"],
+        queryFn: getCustomers,
+    });
 
     const [openAddCustomerModal, setOpenAddCustomerModal] = useState(false);
 
@@ -138,28 +44,34 @@ const CustomerTable = () => {
                     Add +
                 </Button>
             </div>
-            <ScrollArea className="w-full h-[50vh] mt-4 rounded-md">
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead>Name</TableHead>
-                            <TableHead>Shop</TableHead>
-                            <TableHead>Address</TableHead>
-                            <TableHead>Current Balance</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {customersData.map((item) => (
+            {isLoading && <div>Loading...</div>}
+            {error && <div>Error: {error.message}</div>}
+            {customersData && customersData.length > 0 ? (
+                <ScrollArea className="w-full h-[50vh] mt-4 rounded-md">
+                    <Table>
+                        <TableHeader>
                             <TableRow>
-                                <TableCell>{item.name}</TableCell>
-                                <TableCell>{item.shop}</TableCell>
-                                <TableCell>{item.location}</TableCell>
-                                <TableCell>{item.current_dues}</TableCell>
+                                <TableHead>Name</TableHead>
+                                <TableHead>Shop</TableHead>
+                                <TableHead>Address</TableHead>
+                                <TableHead>Current Balance</TableHead>
                             </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </ScrollArea>
+                        </TableHeader>
+                        <TableBody>
+                            {customersData.map((item: any) => (
+                                <TableRow>
+                                    <TableCell>{item.name}</TableCell>
+                                    <TableCell>{item.shopName}</TableCell>
+                                    <TableCell>{item.city}</TableCell>
+                                    <TableCell>{item.current_dues}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </ScrollArea>
+            ) : (
+                <div>No customers found</div>
+            )}
             <AddUpdateCustomerModal
                 isOpen={openAddCustomerModal}
                 onClose={() => setOpenAddCustomerModal(false)}
