@@ -31,9 +31,16 @@ export async function POST(req: NextRequest) {
     }
     await dbConnection();
     const kindeUser = await getUser();
-    const user = await User.create({ ...req.body, kindeUserId: kindeUser?.id });
+    const data = await req.json();
+    const user = await User.findOne({ kindeUserId: kindeUser?.id });
+    if (user) {
+        return NextResponse.json({
+            status: 400,
+            message: "User already exists",
+        });
+    }
+    await User.create({ ...data, kindeUserId: kindeUser?.id });
     return NextResponse.json({
-        data: user,
         status: 200,
         message: "Success",
     });
@@ -49,9 +56,10 @@ export async function PUT(req: NextRequest) {
     }
     await dbConnection();
     const kindeUser = await getUser();
+    const data = await req.json();
     const user = await User.findOneAndUpdate(
         { kindeUserId: kindeUser?.id },
-        { ...req.body },
+        { ...data },
         { new: true }
     );
     return NextResponse.json({
@@ -71,9 +79,15 @@ export async function DELETE(req: NextRequest) {
     }
     await dbConnection();
     const kindeUser = await getUser();
-    const user = await User.findOneAndDelete({ kindeUserId: kindeUser?.id });
+    const user = await User.findOne({ kindeUserId: kindeUser?.id });
+    if (!user) {
+        return NextResponse.json({
+            status: 400,
+            message: "User not found",
+        });
+    }
+    await User.findOneAndDelete({ kindeUserId: kindeUser?.id });
     return NextResponse.json({
-        data: user,
         status: 200,
         message: "Success",
     });
