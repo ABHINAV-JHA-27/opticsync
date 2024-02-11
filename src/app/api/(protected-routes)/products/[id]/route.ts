@@ -1,12 +1,34 @@
 import dbConnection from "@/lib/dbConnect";
 import Product from "@/models/product";
+import User from "@/models/user";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/dist/types/server";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function PUT(
     req: NextRequest,
     { params }: { params: { id: string } }
 ) {
+    const { isAuthenticated, getUser } = getKindeServerSession();
+
+    if (!(await isAuthenticated())) {
+        return NextResponse.json({
+            status: 401,
+            message: "Unauthorized",
+        });
+    }
+
     await dbConnection();
+
+    const kindeUser = await getUser();
+
+    const user = await User.findOne({ kindeUserId: kindeUser?.id });
+
+    if (!user) {
+        return NextResponse.json({
+            status: 404,
+            message: "User not found",
+        });
+    }
 
     const data = await req.json();
 
@@ -26,7 +48,7 @@ export async function PUT(
         });
     }
 
-    product.save();
+    await product.save();
 
     return NextResponse.json({
         status: 200,
@@ -38,9 +60,25 @@ export async function DELETE(
     req: NextRequest,
     { params }: { params: { id: string } }
 ) {
+    const { isAuthenticated, getUser } = getKindeServerSession();
+
+    if (!(await isAuthenticated())) {
+        return NextResponse.json({
+            status: 401,
+            message: "Unauthorized",
+        });
+    }
+
     await dbConnection();
 
-    const product = await Product.findByIdAndDelete(params.id);
+    const kindeUser = await getUser();
+
+    const user = await User.findOne({ kindeUserId: kindeUser?.id });
+
+    const product = await Product.findOneAndDelete({
+        _id: params.id,
+        user: user._id,
+    });
 
     if (!product) {
         return NextResponse.json({

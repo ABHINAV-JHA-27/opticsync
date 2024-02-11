@@ -3,7 +3,7 @@
 import { Input } from "@/components/ui/input";
 import { createUser } from "@/services/user";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function Page() {
@@ -21,12 +21,9 @@ export default function Page() {
     const [alternatePhone, setAlternatePhone] = useState("");
     const [gstNumber, setGstNumber] = useState("");
 
-    const { mutate } = useMutation({
+    const { mutate, isPending, isError, isSuccess } = useMutation({
         mutationKey: ["user"],
         mutationFn: createUser,
-        onSuccess: () => {
-            router.replace("/onboarding");
-        },
     });
 
     const handleOnboard = () => {
@@ -43,6 +40,9 @@ export default function Page() {
             alternatePhone,
             gstNumber,
         });
+        if (isSuccess) {
+            router.replace("/dashboard");
+        }
     };
 
     return (
@@ -186,9 +186,15 @@ export default function Page() {
                         className="bg-primary text-white px-4 py-2 rounded-md"
                         onClick={handleOnboard}
                     >
-                        Onboard
+                        {isPending ? "Loading..." : "Onboard"}
                     </button>
                 </div>
+
+                {isError && (
+                    <div className="text-red-500 text-center">
+                        Something went wrong
+                    </div>
+                )}
             </div>
         </div>
     );
