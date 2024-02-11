@@ -1,7 +1,7 @@
 import dbConnection from "@/lib/dbConnect";
 import Product from "@/models/product";
 import User from "@/models/user";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/dist/types/server";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function PUT(
