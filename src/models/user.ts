@@ -7,15 +7,36 @@ const UserSchema = new Schema({
         type: String,
         required: true,
     },
-    address: {
+    shopName: {
+        type: String,
+        required: true,
+    },
+    gstNumber: {
+        type: String,
+        required: true,
+    },
+    addressLine1: {
+        type: String,
+        required: true,
+    },
+    addressLine2: {
         type: String,
     },
     phone: {
+        type: String,
+        required: true,
+    },
+    alternatePhone: {
         type: String,
     },
     email: {
         type: String,
     },
+    kindeUserId: {
+        type: String,
+    },
 });
 
 const User = mongoose.model("User") || mongoose.model("User", UserSchema);
+
+export default User;
