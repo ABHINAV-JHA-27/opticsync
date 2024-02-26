@@ -5,29 +5,29 @@ const NavBar = () => {
     const pathname = usePathname();
 
     return (
-        <div className="flex flex-row items-center justify-between m-4">
+        <div className="flex flex-row items-center justify-between p-4 bg-[#ffffff] border-b-[2px] border-[#EFEFF3]">
             {pathname === "/dashboard" && (
-                <span className="text-[24px] font-bold leading-none">
+                <span className="text-[24px] font-[600] leading-none">
                     Dashboard
                 </span>
             )}
             {pathname === "/orders" && (
-                <span className="text-[24px] font-bold leading-none">
+                <span className="text-[24px] font-[600] leading-none">
                     Orders
                 </span>
             )}
             {pathname === "/customers" && (
-                <span className="text-[24px] font-bold leading-none">
+                <span className="text-[24px] font-[600] leading-none">
                     Customers
                 </span>
             )}
             {pathname === "/products" && (
-                <span className="text-[24px] font-bold leading-none">
+                <span className="text-[24px] font-[600] leading-none">
                     Products
                 </span>
             )}
             {pathname === "/stocks" && (
-                <span className="text-[24px] font-bold leading-none">
+                <span className="text-[24px] font-[600] leading-none">
                     Stocks
                 </span>
             )}

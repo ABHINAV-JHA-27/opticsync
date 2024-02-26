@@ -5,7 +5,7 @@ import Styles from "./CommonStyles.module.css";
 const SideBar = () => {
     return (
         <div
-            className={`flex flex-col shadow w-[20vw] h-[96vh] sticky top-0 p-4 m-[2vh] rounded-md justify-between ${Styles.glassmorphism}`}
+            className={`flex flex-col shadow w-[20vw] h-screen sticky top-0 p-4 justify-between bg-[#0A0A0A] text-[#fff]`}
         >
             <div className="space-y-3">
                 <div className="flex items-center justify-center">
@@ -111,7 +111,7 @@ const SideBar = () => {
             </div>
             <ul className="pt-2 pb-4 space-y-1 text-sm">
                 <li className="rounded-sm">
-                    <LogoutLink className="flex items-center p-2 space-x-3 rounded-md">
+                    <LogoutLink className="flex items-center p-2 space-x-3 rounded-md bg-[#222222]">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="w-6 h-6"
