@@ -46,8 +46,8 @@ export default function Page() {
     };
 
     return (
-        <div className="h-screen w-full p-[20px]">
-            <div className="bg-[#DCF2F1] w-full h-full rounded-[14px] p-[14px]">
+        <div className="h-screen w-full p-[18px] bg-[#0A0A0A]">
+            <div className="bg-[#ffffff] w-full h-full rounded-2xl p-[20px] border-[2px] border-[#EFEFF3]">
                 <div className="flex flex-row items-center gap-x-3 w-full">
                     <div className="w-1/2">
                         <span className="text-[#0F1035] text-lg font-bold">
