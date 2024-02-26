@@ -1,4 +1,5 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -14,6 +15,8 @@ import { useState } from "react";
 import AddUpdateOrderModal from "./AddUpdateOrderModal";
 import { useQuery } from "@tanstack/react-query";
 import { getOrder } from "@/services/order";
+import Lottie from "lottie-react";
+import * as NoDataAnimation from "@/assets/lottie/NoDataFound.json";
 
 const OrderTable = () => {
     const {
@@ -70,7 +73,17 @@ const OrderTable = () => {
                     </Table>
                 </ScrollArea>
             ) : (
-                <div>No data</div>
+                <div className="flex flex-col justify-center items-center bg-[#ffffff] border-[2px] border-[#EFEFF3] mt-4 rounded-2xl p-[20px]">
+                    <Lottie
+                        animationData={NoDataAnimation}
+                        loop={true}
+                        width={400}
+                        height={400}
+                    />
+                    <p className="text-[#9DA0A7] text-[16px] font-bold mt-5">
+                        No Orders Found
+                    </p>
+                </div>
             )}
             <AddUpdateOrderModal
                 isOpen={openAddOrderModal}

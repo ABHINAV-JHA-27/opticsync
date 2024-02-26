@@ -14,6 +14,8 @@ import { useState } from "react";
 import AddUpdateCustomerModal from "./AddUpdateCustomerModal";
 import { useQuery } from "@tanstack/react-query";
 import { getCustomers } from "@/services/customer";
+import Lottie from "lottie-react";
+import * as NoDataAnimation from "@/assets/lottie/NoDataFound.json";
 
 const CustomerTable = () => {
     const {
@@ -70,7 +72,17 @@ const CustomerTable = () => {
                     </Table>
                 </ScrollArea>
             ) : (
-                <div>No customers found</div>
+                <div className="flex flex-col justify-center items-center bg-[#ffffff] border-[2px] border-[#EFEFF3] mt-4 rounded-2xl p-[20px]">
+                    <Lottie
+                        animationData={NoDataAnimation}
+                        loop={true}
+                        width={400}
+                        height={400}
+                    />
+                    <p className="text-[#9DA0A7] text-[16px] font-bold mt-5">
+                        No Customers Found
+                    </p>
+                </div>
             )}
             <AddUpdateCustomerModal
                 isOpen={openAddCustomerModal}

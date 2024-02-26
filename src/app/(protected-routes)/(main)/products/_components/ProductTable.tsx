@@ -14,6 +14,8 @@ import { getProducts } from "@/services/product";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import AddUpdateProductModal from "./AddUpdateProductModal";
+import Lottie from "lottie-react";
+import * as NoDataAnimation from "@/assets/lottie/NoDataFound.json";
 
 const ProductTable = () => {
     const {
@@ -70,7 +72,17 @@ const ProductTable = () => {
                     </Table>
                 </ScrollArea>
             ) : (
-                <p>No products available</p>
+                <div className="flex flex-col justify-center items-center bg-[#ffffff] border-[2px] border-[#EFEFF3] mt-4 rounded-2xl p-[20px]">
+                    <Lottie
+                        animationData={NoDataAnimation}
+                        loop={true}
+                        width={400}
+                        height={400}
+                    />
+                    <p className="text-[#9DA0A7] text-[16px] font-bold mt-5">
+                        No Products Found
+                    </p>
+                </div>
             )}
             <AddUpdateProductModal
                 isOpen={openAddProductModal}
