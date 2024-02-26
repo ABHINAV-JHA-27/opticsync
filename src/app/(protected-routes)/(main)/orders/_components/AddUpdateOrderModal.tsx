@@ -14,8 +14,11 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createOrder, updateOrder } from "@/services/order";
+import { getProducts } from "@/services/product";
+import { getCustomers } from "@/services/customer";
+import { DropDown } from "@/components/DropDown";
 
 type AddUpdateOrderModalProps = {
     isOpen: boolean;
@@ -72,6 +75,16 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
     const [customer, setCustomer] = useState(
         props.data ? props.data.customer : ""
     );
+
+    const { data: productsData } = useQuery({
+        queryKey: ["products"],
+        queryFn: getProducts,
+    });
+
+    const { data: customersData } = useQuery({
+        queryKey: ["customers"],
+        queryFn: getCustomers,
+    });
 
     const handleOrderSave = () => {
         if (props.data) {
@@ -232,53 +245,25 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
                                     <span className="text-xs font-bold">
                                         Customer
                                     </span>
-                                    <Select
+                                    <DropDown
+                                        data={customersData?.map(
+                                            (customer: any) => customer.shopName
+                                        )}
                                         value={customer}
-                                        onValueChange={(e) => {
-                                            setCustomer(e);
-                                        }}
-                                    >
-                                        <SelectTrigger className="w-full">
-                                            <SelectValue placeholder="Theme" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="light">
-                                                Pending
-                                            </SelectItem>
-                                            <SelectItem value="dark">
-                                                Ordered
-                                            </SelectItem>
-                                            <SelectItem value="system">
-                                                Delivered
-                                            </SelectItem>
-                                        </SelectContent>
-                                    </Select>
+                                        onChange={(e: string) => setCustomer(e)}
+                                    />
                                 </div>
                                 <div className="w-1/2">
                                     <span className="text-xs font-bold">
                                         Product
                                     </span>
-                                    <Select
+                                    <DropDown
+                                        data={productsData?.map(
+                                            (product: any) => product.name
+                                        )}
                                         value={product}
-                                        onValueChange={(e) => {
-                                            setProduct(e);
-                                        }}
-                                    >
-                                        <SelectTrigger className="w-full">
-                                            <SelectValue placeholder="Theme" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="light">
-                                                Pending
-                                            </SelectItem>
-                                            <SelectItem value="dark">
-                                                Ordered
-                                            </SelectItem>
-                                            <SelectItem value="system">
-                                                Delivered
-                                            </SelectItem>
-                                        </SelectContent>
-                                    </Select>
+                                        onChange={(e: string) => setProduct(e)}
+                                    />
                                 </div>
                             </div>
                             <div className="w-full mt-4 flex justify-end">
