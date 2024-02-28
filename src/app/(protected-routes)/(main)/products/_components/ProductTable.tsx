@@ -10,14 +10,16 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { getProducts } from "@/services/product";
-import { useQuery } from "@tanstack/react-query";
+import { deleteProduct, getProducts } from "@/services/product";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import AddUpdateProductModal from "./AddUpdateProductModal";
 import Lottie from "lottie-react";
 import * as NoDataAnimation from "@/assets/lottie/NoDataFound.json";
 
 const ProductTable = () => {
+    const queryclient = useQueryClient();
+
     const {
         data: productsData,
         isLoading,
@@ -27,7 +29,27 @@ const ProductTable = () => {
         queryFn: getProducts,
     });
 
+    const { mutate: deleteCustomerMutation } = useMutation({
+        mutationFn: deleteProduct,
+        onSuccess: () => {
+            queryclient.invalidateQueries({
+                queryKey: ["products"],
+            });
+        },
+    });
+
     const [openAddProductModal, setOpenAddProductModal] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState<any>(null);
+
+    const handleEdit = async (id: string) => {
+        const product = productsData.find((product: any) => product._id === id);
+        setSelectedProduct(product);
+        setOpenAddProductModal(true);
+    };
+
+    const handleDelete = async (id: string) => {
+        await deleteCustomerMutation(id);
+    };
 
     return (
         <>
@@ -57,6 +79,7 @@ const ProductTable = () => {
                                 <TableHead>Company</TableHead>
                                 <TableHead>WLP</TableHead>
                                 <TableHead>SRP</TableHead>
+                                <TableHead></TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -66,6 +89,26 @@ const ProductTable = () => {
                                     <TableCell>{item.company}</TableCell>
                                     <TableCell>{item.wlp}</TableCell>
                                     <TableCell>{item.srp}</TableCell>
+                                    <TableCell>
+                                        <div className="flex flex-row items-center gap-x-4">
+                                            <Button
+                                                className="bg-[#F2F2F2] text-[#000000] hover:bg-[#E5E5E5] hover:text-[#000000] w-20 h-8 z-[5]"
+                                                onClick={() => {
+                                                    handleEdit(item._id);
+                                                }}
+                                            >
+                                                Edit
+                                            </Button>
+                                            <Button
+                                                className="bg-[#F2F2F2] text-[#000000] hover:bg-[#E5E5E5] hover:text-[#000000] w-20 h-8 z-[5]"
+                                                onClick={() => {
+                                                    handleDelete(item._id);
+                                                }}
+                                            >
+                                                Delete
+                                            </Button>
+                                        </div>
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -88,7 +131,9 @@ const ProductTable = () => {
                 isOpen={openAddProductModal}
                 onClose={() => {
                     setOpenAddProductModal(false);
+                    setSelectedProduct(null);
                 }}
+                data={selectedProduct}
             />
         </>
     );

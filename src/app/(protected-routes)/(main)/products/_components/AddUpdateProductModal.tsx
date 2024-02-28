@@ -8,7 +8,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { createProduct, updateProduct } from "@/services/product";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type AddProductModalProps = {
     isOpen: boolean;
@@ -48,23 +48,15 @@ const AddUpdateProductModal = (props: AddProductModalProps) => {
         },
     });
 
-    const [productName, setProductName] = useState(
-        props.data ? props.data.name : ""
-    );
-    const [productCompany, setProductCompany] = useState(
-        props.data ? props.data.company : ""
-    );
-    const [productSrp, setProductSrp] = useState(
-        props.data ? props.data.srp : ""
-    );
-    const [productWlp, setProductWlp] = useState(
-        props.data ? props.data.wlp : ""
-    );
+    const [productName, setProductName] = useState("");
+    const [productCompany, setProductCompany] = useState("");
+    const [productSrp, setProductSrp] = useState("");
+    const [productWlp, setProductWlp] = useState("");
 
     const handleProductSave = () => {
         if (props.data) {
             update({
-                id: props.data.id,
+                id: props.data?._id,
                 name: productName,
                 company: productCompany,
                 srp: productSrp,
@@ -84,6 +76,15 @@ const AddUpdateProductModal = (props: AddProductModalProps) => {
             console.log("Error");
         }
     };
+
+    useEffect(() => {
+        if (props.data) {
+            setProductName(props.data.name);
+            setProductCompany(props.data.company);
+            setProductSrp(props.data.srp);
+            setProductWlp(props.data.wlp);
+        }
+    }, [props.data]);
 
     return (
         <Dialog
