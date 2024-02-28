@@ -1,3 +1,4 @@
+import { DropDown } from "@/components/DropDown";
 import {
     Dialog,
     DialogContent,
@@ -6,19 +7,11 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getCustomers } from "@/services/customer";
 import { createOrder, updateOrder } from "@/services/order";
 import { getProducts } from "@/services/product";
-import { getCustomers } from "@/services/customer";
-import { DropDown } from "@/components/DropDown";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 
 type AddUpdateOrderModalProps = {
     isOpen: boolean;
@@ -28,53 +21,39 @@ type AddUpdateOrderModalProps = {
 
 const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
     const queryClient = useQueryClient();
-    const {
-        mutate: create,
-        isPending: isPendingCreate,
-        isSuccess: isSuccessCreate,
-        isError: isErrorCreate,
-    } = useMutation({
+    const { mutate: create, isPending: isPendingCreate } = useMutation({
         mutationFn: createOrder,
         mutationKey: ["orders"],
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ["orders"],
             });
+            props.onClose();
         },
     });
 
-    const {
-        mutate: update,
-        isPending: isPendingUpdate,
-        isSuccess: isSuccessUpdate,
-        isError: isErrorUpdate,
-    } = useMutation({
+    const { mutate: update, isPending: isPendingUpdate } = useMutation({
         mutationFn: updateOrder,
         mutationKey: ["orders"],
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ["orders"],
             });
+            props.onClose();
         },
     });
 
-    const [rSph, setRSph] = useState(props.data ? props.data.r.sph : "");
-    const [rCyl, setRCyl] = useState(props.data ? props.data.r.cyl : "");
-    const [rAxis, setRAxis] = useState(props.data ? props.data.r.axis : "");
-    const [rAdd, setRAdd] = useState(props.data ? props.data.r.add : "");
-    const [lSph, setLSph] = useState(props.data ? props.data.l.sph : "");
-    const [lCyl, setLCyl] = useState(props.data ? props.data.l.cyl : "");
-    const [lAxis, setLAxis] = useState(props.data ? props.data.l.axis : "");
-    const [lAdd, setLAdd] = useState(props.data ? props.data.l.add : "");
-    const [status, setStatus] = useState(
-        props.data ? props.data.status : "pending"
-    );
-    const [product, setProduct] = useState(
-        props.data ? props.data.products : ""
-    );
-    const [customer, setCustomer] = useState(
-        props.data ? props.data.customer : ""
-    );
+    const [rSph, setRSph] = useState("");
+    const [rCyl, setRCyl] = useState("");
+    const [rAxis, setRAxis] = useState("");
+    const [rAdd, setRAdd] = useState("");
+    const [lSph, setLSph] = useState("");
+    const [lCyl, setLCyl] = useState("");
+    const [lAxis, setLAxis] = useState("");
+    const [lAdd, setLAdd] = useState("");
+    const [status, setStatus] = useState("pending");
+    const [product, setProduct] = useState("");
+    const [customer, setCustomer] = useState("");
 
     const { data: productsData } = useQuery({
         queryKey: ["products"],
@@ -89,7 +68,7 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
     const handleOrderSave = () => {
         if (props.data) {
             update({
-                id: props.data.id,
+                id: props.data?._id,
                 r: {
                     sph: rSph,
                     cyl: rCyl,
@@ -103,8 +82,11 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
                     add: lAdd,
                 },
                 status: status,
-                products: product,
-                customer: customer,
+                products: productsData?.find((pr: any) => product === pr.name)
+                    ?._id,
+                customer: customersData?.find(
+                    (customer: any) => customer.shopName === customer
+                )?._id,
             });
         } else {
             create({
@@ -121,16 +103,34 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
                     add: lAdd,
                 },
                 status: status,
-                products: product,
-                customer: customer,
+                products: productsData?.find((pr: any) => product === pr.name)
+                    ?._id,
+                customer: customersData?.find(
+                    (customer: any) => customer.shopName === customer
+                )?._id,
             });
         }
-        if (isSuccessCreate || isSuccessUpdate) {
-            props.onClose();
-        } else if (isErrorCreate || isErrorUpdate) {
-            console.log("Error");
-        }
     };
+
+    useEffect(() => {
+        if (props.data) {
+            setRSph(props.data.r.sph);
+            setRCyl(props.data.r.cyl);
+            setRAxis(props.data.r.axis);
+            setRAdd(props.data.r.add);
+            setLSph(props.data.l.sph);
+            setLCyl(props.data.l.cyl);
+            setLAxis(props.data.l.axis);
+            setLAdd(props.data.l.add);
+            setStatus(props.data.status);
+            setProduct(props.data.products);
+            setCustomer(props.data.customer);
+        }
+    }, [props.data]);
+
+    useEffect(() => {
+        console.log(" product", product);
+    }, [product]);
 
     return (
         <Dialog
@@ -262,7 +262,9 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
                                             (product: any) => product.name
                                         )}
                                         value={product}
-                                        onChange={(e: string) => setProduct(e)}
+                                        onChange={(e: string) => {
+                                            setProduct(e);
+                                        }}
                                     />
                                 </div>
                             </div>

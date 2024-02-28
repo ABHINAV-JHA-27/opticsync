@@ -13,12 +13,14 @@ import {
 } from "@/components/ui/table";
 import { useState } from "react";
 import AddUpdateOrderModal from "./AddUpdateOrderModal";
-import { useQuery } from "@tanstack/react-query";
-import { getOrder } from "@/services/order";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { deleteOrder, getOrder } from "@/services/order";
 import Lottie from "lottie-react";
 import * as NoDataAnimation from "@/assets/lottie/NoDataFound.json";
 
 const OrderTable = () => {
+    const queryclient = useQueryClient();
+
     const {
         data: orderData,
         isLoading,
@@ -29,6 +31,27 @@ const OrderTable = () => {
     });
 
     const [openAddOrderModal, setOpenAddOrderModal] = useState(false);
+    const [search, setSearch] = useState("");
+    const [selectedOrder, setSelectedOrder] = useState<any>(null);
+
+    const { mutate: deleteOrderMutation } = useMutation({
+        mutationFn: deleteOrder,
+        onSuccess: () => {
+            queryclient.invalidateQueries({
+                queryKey: ["orders"],
+            });
+        },
+    });
+
+    const handleEdit = async (id: string) => {
+        const order = orderData.find((order: any) => order._id === id);
+        setSelectedOrder(order);
+        setOpenAddOrderModal(true);
+    };
+
+    const handleDelete = async (id: string) => {
+        await deleteOrderMutation(id);
+    };
 
     return (
         <>
@@ -57,18 +80,49 @@ const OrderTable = () => {
                                 {/* <TableHead>Name</TableHead>
                             <TableHead>Company</TableHead>
                             <TableHead>WLP</TableHead>
-                            <TableHead>SRP</TableHead> */}
+                        <TableHead>SRP</TableHead> */}
+                                <TableHead></TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {orderData.map((item: any) => (
-                                <TableRow>
-                                    {/* <TableCell>{item.name}</TableCell>
+                            {orderData
+                                .filter((order: any) => {
+                                    // if (
+                                    //     order.name
+                                    //         .toLowerCase()
+                                    //         .includes(search.toLowerCase())
+                                    // ) {
+                                    // }
+                                    return order;
+                                })
+                                .map((item: any) => (
+                                    <TableRow>
+                                        {/* <TableCell>{item.name}</TableCell>
                                 <TableCell>{item.company}</TableCell>
                                 <TableCell>{item.wlp}</TableCell>
                                 <TableCell>{item.srp}</TableCell> */}
-                                </TableRow>
-                            ))}
+                                        <TableCell>
+                                            <div className="flex flex-row items-center gap-x-4">
+                                                <Button
+                                                    className="bg-[#F2F2F2] text-[#000000] hover:bg-[#E5E5E5] hover:text-[#000000] w-20 h-8 z-[5]"
+                                                    onClick={() => {
+                                                        handleEdit(item._id);
+                                                    }}
+                                                >
+                                                    Edit
+                                                </Button>
+                                                <Button
+                                                    className="bg-[#F2F2F2] text-[#000000] hover:bg-[#E5E5E5] hover:text-[#000000] w-20 h-8 z-[5]"
+                                                    onClick={() => {
+                                                        handleDelete(item._id);
+                                                    }}
+                                                >
+                                                    Delete
+                                                </Button>
+                                            </div>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
                         </TableBody>
                     </Table>
                 </ScrollArea>
@@ -89,7 +143,9 @@ const OrderTable = () => {
                 isOpen={openAddOrderModal}
                 onClose={() => {
                     setOpenAddOrderModal(false);
+                    setSelectedOrder(null);
                 }}
+                data={selectedOrder}
             />
         </>
     );

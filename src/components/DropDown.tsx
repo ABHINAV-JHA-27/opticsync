@@ -36,15 +36,16 @@ export function DropDown(props: DropDownProps) {
                     aria-expanded={open}
                     className="w-[200px] justify-between"
                 >
-                    {props.value
-                        ? props.data.find((item) => item === props.value)
-                        : "Select framework..."}
+                    {props.value !== "" ? props.value : "Select framework..."}
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[200px] p-0">
                 <Command>
-                    <CommandInput placeholder="Search framework..." />
+                    <CommandInput
+                        placeholder="Search framework..."
+                        value={props.value}
+                    />
                     <CommandEmpty>No framework found.</CommandEmpty>
                     <CommandGroup>
                         {props.data.map((item) => (
@@ -58,7 +59,7 @@ export function DropDown(props: DropDownProps) {
                             >
                                 <Check
                                     className={cn(
-                                        "mr-2 h-4 w-4",
+                                        "mr-2 h-4 w-4 text-black",
                                         props.value === item
                                             ? "opacity-100"
                                             : "opacity-0"
