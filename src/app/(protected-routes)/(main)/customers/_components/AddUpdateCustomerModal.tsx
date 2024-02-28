@@ -8,7 +8,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { createCustomer, updateCustomer } from "@/services/customer";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type AddUpdateCustomerModalProps = {
     isOpen: boolean;
@@ -18,6 +18,7 @@ type AddUpdateCustomerModalProps = {
 
 const AddUpdateCustomerModal = (props: AddUpdateCustomerModalProps) => {
     const queryClient = useQueryClient();
+
     const {
         mutate: create,
         isPending: isPendingCreate,
@@ -45,44 +46,25 @@ const AddUpdateCustomerModal = (props: AddUpdateCustomerModalProps) => {
             queryClient.invalidateQueries({
                 queryKey: ["customers"],
             });
+            props.onClose();
         },
     });
 
-    const [customerName, setCustomerName] = useState(
-        props.data ? props.data.name : ""
-    );
-    const [customerPhone, setCustomerPhone] = useState(
-        props.data ? props.data.phone : ""
-    );
-    const [customerAddressLine1, setCustomerAddressLine1] = useState(
-        props.data ? props.data.addressLine1 : ""
-    );
-    const [customerAddressLine2, setCustomerAddressLine2] = useState(
-        props.data ? props.data.addressLine2 : ""
-    );
-    const [customerCity, setCustomerCity] = useState(
-        props.data ? props.data.city : ""
-    );
-    const [customerState, setCustomerState] = useState(
-        props.data ? props.data.state : ""
-    );
-    const [customerPincode, setCustomerPincode] = useState(
-        props.data ? props.data.pincode : ""
-    );
-    const [customerShopName, setCustomerShopName] = useState(
-        props.data ? props.data.shopName : ""
-    );
-    const [customerAlternatePhone, setCustomerAlternatePhone] = useState(
-        props.data ? props.data.alternatePhone : ""
-    );
-    const [customerGstNumber, setCustomerGstNumber] = useState(
-        props.data ? props.data.gstNumber : ""
-    );
+    const [customerName, setCustomerName] = useState("");
+    const [customerPhone, setCustomerPhone] = useState("");
+    const [customerAddressLine1, setCustomerAddressLine1] = useState("");
+    const [customerAddressLine2, setCustomerAddressLine2] = useState("");
+    const [customerCity, setCustomerCity] = useState("");
+    const [customerState, setCustomerState] = useState("");
+    const [customerPincode, setCustomerPincode] = useState("");
+    const [customerShopName, setCustomerShopName] = useState("");
+    const [customerAlternatePhone, setCustomerAlternatePhone] = useState("");
+    const [customerGstNumber, setCustomerGstNumber] = useState("");
 
     const handleCustomerSave = () => {
         if (props.data) {
             update({
-                id: props.data.id,
+                id: props.data?._id,
                 name: customerName,
                 phone: customerPhone,
                 addressLine1: customerAddressLine1,
@@ -114,6 +96,21 @@ const AddUpdateCustomerModal = (props: AddUpdateCustomerModalProps) => {
             console.log("Error");
         }
     };
+
+    useEffect(() => {
+        if (props.data) {
+            setCustomerName(props.data.name);
+            setCustomerPhone(props.data.phone);
+            setCustomerAddressLine1(props.data.addressLine1);
+            setCustomerAddressLine2(props.data.addressLine2);
+            setCustomerCity(props.data.city);
+            setCustomerState(props.data.state);
+            setCustomerPincode(props.data.pincode);
+            setCustomerShopName(props.data.shopName);
+            setCustomerAlternatePhone(props.data.alternatePhone);
+            setCustomerGstNumber(props.data.gstNumber);
+        }
+    }, [props.data]);
 
     return (
         <Dialog

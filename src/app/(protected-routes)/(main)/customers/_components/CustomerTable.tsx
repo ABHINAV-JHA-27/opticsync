@@ -1,4 +1,5 @@
 "use client";
+import * as NoDataAnimation from "@/assets/lottie/NoDataFound.json";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -10,14 +11,15 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import { deleteCustomer, getCustomers } from "@/services/customer";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import Lottie from "lottie-react";
 import { useState } from "react";
 import AddUpdateCustomerModal from "./AddUpdateCustomerModal";
-import { useQuery } from "@tanstack/react-query";
-import { getCustomers } from "@/services/customer";
-import Lottie from "lottie-react";
-import * as NoDataAnimation from "@/assets/lottie/NoDataFound.json";
 
 const CustomerTable = () => {
+    const queryclient = useQueryClient();
+
     const {
         data: customersData,
         isLoading,
@@ -27,7 +29,30 @@ const CustomerTable = () => {
         queryFn: getCustomers,
     });
 
+    const { mutate: deleteCustomerMutation } = useMutation({
+        mutationFn: deleteCustomer,
+        onSuccess: () => {
+            queryclient.invalidateQueries({
+                queryKey: ["customers"],
+            });
+        },
+    });
+
     const [openAddCustomerModal, setOpenAddCustomerModal] = useState(false);
+    const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
+    const [search, setSearch] = useState("");
+
+    const handleEdit = async (id: string) => {
+        const customer = customersData.find(
+            (customer: any) => customer._id === id
+        );
+        setSelectedCustomer(customer);
+        setOpenAddCustomerModal(true);
+    };
+
+    const handleDelete = async (id: string) => {
+        await deleteCustomerMutation(id);
+    };
 
     return (
         <>
@@ -36,6 +61,8 @@ const CustomerTable = () => {
                     type="text"
                     className="px-3 py-2 w-80"
                     placeholder="Search..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
                 />
                 <Button
                     className="w-[15%]"
@@ -57,17 +84,56 @@ const CustomerTable = () => {
                                 <TableHead>Shop</TableHead>
                                 <TableHead>Address</TableHead>
                                 <TableHead>Current Balance</TableHead>
+                                <TableHead></TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {customersData.map((item: any) => (
-                                <TableRow>
-                                    <TableCell>{item.name}</TableCell>
-                                    <TableCell>{item.shopName}</TableCell>
-                                    <TableCell>{item.city}</TableCell>
-                                    <TableCell>{item.current_dues}</TableCell>
-                                </TableRow>
-                            ))}
+                            {customersData
+                                .filter((customer: any) => {
+                                    if (
+                                        customer.name
+                                            .toLowerCase()
+                                            .includes(search.toLowerCase()) ||
+                                        customer.shopName
+                                            .toLowerCase()
+                                            .includes(search.toLowerCase()) ||
+                                        customer.city
+                                            .toLowerCase()
+                                            .includes(search.toLowerCase())
+                                    ) {
+                                        return customer;
+                                    }
+                                })
+                                .map((item: any) => (
+                                    <TableRow>
+                                        <TableCell>{item.name}</TableCell>
+                                        <TableCell>{item.shopName}</TableCell>
+                                        <TableCell>{item.city}</TableCell>
+                                        <TableCell>
+                                            {item.currentBalance}
+                                        </TableCell>
+                                        <TableCell>
+                                            <div className="flex flex-row items-center gap-x-4">
+                                                <Button
+                                                    className="bg-[#F2F2F2] text-[#000000] hover:bg-[#E5E5E5] hover:text-[#000000] w-20 h-8 z-[5]"
+                                                    onClick={() => {
+                                                        handleEdit(item._id);
+                                                    }}
+                                                >
+                                                    Edit
+                                                </Button>
+                                                <Button
+                                                    className="bg-[#F2F2F2] text-[#000000] hover:bg-[#E5E5E5] hover:text-[#000000] w-20 h-8 z-[5]"
+                                                    onClick={() => {
+                                                        handleDelete(item._id);
+                                                    }}
+                                                >
+                                                    Delete
+                                                </Button>
+                                            </div>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
                         </TableBody>
                     </Table>
                 </ScrollArea>
@@ -86,7 +152,11 @@ const CustomerTable = () => {
             )}
             <AddUpdateCustomerModal
                 isOpen={openAddCustomerModal}
-                onClose={() => setOpenAddCustomerModal(false)}
+                onClose={() => {
+                    setOpenAddCustomerModal(false);
+                    setSelectedCustomer(null);
+                }}
+                data={selectedCustomer}
             />
         </>
     );
