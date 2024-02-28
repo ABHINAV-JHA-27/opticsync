@@ -52,8 +52,8 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
     const [lAxis, setLAxis] = useState("");
     const [lAdd, setLAdd] = useState("");
     const [status, setStatus] = useState("pending");
-    const [product, setProduct] = useState("");
-    const [customer, setCustomer] = useState("");
+    const [product, setProduct] = useState<string>("");
+    const [customer, setCustomer] = useState<string>("");
 
     const { data: productsData } = useQuery({
         queryKey: ["products"],
@@ -66,49 +66,33 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
     });
 
     const handleOrderSave = () => {
+        let data = {
+            r: {
+                sph: rSph,
+                cyl: rCyl,
+                axis: rAxis,
+                add: rAdd,
+            },
+            l: {
+                sph: lSph,
+                cyl: lCyl,
+                axis: lAxis,
+                add: lAdd,
+            },
+            status: status,
+            products: productsData.find((pr: any) => product == pr.name)?._id,
+            customer: customersData.find(
+                (customer: any) => customer.shopName == customer
+            )?._id,
+        };
+
         if (props.data) {
             update({
                 id: props.data?._id,
-                r: {
-                    sph: rSph,
-                    cyl: rCyl,
-                    axis: rAxis,
-                    add: rAdd,
-                },
-                l: {
-                    sph: lSph,
-                    cyl: lCyl,
-                    axis: lAxis,
-                    add: lAdd,
-                },
-                status: status,
-                products: productsData?.find((pr: any) => product === pr.name)
-                    ?._id,
-                customer: customersData?.find(
-                    (customer: any) => customer.shopName === customer
-                )?._id,
+                ...data,
             });
         } else {
-            create({
-                r: {
-                    sph: rSph,
-                    cyl: rCyl,
-                    axis: rAxis,
-                    add: rAdd,
-                },
-                l: {
-                    sph: lSph,
-                    cyl: lCyl,
-                    axis: lAxis,
-                    add: lAdd,
-                },
-                status: status,
-                products: productsData?.find((pr: any) => product === pr.name)
-                    ?._id,
-                customer: customersData?.find(
-                    (customer: any) => customer.shopName === customer
-                )?._id,
-            });
+            create(data);
         }
     };
 
@@ -127,10 +111,6 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
             setCustomer(props.data.customer);
         }
     }, [props.data]);
-
-    useEffect(() => {
-        console.log(" product", product);
-    }, [product]);
 
     return (
         <Dialog

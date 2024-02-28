@@ -14,6 +14,7 @@ export const getOrder = async () => {
 };
 
 export const createOrder = async (data: any) => {
+    console.log(data);
     try {
         const response = await fetch("/api/orders", {
             method: "POST",

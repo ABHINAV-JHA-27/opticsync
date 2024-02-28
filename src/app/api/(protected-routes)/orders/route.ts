@@ -1,5 +1,7 @@
 import dbConnection from "@/lib/dbConnect";
+import Customer from "@/models/customer";
 import Order from "@/models/order";
+import Product from "@/models/product";
 import User from "@/models/user";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
@@ -69,11 +71,19 @@ export async function POST(req: NextRequest) {
         });
     }
 
+    // console.log(data.customer);
+    // const customer = await Customer.findById(data.customer);
+    // console.log(customer);
+    // const product = await Product.findById(data.product);
+    // customer.currentBalance = customer?.currentBalance + product?.wlp;
+    // console.log(customer.currentBalance);
+
     const order = new Order({
         ...data,
         user: user._id,
     });
     await order.save();
+    // await customer.save();
 
     return NextResponse.json({
         data: order,
