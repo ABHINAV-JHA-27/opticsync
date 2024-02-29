@@ -124,151 +124,133 @@ const AddUpdateCustomerModal = (props: AddUpdateCustomerModalProps) => {
                     <DialogTitle>
                         {props.data ? "Edit Customer" : "Add Customer"}
                     </DialogTitle>
-                    <DialogDescription>
-                        <div className="w-full mt-2">
-                            <div className="w-full">
-                                <span className="text-xs font-bold">
-                                    Customer Name
-                                </span>
-                                <Input
-                                    type="text"
-                                    value={customerName}
-                                    onChange={(e) =>
-                                        setCustomerName(e.target.value)
-                                    }
-                                />
-                            </div>
-                            <div className="w-full mt-2">
-                                <span className="text-xs font-bold">
-                                    Shop Name
-                                </span>
-                                <Input
-                                    type="text"
-                                    value={customerShopName}
-                                    onChange={(e) =>
-                                        setCustomerShopName(e.target.value)
-                                    }
-                                />
-                            </div>
-                            <div className="w-full mt-2">
-                                <span className="text-xs font-bold">
-                                    Address Line 1
-                                </span>
-                                <Input
-                                    type="text"
-                                    value={customerAddressLine1}
-                                    onChange={(e) =>
-                                        setCustomerAddressLine1(e.target.value)
-                                    }
-                                />
-                            </div>
-                            <div className="w-full mt-2">
-                                <span className="text-xs font-bold">
-                                    Address Line 2
-                                </span>
-                                <Input
-                                    type="text"
-                                    value={customerAddressLine2}
-                                    onChange={(e) =>
-                                        setCustomerAddressLine2(e.target.value)
-                                    }
-                                />
-                            </div>
-                            <div className="w-full mt-2 flex flex-row items-center gap-x-2">
-                                <div className="w-1/2">
-                                    <span className="text-xs font-bold">
-                                        City
-                                    </span>
-                                    <Input
-                                        type="text"
-                                        value={customerCity}
-                                        onChange={(e) =>
-                                            setCustomerCity(e.target.value)
-                                        }
-                                    />
-                                </div>
-                                <div className="w-1/2">
-                                    <span className="text-xs font-bold">
-                                        Pincode
-                                    </span>
-                                    <Input
-                                        type="text"
-                                        value={customerPincode}
-                                        onChange={(e) =>
-                                            setCustomerPincode(e.target.value)
-                                        }
-                                    />
-                                </div>
-                            </div>
-                            <div className="w-full mt-2 flex flex-row items-center gap-x-2">
-                                <div className="w-1/2">
-                                    <span className="text-xs font-bold">
-                                        State
-                                    </span>
-                                    <Input
-                                        type="text"
-                                        value={customerState}
-                                        onChange={(e) =>
-                                            setCustomerState(e.target.value)
-                                        }
-                                    />
-                                </div>
-                                <div className="w-1/2">
-                                    <span className="text-xs font-bold">
-                                        GST
-                                    </span>
-                                    <Input
-                                        type="text"
-                                        value={customerGstNumber}
-                                        onChange={(e) =>
-                                            setCustomerGstNumber(e.target.value)
-                                        }
-                                    />
-                                </div>
-                            </div>
-                            <div className="w-full mt-2 flex flex-row items-center gap-x-2">
-                                <div className="w-1/2">
-                                    <span className="text-xs font-bold">
-                                        Phone Number
-                                    </span>
-                                    <Input
-                                        type="text"
-                                        value={customerPhone}
-                                        onChange={(e) =>
-                                            setCustomerPhone(e.target.value)
-                                        }
-                                    />
-                                </div>
-                                <div className="w-1/2">
-                                    <span className="text-xs font-bold">
-                                        Alternate Phone Number
-                                    </span>
-                                    <Input
-                                        type="text"
-                                        value={customerAlternatePhone}
-                                        onChange={(e) =>
-                                            setCustomerAlternatePhone(
-                                                e.target.value
-                                            )
-                                        }
-                                    />
-                                </div>
-                            </div>
-                            <div className="w-full mt-4 flex justify-end">
-                                <button
-                                    className="bg-primary text-white px-4 py-2 rounded-md"
-                                    onClick={handleCustomerSave}
-                                >
-                                    {isPendingCreate || isPendingUpdate
-                                        ? "Saving..."
-                                        : props.data
-                                        ? "Update Customer"
-                                        : "Add Customer"}
-                                </button>
-                            </div>
-                        </div>
-                    </DialogDescription>
                 </DialogHeader>
+                <div className="w-full mt-2">
+                    <div className="w-full">
+                        <span className="text-xs font-bold">Customer Name</span>
+                        <Input
+                            type="text"
+                            value={customerName}
+                            onChange={(e) => setCustomerName(e.target.value)}
+                        />
+                    </div>
+                    <div className="w-full mt-2">
+                        <span className="text-xs font-bold">Shop Name</span>
+                        <Input
+                            type="text"
+                            value={customerShopName}
+                            onChange={(e) =>
+                                setCustomerShopName(e.target.value)
+                            }
+                        />
+                    </div>
+                    <div className="w-full mt-2">
+                        <span className="text-xs font-bold">
+                            Address Line 1
+                        </span>
+                        <Input
+                            type="text"
+                            value={customerAddressLine1}
+                            onChange={(e) =>
+                                setCustomerAddressLine1(e.target.value)
+                            }
+                        />
+                    </div>
+                    <div className="w-full mt-2">
+                        <span className="text-xs font-bold">
+                            Address Line 2
+                        </span>
+                        <Input
+                            type="text"
+                            value={customerAddressLine2}
+                            onChange={(e) =>
+                                setCustomerAddressLine2(e.target.value)
+                            }
+                        />
+                    </div>
+                    <div className="w-full mt-2 flex flex-row items-center gap-x-2">
+                        <div className="w-1/2">
+                            <span className="text-xs font-bold">City</span>
+                            <Input
+                                type="text"
+                                value={customerCity}
+                                onChange={(e) =>
+                                    setCustomerCity(e.target.value)
+                                }
+                            />
+                        </div>
+                        <div className="w-1/2">
+                            <span className="text-xs font-bold">Pincode</span>
+                            <Input
+                                type="text"
+                                value={customerPincode}
+                                onChange={(e) =>
+                                    setCustomerPincode(e.target.value)
+                                }
+                            />
+                        </div>
+                    </div>
+                    <div className="w-full mt-2 flex flex-row items-center gap-x-2">
+                        <div className="w-1/2">
+                            <span className="text-xs font-bold">State</span>
+                            <Input
+                                type="text"
+                                value={customerState}
+                                onChange={(e) =>
+                                    setCustomerState(e.target.value)
+                                }
+                            />
+                        </div>
+                        <div className="w-1/2">
+                            <span className="text-xs font-bold">GST</span>
+                            <Input
+                                type="text"
+                                value={customerGstNumber}
+                                onChange={(e) =>
+                                    setCustomerGstNumber(e.target.value)
+                                }
+                            />
+                        </div>
+                    </div>
+                    <div className="w-full mt-2 flex flex-row items-center gap-x-2">
+                        <div className="w-1/2">
+                            <span className="text-xs font-bold">
+                                Phone Number
+                            </span>
+                            <Input
+                                type="text"
+                                value={customerPhone}
+                                onChange={(e) =>
+                                    setCustomerPhone(e.target.value)
+                                }
+                            />
+                        </div>
+                        <div className="w-1/2">
+                            <span className="text-xs font-bold">
+                                Alternate Phone Number
+                            </span>
+                            <Input
+                                type="text"
+                                value={customerAlternatePhone}
+                                onChange={(e) =>
+                                    setCustomerAlternatePhone(e.target.value)
+                                }
+                            />
+                        </div>
+                    </div>
+                    <div className="w-full mt-4 flex justify-end">
+                        <button
+                            className="bg-primary text-white px-4 py-2 rounded-md"
+                            onClick={handleCustomerSave}
+                        >
+                            {isPendingCreate || isPendingUpdate
+                                ? "Saving..."
+                                : props.data
+                                ? "Update Customer"
+                                : "Add Customer"}
+                        </button>
+                    </div>
+                </div>
             </DialogContent>
         </Dialog>
     );

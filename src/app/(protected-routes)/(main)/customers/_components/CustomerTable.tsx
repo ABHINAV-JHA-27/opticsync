@@ -18,6 +18,7 @@ import { useState } from "react";
 import AddUpdateCustomerModal from "./AddUpdateCustomerModal";
 import ReactPDF from "@react-pdf/renderer";
 import InvoiceDoc from "@/components/InvoiceDoc";
+import ShowCustomerDetails from "./ShowCustomerDetails";
 
 const CustomerTable = () => {
     const queryclient = useQueryClient();
@@ -41,6 +42,8 @@ const CustomerTable = () => {
     });
 
     const [openAddCustomerModal, setOpenAddCustomerModal] = useState(false);
+    const [openShowCustomerDetails, setOpenShowCustomerDetails] =
+        useState(false);
     const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
     const [search, setSearch] = useState("");
 
@@ -107,7 +110,12 @@ const CustomerTable = () => {
                                     }
                                 })
                                 .map((item: any) => (
-                                    <TableRow>
+                                    <TableRow
+                                        onClick={() => {
+                                            setSelectedCustomer(item);
+                                            setOpenShowCustomerDetails(true);
+                                        }}
+                                    >
                                         <TableCell>{item.name}</TableCell>
                                         <TableCell>{item.shopName}</TableCell>
                                         <TableCell>{item.city}</TableCell>
@@ -159,6 +167,14 @@ const CustomerTable = () => {
                     setSelectedCustomer(null);
                 }}
                 data={selectedCustomer}
+            />
+            <ShowCustomerDetails
+                isOpen={openShowCustomerDetails}
+                onClose={() => {
+                    setOpenShowCustomerDetails(false);
+                    setSelectedCustomer(null);
+                }}
+                customer={selectedCustomer}
             />
         </>
     );
