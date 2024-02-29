@@ -17,6 +17,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { deleteOrder, getOrder } from "@/services/order";
 import Lottie from "lottie-react";
 import * as NoDataAnimation from "@/assets/lottie/NoDataFound.json";
+import { getProducts } from "@/services/product";
+import { getCustomers } from "@/services/customer";
+import { it } from "node:test";
 
 const OrderTable = () => {
     const queryclient = useQueryClient();
@@ -28,6 +31,16 @@ const OrderTable = () => {
     } = useQuery({
         queryKey: ["orders"],
         queryFn: getOrder,
+    });
+
+    const { data: productsData } = useQuery({
+        queryKey: ["products"],
+        queryFn: getProducts,
+    });
+
+    const { data: customersData } = useQuery({
+        queryKey: ["customers"],
+        queryFn: getCustomers,
     });
 
     const [openAddOrderModal, setOpenAddOrderModal] = useState(false);
@@ -77,10 +90,10 @@ const OrderTable = () => {
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                {/* <TableHead>Name</TableHead>
-                            <TableHead>Company</TableHead>
-                            <TableHead>WLP</TableHead>
-                        <TableHead>SRP</TableHead> */}
+                                <TableHead>Status</TableHead>
+                                <TableHead>Product</TableHead>
+                                <TableHead>Customer</TableHead>
+                                <TableHead>Note</TableHead>
                                 <TableHead></TableHead>
                             </TableRow>
                         </TableHeader>
@@ -97,10 +110,26 @@ const OrderTable = () => {
                                 })
                                 .map((item: any) => (
                                     <TableRow>
-                                        {/* <TableCell>{item.name}</TableCell>
-                                <TableCell>{item.company}</TableCell>
-                                <TableCell>{item.wlp}</TableCell>
-                                <TableCell>{item.srp}</TableCell> */}
+                                        <TableCell>{item.status}</TableCell>
+                                        <TableCell>
+                                            {
+                                                productsData?.find(
+                                                    (pr: any) =>
+                                                        pr?._id ===
+                                                        item.products
+                                                )?.name
+                                            }
+                                        </TableCell>
+                                        <TableCell>
+                                            {
+                                                customersData?.find(
+                                                    (cust: any) =>
+                                                        cust?._id ===
+                                                        item.customer
+                                                )?.shopName
+                                            }
+                                        </TableCell>
+                                        <TableCell>{item.srp}</TableCell>
                                         <TableCell>
                                             <div className="flex flex-row items-center gap-x-4">
                                                 <Button

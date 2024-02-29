@@ -71,19 +71,16 @@ export async function POST(req: NextRequest) {
         });
     }
 
-    // console.log(data.customer);
-    // const customer = await Customer.findById(data.customer);
-    // console.log(customer);
-    // const product = await Product.findById(data.product);
-    // customer.currentBalance = customer?.currentBalance + product?.wlp;
-    // console.log(customer.currentBalance);
+    const customer = await Customer.findById(data.customer);
+    const product = await Product.findById(data.products);
+    customer.currentBalance = customer?.currentBalance + product?.wlp;
 
     const order = new Order({
         ...data,
         user: user._id,
     });
     await order.save();
-    // await customer.save();
+    await customer.save();
 
     return NextResponse.json({
         data: order,

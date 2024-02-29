@@ -1,9 +1,8 @@
 "use client";
 
-import { Dispatch, SetStateAction, useState } from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
+import { useState } from "react";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
     Command,
@@ -17,6 +16,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 
 type DropDownProps = {
     data: string[];
@@ -53,7 +53,7 @@ export function DropDown(props: DropDownProps) {
                                 key={item}
                                 value={item}
                                 onSelect={(currentValue) => {
-                                    props.onChange(currentValue);
+                                    props.onChange(item);
                                     setOpen(false);
                                 }}
                             >
