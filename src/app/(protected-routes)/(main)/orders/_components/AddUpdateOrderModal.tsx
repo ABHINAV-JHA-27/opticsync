@@ -96,6 +96,21 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
         } else {
             create(data);
         }
+        reset();
+    };
+
+    const reset = () => {
+        setRSph("");
+        setRCyl("");
+        setRAxis("");
+        setRAdd("");
+        setLSph("");
+        setLCyl("");
+        setLAxis("");
+        setLAdd("");
+        setStatus("pending");
+        setProduct("");
+        setCustomer("");
     };
 
     useEffect(() => {
@@ -109,8 +124,17 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
             setLAxis(props.data.l.axis);
             setLAdd(props.data.l.add);
             setStatus(props.data.status);
-            setProduct(props.data.products);
-            setCustomer(props.data.customer);
+            setProduct(
+                productsData?.find((pr: any) => pr._id == props.data.products)
+                    ?.name
+            );
+            setCustomer(
+                customersData?.find(
+                    (cust: any) => cust._id == props.data.customer
+                )?.shopName
+            );
+        } else {
+            reset();
         }
     }, [props.data]);
 

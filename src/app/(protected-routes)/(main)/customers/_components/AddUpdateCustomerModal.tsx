@@ -61,6 +61,19 @@ const AddUpdateCustomerModal = (props: AddUpdateCustomerModalProps) => {
     const [customerAlternatePhone, setCustomerAlternatePhone] = useState("");
     const [customerGstNumber, setCustomerGstNumber] = useState("");
 
+    const reset = () => {
+        setCustomerName("");
+        setCustomerPhone("");
+        setCustomerAddressLine1("");
+        setCustomerAddressLine2("");
+        setCustomerCity("");
+        setCustomerState("");
+        setCustomerPincode("");
+        setCustomerShopName("");
+        setCustomerAlternatePhone("");
+        setCustomerGstNumber("");
+    };
+
     const handleCustomerSave = () => {
         if (props.data) {
             update({
@@ -91,6 +104,7 @@ const AddUpdateCustomerModal = (props: AddUpdateCustomerModalProps) => {
             });
         }
         if (isSuccessCreate || isSuccessUpdate) {
+            reset();
             props.onClose();
         } else if (isErrorCreate || isErrorUpdate) {
             console.log("Error");
@@ -109,6 +123,8 @@ const AddUpdateCustomerModal = (props: AddUpdateCustomerModalProps) => {
             setCustomerShopName(props.data.shopName);
             setCustomerAlternatePhone(props.data.alternatePhone);
             setCustomerGstNumber(props.data.gstNumber);
+        } else {
+            reset();
         }
     }, [props.data]);
 

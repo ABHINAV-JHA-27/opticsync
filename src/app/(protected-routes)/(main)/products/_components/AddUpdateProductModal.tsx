@@ -53,6 +53,13 @@ const AddUpdateProductModal = (props: AddProductModalProps) => {
     const [productSrp, setProductSrp] = useState("");
     const [productWlp, setProductWlp] = useState("");
 
+    const reset = () => {
+        setProductName("");
+        setProductCompany("");
+        setProductSrp("");
+        setProductWlp("");
+    };
+
     const handleProductSave = () => {
         if (props.data) {
             update({
@@ -71,6 +78,7 @@ const AddUpdateProductModal = (props: AddProductModalProps) => {
             });
         }
         if (isSuccessCreate || isSuccessUpdate) {
+            reset();
             props.onClose();
         } else if (isErrorCreate || isErrorUpdate) {
             console.log("Error");
@@ -83,6 +91,8 @@ const AddUpdateProductModal = (props: AddProductModalProps) => {
             setProductCompany(props.data.company);
             setProductSrp(props.data.srp);
             setProductWlp(props.data.wlp);
+        } else {
+            reset();
         }
     }, [props.data]);
 

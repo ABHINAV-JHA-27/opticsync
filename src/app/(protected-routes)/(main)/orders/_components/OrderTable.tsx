@@ -1,5 +1,7 @@
 "use client";
 
+import * as NoDataAnimation from "@/assets/lottie/NoDataFound.json";
+import Select from "@/components/Select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -11,16 +13,13 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import { getCustomers } from "@/services/customer";
+import { changeOrderStatus, deleteOrder, getOrder } from "@/services/order";
+import { getProducts } from "@/services/product";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import Lottie from "lottie-react";
 import { useState } from "react";
 import AddUpdateOrderModal from "./AddUpdateOrderModal";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { changeOrderStatus, deleteOrder, getOrder } from "@/services/order";
-import Lottie from "lottie-react";
-import * as NoDataAnimation from "@/assets/lottie/NoDataFound.json";
-import { getProducts } from "@/services/product";
-import { getCustomers } from "@/services/customer";
-import { it } from "node:test";
-import Select from "@/components/Select";
 
 const OrderTable = () => {
     const queryclient = useQueryClient();
@@ -91,6 +90,7 @@ const OrderTable = () => {
                 <Button
                     className="w-[15%]"
                     onClick={() => {
+                        setSelectedOrder(null);
                         setOpenAddOrderModal(true);
                     }}
                 >
@@ -205,8 +205,8 @@ const OrderTable = () => {
             <AddUpdateOrderModal
                 isOpen={openAddOrderModal}
                 onClose={() => {
-                    setOpenAddOrderModal(false);
                     setSelectedOrder(null);
+                    setOpenAddOrderModal(false);
                 }}
                 data={selectedOrder}
             />
