@@ -5,18 +5,32 @@ import {
     DropdownMenuLabel,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import arrow from "@/assets/svg/arrowDown.svg";
 
 type SelectProps = {
     data: string[];
     value: string;
+    placeholder?: string;
     onChange: (value: string) => void;
+    classname?: string;
 };
 
 const Select = (props: SelectProps) => {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger>
-                <DropdownMenuLabel>{props.value || "Open"}</DropdownMenuLabel>
+                <div
+                    className={`rounded-[20px] p-[6px] px-[15px] border-[2px] border-[#EFEFF3] text-[14px] font-[500] font-DMSans  bg-[#FFFFFF] outline-none flex flex-row items-center gap-x-3 ${
+                        props.classname ? props.classname : ""
+                    }`}
+                >
+                    <span>
+                        {props.value && props.value !== ""
+                            ? props.value
+                            : props.placeholder}
+                    </span>
+                    <img src={arrow.src} alt="arrow" />
+                </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
                 {props.data.map((item) => (

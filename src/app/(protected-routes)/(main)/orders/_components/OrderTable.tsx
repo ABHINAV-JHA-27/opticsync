@@ -20,6 +20,7 @@ import * as NoDataAnimation from "@/assets/lottie/NoDataFound.json";
 import { getProducts } from "@/services/product";
 import { getCustomers } from "@/services/customer";
 import { it } from "node:test";
+import Select from "@/components/Select";
 
 const OrderTable = () => {
     const queryclient = useQueryClient();
@@ -110,7 +111,15 @@ const OrderTable = () => {
                                 })
                                 .map((item: any) => (
                                     <TableRow>
-                                        <TableCell>{item.status}</TableCell>
+                                        <TableCell>
+                                            <Select
+                                                data={["Pending", "Delivered"]}
+                                                value={item.status}
+                                                onChange={(value) => {
+                                                    console.log(value);
+                                                }}
+                                            />
+                                        </TableCell>
                                         <TableCell>
                                             {
                                                 productsData?.find(
