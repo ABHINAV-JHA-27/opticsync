@@ -1,6 +1,5 @@
-import Link from "next/link";
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
-import Styles from "./CommonStyles.module.css";
+import Link from "next/link";
 
 const SideBar = () => {
     return (
