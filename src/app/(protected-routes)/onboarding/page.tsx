@@ -2,9 +2,9 @@
 
 import { Input } from "@/components/ui/input";
 import { createUser } from "@/services/user";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Page() {
     const router = useRouter();
@@ -20,6 +20,17 @@ export default function Page() {
     const [phone, setphone] = useState("");
     const [alternatePhone, setAlternatePhone] = useState("");
     const [gstNumber, setGstNumber] = useState("");
+
+    const { error, data: user } = useQuery({
+        queryKey: ["user"],
+        queryFn: () => fetch("/api/user").then((res) => res.json()),
+    });
+
+    useEffect(() => {
+        if (user && user.data.length > 0) {
+            router.push("/dashboard");
+        }
+    }, [user]);
 
     const { mutate, isPending, isError, isSuccess } = useMutation({
         mutationKey: ["user"],
@@ -40,9 +51,7 @@ export default function Page() {
             alternatePhone,
             gstNumber,
         });
-        if (isSuccess) {
-            router.replace("/dashboard");
-        }
+        router.replace("/dashboard");
     };
 
     return (
