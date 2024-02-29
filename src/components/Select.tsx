@@ -1,11 +1,10 @@
+import arrow from "@/assets/svg/arrowDown.svg";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuLabel,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import arrow from "@/assets/svg/arrowDown.svg";
 
 type SelectProps = {
     data: string[];

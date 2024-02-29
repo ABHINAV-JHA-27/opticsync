@@ -49,6 +49,9 @@ const OrderSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: "Challan",
         },
+        note: {
+            type: String,
+        },
     },
     {
         timestamps: true,

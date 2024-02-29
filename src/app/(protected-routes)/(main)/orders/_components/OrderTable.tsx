@@ -14,7 +14,7 @@ import {
 import { useState } from "react";
 import AddUpdateOrderModal from "./AddUpdateOrderModal";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { deleteOrder, getOrder } from "@/services/order";
+import { changeOrderStatus, deleteOrder, getOrder } from "@/services/order";
 import Lottie from "lottie-react";
 import * as NoDataAnimation from "@/assets/lottie/NoDataFound.json";
 import { getProducts } from "@/services/product";
@@ -56,6 +56,19 @@ const OrderTable = () => {
             });
         },
     });
+
+    const { mutate: changeStatus } = useMutation({
+        mutationFn: changeOrderStatus,
+        onSuccess: () => {
+            queryclient.invalidateQueries({
+                queryKey: ["orders"],
+            });
+        },
+    });
+
+    const handleChangeStatus = async (id: string, status: string) => {
+        await changeStatus({ id, status });
+    };
 
     const handleEdit = async (id: string) => {
         const order = orderData.find((order: any) => order._id === id);
@@ -113,10 +126,22 @@ const OrderTable = () => {
                                     <TableRow>
                                         <TableCell>
                                             <Select
-                                                data={["Pending", "Delivered"]}
-                                                value={item.status}
+                                                data={[
+                                                    "Pending",
+                                                    "Ordered",
+                                                    "Delivered",
+                                                ]}
+                                                value={
+                                                    item.status
+                                                        .charAt(0)
+                                                        .toUpperCase() +
+                                                    item.status.slice(1)
+                                                }
                                                 onChange={(value) => {
-                                                    console.log(value);
+                                                    handleChangeStatus(
+                                                        item._id,
+                                                        value
+                                                    );
                                                 }}
                                             />
                                         </TableCell>

@@ -13,8 +13,22 @@ export const getOrder = async () => {
     }
 };
 
+export const changeOrderStatus = async (data: any) => {
+    try {
+        const response = await fetch(`/api/orders/active/${data.id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ status: data.status.toLowerCase() }),
+        });
+        return response.json();
+    } catch (error) {
+        return error;
+    }
+};
+
 export const createOrder = async (data: any) => {
-    console.log(data);
     try {
         const response = await fetch("/api/orders", {
             method: "POST",
@@ -36,7 +50,7 @@ export const updateOrder = async (data: any) => {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(data),
+            body: JSON.stringify(data.value),
         });
         return response.json();
     } catch (error) {
