@@ -98,69 +98,63 @@ const AddUpdateProductModal = (props: AddProductModalProps) => {
                     <DialogTitle>
                         {props.data ? "Edit Product" : "Add Product"}
                     </DialogTitle>
-                    <DialogDescription>
-                        <div className="w-full mt-2">
-                            <div className="w-full">
-                                <span className="text-xs font-semibold">
-                                    Product Name
-                                </span>
-                                <Input
-                                    value={productName}
-                                    onChange={(e) => {
-                                        setProductName(e.target.value);
-                                    }}
-                                />
-                            </div>
-                            <div className="w-full mt-2">
-                                <span className="text-xs font-semibold">
-                                    Product Company
-                                </span>
-                                <Input
-                                    value={productCompany}
-                                    onChange={(e) => {
-                                        setProductCompany(e.target.value);
-                                    }}
-                                />
-                            </div>
-                            <div className="w-full flex flex-row items-center mt-2 gap-x-2">
-                                <div className="w-1/2">
-                                    <span className="text-xs font-semibold">
-                                        SRP
-                                    </span>
-                                    <Input
-                                        value={productSrp}
-                                        onChange={(e) => {
-                                            setProductSrp(e.target.value);
-                                        }}
-                                    />
-                                </div>
-                                <div className="w-1/2">
-                                    <span className="text-xs font-semibold">
-                                        WLP
-                                    </span>
-                                    <Input
-                                        value={productWlp}
-                                        onChange={(e) => {
-                                            setProductWlp(e.target.value);
-                                        }}
-                                    />
-                                </div>
-                            </div>
-                            <div className="w-full mt-4 flex justify-end">
-                                <button
-                                    className="bg-primary text-white px-4 py-2 rounded-md"
-                                    onClick={handleProductSave}
-                                >
-                                    {isPendingCreate || isPendingUpdate
-                                        ? "Saving..."
-                                        : props.data
-                                        ? "Update"
-                                        : "Save"}
-                                </button>
-                            </div>
-                        </div>
-                    </DialogDescription>
                 </DialogHeader>
+                <div className="w-full mt-2">
+                    <div className="w-full">
+                        <span className="text-xs font-semibold">
+                            Product Name
+                        </span>
+                        <Input
+                            value={productName}
+                            onChange={(e) => {
+                                setProductName(e.target.value);
+                            }}
+                        />
+                    </div>
+                    <div className="w-full mt-2">
+                        <span className="text-xs font-semibold">
+                            Product Company
+                        </span>
+                        <Input
+                            value={productCompany}
+                            onChange={(e) => {
+                                setProductCompany(e.target.value);
+                            }}
+                        />
+                    </div>
+                    <div className="w-full flex flex-row items-center mt-2 gap-x-2">
+                        <div className="w-1/2">
+                            <span className="text-xs font-semibold">SRP</span>
+                            <Input
+                                value={productSrp}
+                                onChange={(e) => {
+                                    setProductSrp(e.target.value);
+                                }}
+                            />
+                        </div>
+                        <div className="w-1/2">
+                            <span className="text-xs font-semibold">WLP</span>
+                            <Input
+                                value={productWlp}
+                                onChange={(e) => {
+                                    setProductWlp(e.target.value);
+                                }}
+                            />
+                        </div>
+                    </div>
+                    <div className="w-full mt-4 flex justify-end">
+                        <button
+                            className="bg-primary text-white px-4 py-2 rounded-md"
+                            onClick={handleProductSave}
+                        >
+                            {isPendingCreate || isPendingUpdate
+                                ? "Saving..."
+                                : props.data
+                                ? "Update"
+                                : "Save"}
+                        </button>
+                    </div>
+                </div>
             </DialogContent>
         </Dialog>
     );
