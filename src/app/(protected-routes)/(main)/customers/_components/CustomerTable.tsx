@@ -16,6 +16,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Lottie from "lottie-react";
 import { useState } from "react";
 import AddUpdateCustomerModal from "./AddUpdateCustomerModal";
+import ReactPDF from "@react-pdf/renderer";
+import InvoiceDoc from "@/components/InvoiceDoc";
 
 const CustomerTable = () => {
     const queryclient = useQueryClient();
