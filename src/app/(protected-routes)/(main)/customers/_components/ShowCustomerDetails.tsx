@@ -25,7 +25,7 @@ const ShowCustomerDetails = (props: ShowCustomerDetailsProps) => {
             }),
         });
         console.log(data);
-        html2pdf(data, {
+        await html2pdf(data, {
             margin: 10,
             filename: "challan.pdf",
             image: { type: "jpeg", quality: 0.98 },
