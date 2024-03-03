@@ -7,16 +7,20 @@ export async function GET(
     { params }: { params: { id: string } }
 ) {
     await dbConnection();
+    const challans = await Challan.findById(params.id)
+        .populate("orders")
+        .populate("products")
+        .populate("customer");
 
-    // if (!challans) {
-    //     return NextResponse.json({
-    //         message: "No data found",
-    //         status: 204,
-    //     });
-    // }
+    if (!challans) {
+        return NextResponse.json({
+            message: "No data found",
+            status: 204,
+        });
+    }
 
     return NextResponse.json({
-        // data: challans,
+        data: challans,
         status: 200,
     });
 }
