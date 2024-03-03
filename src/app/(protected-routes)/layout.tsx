@@ -15,7 +15,7 @@ export default async function RootLayout({
 
     return (
         <UserProvider>
-            <div className="flex flex-row w-full bg-[#FCFCFD]">{children}</div>
+            <div className="flex flex-row w-full bg-[#FBFAF5]">{children}</div>
         </UserProvider>
     );
 }

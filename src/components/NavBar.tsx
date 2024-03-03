@@ -5,7 +5,7 @@ const NavBar = () => {
     const pathname = usePathname();
 
     return (
-        <div className="flex flex-row items-center justify-between p-4 bg-[#ffffff] border-b-[2px] border-[#EFEFF3]">
+        <div className="flex flex-row items-center justify-between p-4 bg-[#ffffff]">
             {pathname === "/dashboard" && (
                 <span className="text-[24px] font-[600] leading-none">
                     Dashboard

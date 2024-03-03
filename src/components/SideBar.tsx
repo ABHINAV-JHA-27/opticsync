@@ -1,21 +1,31 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 const SideBar = () => {
+    const pathname = usePathname();
     return (
         <div
-            className={`flex flex-col shadow w-[20vw] h-screen sticky top-0 p-4 justify-between bg-[#0A0A0A] text-[#fff]`}
+            className={`flex flex-col  w-[20vw] h-screen sticky top-0 justify-between text-[#000]`}
         >
             <div className="space-y-3">
-                <div className="flex items-center justify-center">
+                <div className="flex items-center justify-center p-4">
                     <h2 className="text-xl font-bold">OpticSync</h2>
                 </div>
-                <div className="flex-1">
-                    <ul className="pt-2 pb-4 space-y-1 text-sm">
-                        <li className="rounded-sm">
+                <div className="flex-1 mt-6">
+                    <ul className="pt-4 pb-4 space-y-3 text-sm">
+                        <li>
                             <Link
                                 href="/dashboard"
-                                className="flex items-center p-2 space-x-3 rounded-md"
+                                className={cn(
+                                    "flex items-center py-[10px] px-4 space-x-3 " +
+                                        (pathname === "/dashboard"
+                                            ? " bg-[#1da1f2] text-white rounded-r-3xl"
+                                            : "")
+                                )}
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -34,10 +44,15 @@ const SideBar = () => {
                                 <span>Dashboard</span>
                             </Link>
                         </li>
-                        <li className="rounded-sm">
+                        <li>
                             <Link
                                 href="/orders"
-                                className="flex items-center p-2 space-x-3 rounded-md"
+                                className={cn(
+                                    "flex items-center py-[10px] px-4 space-x-3 " +
+                                        (pathname === "/orders"
+                                            ? " bg-[#1da1f2] text-white rounded-r-3xl"
+                                            : "")
+                                )}
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -56,10 +71,15 @@ const SideBar = () => {
                                 <span>Orders</span>
                             </Link>
                         </li>
-                        <li className="rounded-sm">
+                        <li>
                             <Link
                                 href="/products"
-                                className="flex items-center p-2 space-x-3 rounded-md"
+                                className={cn(
+                                    "flex items-center py-[10px] px-4 space-x-3 " +
+                                        (pathname === "/products"
+                                            ? " bg-[#1da1f2] text-white rounded-r-3xl"
+                                            : "")
+                                )}
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -78,10 +98,15 @@ const SideBar = () => {
                                 <span>Products</span>
                             </Link>
                         </li>
-                        <li className="rounded-sm">
+                        <li>
                             <Link
                                 href="/customers"
-                                className="flex items-center p-2 space-x-3 rounded-md"
+                                className={cn(
+                                    "flex items-center py-[10px] px-4 space-x-3 " +
+                                        (pathname === "/customers"
+                                            ? " bg-[#1da1f2] text-white rounded-r-3xl"
+                                            : "")
+                                )}
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -108,9 +133,9 @@ const SideBar = () => {
                     </ul>
                 </div>
             </div>
-            <ul className="pt-2 pb-4 space-y-1 text-sm">
-                <li className="rounded-sm">
-                    <LogoutLink className="flex items-center p-2 space-x-3 rounded-md bg-[#222222]">
+            <ul className="pt-2 pb-4 px-4 space-y-1 text-sm">
+                <li>
+                    <LogoutLink className="flex items-center p-2 px-4 space-x-3 rounded-md bg-[#1da1f2] text-white">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="w-6 h-6"
