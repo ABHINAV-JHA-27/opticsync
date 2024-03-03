@@ -56,13 +56,13 @@ export async function POST(req: NextRequest) {
         challanNumber: RandomChallanNumber("user", customer.name),
     };
 
-    const challan = new Challan(challanData);
-    await challan.save();
+    // const challan = new Challan(challanData);
+    // await challan.save();
 
-    orders.forEach(async (order) => {
-        order.status = "delivered";
-        await order.save();
-    });
+    // orders.forEach(async (order) => {
+    //     order.status = "delivered";
+    //     await order.save();
+    // });
 
     const challanHtml = await ejs.renderFile("src/views/challan.ejs", {
         challanNumber: challanData.challanNumber,
@@ -71,15 +71,8 @@ export async function POST(req: NextRequest) {
         orders,
     });
 
-    return NextResponse.json(
-        {
-            data: challanHtml,
-            status: 200,
-        },
-        {
-            headers: {
-                "Content-Type": "text/html",
-            },
-        }
-    );
+    return NextResponse.json({
+        data: challanHtml,
+        status: 200,
+    });
 }
