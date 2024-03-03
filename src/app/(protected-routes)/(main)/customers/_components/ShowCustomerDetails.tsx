@@ -1,12 +1,13 @@
 "use client";
 
+import html2pdf from "html2pdf.js";
+
 import {
     Dialog,
     DialogContent,
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
-import { useEffect } from "react";
 
 type ShowCustomerDetailsProps = {
     isOpen: boolean;
@@ -15,6 +16,28 @@ type ShowCustomerDetailsProps = {
 };
 
 const ShowCustomerDetails = (props: ShowCustomerDetailsProps) => {
+    const handleGenerateChallan = async () => {
+        console.log("Generate challan");
+        const data = fetch("/api/challans", {
+            method: "POST",
+            body: JSON.stringify({
+                customer: props.customer._id,
+            }),
+        });
+        console.log(data);
+        html2pdf(data, {
+            margin: 10,
+            filename: "challan.pdf",
+            image: { type: "jpeg", quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+        });
+    };
+
+    const handleGenerateInvoice = async () => {
+        console.log("Generate Invoice");
+    };
+
     return (
         <Dialog
             open={props.isOpen}
@@ -87,13 +110,13 @@ const ShowCustomerDetails = (props: ShowCustomerDetailsProps) => {
                     <div className="w-full mt-4 flex justify-between items-center ">
                         <button
                             className="bg-primary text-white px-4 py-2 rounded-md"
-                            // onClick={handleCustomerSave}
+                            onClick={handleGenerateChallan}
                         >
                             Generate Invoice
                         </button>
                         <button
                             className="bg-primary text-white px-4 py-2 rounded-md"
-                            // onClick={handleCustomerSave}
+                            onClick={handleGenerateInvoice}
                         >
                             Generate Todays Challan
                         </button>
