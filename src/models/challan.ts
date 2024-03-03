@@ -2,30 +2,39 @@ import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
-const ChallanSchema = new Schema({
-    user: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-    },
-    orders: [
-        {
+const ChallanSchema = new Schema(
+    {
+        user: {
             type: Schema.Types.ObjectId,
-            ref: "Order",
+            ref: "User",
         },
-    ],
-    total: {
-        type: Number,
-        required: true,
+        orders: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Order",
+            },
+        ],
+        total: {
+            type: Number,
+            required: true,
+        },
+        customer: {
+            type: Schema.Types.ObjectId,
+            ref: "Customer",
+        },
+        date: {
+            type: Date,
+            required: true,
+        },
+        challanNumber: {
+            type: String,
+            required: true,
+        },
     },
-    customer: {
-        type: Schema.Types.ObjectId,
-        ref: "Customer",
-    },
-    date: {
-        type: Date,
-        required: true,
-    },
-});
+    {
+        timestamps: true,
+    }
+);
 
 const Challan =
     mongoose.models.Challan || mongoose.model("Challans", ChallanSchema);
