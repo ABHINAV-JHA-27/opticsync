@@ -1,7 +1,11 @@
 import dbConnection from "@/lib/dbConnect";
+import { RandomChallanNumber } from "@/lib/randomNumberGenerator";
+import Challan from "@/models/challan";
+import Customer from "@/models/customer";
 import Order from "@/models/order";
 import { ObjectId } from "mongodb";
 import { NextRequest, NextResponse } from "next/server";
+import ejs from "ejs";
 
 export async function POST(req: NextRequest) {
     await dbConnection();
@@ -14,6 +18,15 @@ export async function POST(req: NextRequest) {
         });
     }
 
+    const customer = await Customer.findById(data.customer);
+
+    if (!customer) {
+        return NextResponse.json({
+            message: "Customer not found",
+            status: 400,
+        });
+    }
+
     let currentDate = new Date();
     currentDate.setHours(0, 0, 0, 0);
     let endOfDay = new Date(currentDate);
@@ -21,7 +34,7 @@ export async function POST(req: NextRequest) {
 
     const orders = await Order.find({
         customer: new ObjectId(data.customer),
-        status: "pending",
+        status: "received",
         updatedAt: {
             $gte: currentDate,
             $lt: endOfDay,
@@ -40,14 +53,33 @@ export async function POST(req: NextRequest) {
         total: orders.reduce((acc, order) => acc + order.products.wlp, 0),
         customer: data.customer,
         date: currentDate,
-        // challanNumber: `CH-${Date.now()}`,
+        challanNumber: RandomChallanNumber("user", customer.name),
     };
 
-    // const challan = new Challan(data);
-    // await challan.save();
+    const challan = new Challan(challanData);
+    await challan.save();
 
-    return NextResponse.json({
-        // data: orders,
-        status: 200,
+    orders.forEach(async (order) => {
+        order.status = "delivered";
+        await order.save();
     });
+
+    const challanHtml = await ejs.renderFile("src/views/challan.ejs", {
+        challanNumber: challanData.challanNumber,
+        date: currentDate,
+        customer,
+        orders,
+    });
+
+    return NextResponse.json(
+        {
+            data: challanHtml,
+            status: 200,
+        },
+        {
+            headers: {
+                "Content-Type": "text/html",
+            },
+        }
+    );
 }
