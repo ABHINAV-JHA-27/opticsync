@@ -20,6 +20,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Lottie from "lottie-react";
 import { useState } from "react";
 import AddUpdateOrderModal from "./AddUpdateOrderModal";
+import ShowOrderDetails from "./ShowOrderDetails";
 
 const OrderTable = () => {
     const queryclient = useQueryClient();
@@ -44,6 +45,7 @@ const OrderTable = () => {
     });
 
     const [openAddOrderModal, setOpenAddOrderModal] = useState(false);
+    const [openShowOrderDetails, setOpenShowOrderDetails] = useState(false);
     const [search, setSearch] = useState("");
     const [selectedOrder, setSelectedOrder] = useState<any>(null);
 
@@ -123,7 +125,12 @@ const OrderTable = () => {
                                     return order;
                                 })
                                 .map((item: any) => (
-                                    <TableRow>
+                                    <TableRow
+                                        onClick={() => {
+                                            setSelectedOrder(item);
+                                            setOpenShowOrderDetails(true);
+                                        }}
+                                    >
                                         <TableCell>
                                             <Select
                                                 data={[
@@ -209,6 +216,14 @@ const OrderTable = () => {
                     setOpenAddOrderModal(false);
                 }}
                 data={selectedOrder}
+            />
+            <ShowOrderDetails
+                isOpen={openShowOrderDetails}
+                onClose={() => {
+                    setOpenShowOrderDetails(false);
+                    setSelectedOrder(null);
+                }}
+                order={selectedOrder}
             />
         </>
     );

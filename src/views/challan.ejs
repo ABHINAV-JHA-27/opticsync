@@ -6,6 +6,35 @@
         <title>Document</title>
     </head>
     <body>
-        <%= challanNumber %> <%= date %> <%= customer %> <%= orders %>
+        <div style="flex-direction: column; display: flex">
+            <h1>Challan</h1>
+            <br />
+
+            <label for="challanNumber">Challan Number</label>
+            <span> <%= challanNumber %> </span>
+            <br />
+
+            <label for="date">Date</label>
+            <span> <%= date.toDateString() %> </span>
+            <br />
+
+            <label for="customer">Customer</label>
+            <span> <%= customer.shopName %> </span>
+            <br />
+
+            <label for="currentBalance">Current Balance</label>
+            <span> <%= customer.currentBalance %> </span>
+            <br />
+
+            <label for="orders">Orders</label>
+            <% orders.forEach(function(order) { %>
+            <li>
+                Product: <%= order.product.name %><br />
+                Price: <%= order.product.wlp %><br />
+                Quantity: 1
+                <br />
+            </li>
+            <% }); %>
+        </div>
     </body>
 </html>
