@@ -3,9 +3,16 @@
     <head>
         <title>Document</title>
         <style>
+            body {
+                font-family: Arial, sans-serif;
+                font-size: 12px;
+            }
             .container {
                 display: flex;
-                justify-content: space-between;
+                width: 100%;
+            }
+            .container-section {
+                width: 50%;
             }
             .tableTop {
                 display: flex;
@@ -40,46 +47,48 @@
                     flex-direction: column;
                 }
             }
+            @page {
+                size: 7in 9.25in;
+                margin: 27mm 16mm 27mm 16mm;
+            }
         </style>
     </head>
     <body>
-        <section>
-            <div class="container">
-                <div>
-                    <b>ESSILOR INDIA PVT LTD</b>
-                    <p>
-                        2ND FLOOR, PLOT NO.250, WARD NO.38, HOLDINGNO. 322A,<br />DWARKAMAI
-                        <br />MAUZA-MOHRAMPURMOHALLA - KADAMKUAN <br />Patna -
-                        800003
-                        <br />
-                    </p>
-                    <p>PHONE: 1234567890 &nbsp;&nbsp; FAX:</p>
-                    <p>GST No : 10AAACE4623J1Z5</p>
-                    <p>CIN : U51394KA1998PTC023723</p>
-                </div>
-                <div>
-                    <p>Cust: VAISHNAVI SALES [KADAMKUAN]</p>
-                    <p>
-                        GROUND FLOOR, <br />
-                        NALA ROAD, NEAR MAHAVIR STHAN, KADAMKUAN
-                    </p>
-                    <p>
-                        Channapatna, Karnataka <br />
-                        800001
-                    </p>
-                    <p>
-                        CUST CODE: E-BR-V115 &nbsp;&nbsp; 9334446671
-                        <br />
-                        GST No: 10BEXPJ1817E1ZQ
-                    </p>
-                </div>
-            </div>
+        <section class="page">
             <div class="tableTop">
                 <b>Delivery Challan: DN612000004831</b>
                 <p>Date: 29/02/2024</p>
-                <p>Tracking No: RX0040164040</p>
-                <p>Page: 1/1</p>
             </div>
+            <div class="container">
+                <div class="container-section">
+                    <b>Vaishnavi Sales</b>
+                    <p>
+                        2ND FLOOR, PLOT NO.250, WARD NO.38, HOLDINGNO. 322A,
+                        DWARKAMAI
+                        <br />
+                        MAUZA-MOHRAMPURMOHALLA - KADAMKUAN
+                        <br />
+                        Patna - 800003
+                        <br />
+                    </p>
+                    <p>PHONE: 1234567890 &nbsp;&nbsp;</p>
+                    <p>GST No : 10AAACE4623J1Z5</p>
+                </div>
+                <div class="container-section">
+                    <b>Cust: VAISHNAVI SALES [KADAMKUAN]</b>
+                    <p>
+                        GROUND FLOOR, NALA ROAD, NEAR MAHAVIR STHAN, KADAMKUAN
+                        <br />
+                        MAUZA-MOHRAMPURMOHALLA - KADAMKUAN
+                        <br />
+                        Patna - 800003
+                        <br />
+                    </p>
+                    <p>PHONE: 1234567890 &nbsp;&nbsp;</p>
+                    <p>GST No : 10AAACE4623J1Z5</p>
+                </div>
+            </div>
+
             <table>
                 <thead>
                     <tr>
@@ -166,10 +175,9 @@
             </table>
             <div class="footer">
                 <div class="footer_div">
-                    <b>Cart Note: 104967</b>
                     <b>REF: EYE N EYE</b>
                     <br />
-                    <b>Received in Good Condition</b>
+                    <br />
                     <br />
                     <b>Authorised Signatory</b>
                 </div>
