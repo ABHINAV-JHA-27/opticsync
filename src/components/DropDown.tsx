@@ -46,7 +46,7 @@ export function DropDown(props: DropDownProps) {
                         placeholder="Search framework..."
                         value={props.value}
                     />
-                    <CommandEmpty>No framework found.</CommandEmpty>
+                    <CommandEmpty>No data found.</CommandEmpty>
                     <CommandGroup>
                         {props.data.map((item) => (
                             <CommandItem
