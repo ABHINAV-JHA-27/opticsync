@@ -20,6 +20,9 @@ const ProductSchema = new Schema(
             type: Number,
             required: true,
         },
+        hsn: {
+            type: String,
+        },
         index: {
             type: String,
         },

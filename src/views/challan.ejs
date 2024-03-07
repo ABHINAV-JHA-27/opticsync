@@ -37,6 +37,7 @@
                 margin-top: 40px;
                 display: flex;
                 justify-content: space-between;
+                width: 100%;
                 .footer_div {
                     display: flex;
                     flex-direction: column;
@@ -45,6 +46,8 @@
                 .footer_division {
                     display: flex;
                     flex-direction: column;
+                    justify-content: center;
+                    width: 70%;
                 }
             }
             @page {
@@ -56,44 +59,47 @@
     <body>
         <section class="page">
             <div class="tableTop">
-                <b>Delivery Challan: DN612000004831</b>
-                <p>Date: 29/02/2024</p>
+                <b>Delivery Challan: <%= challanNumber %></b>
+                <p>Date: <%= date %></p>
             </div>
+            <br />
             <div class="container">
                 <div class="container-section">
-                    <b>Vaishnavi Sales</b>
+                    <b><%= user.shopName %></b>
                     <p>
-                        2ND FLOOR, PLOT NO.250, WARD NO.38, HOLDINGNO. 322A,
-                        DWARKAMAI
+                        <%= user.addressLine1 %>
                         <br />
-                        MAUZA-MOHRAMPURMOHALLA - KADAMKUAN
+                        <%= user.addressLine2 %>
                         <br />
-                        Patna - 800003
+                        <%= user.city %>, <%= user.state %>
+                        <br />
+                        Pincode - <%= user.pincode %> &nbsp;&nbsp;
                         <br />
                     </p>
-                    <p>PHONE: 1234567890 &nbsp;&nbsp;</p>
-                    <p>GST No : 10AAACE4623J1Z5</p>
+                    <p>PHONE: <%= user.phone %> &nbsp;&nbsp;</p>
+                    <p>GST No : <%= user.gstNumber %></p>
                 </div>
                 <div class="container-section">
-                    <b>Cust: VAISHNAVI SALES [KADAMKUAN]</b>
+                    <b>Cust: <%= customer.shopName %></b>
                     <p>
-                        GROUND FLOOR, NALA ROAD, NEAR MAHAVIR STHAN, KADAMKUAN
+                        <%= customer.addressLine1 %>
                         <br />
-                        MAUZA-MOHRAMPURMOHALLA - KADAMKUAN
+                        <%= customer.addressLine2 %>
                         <br />
-                        Patna - 800003
+                        <%= customer.city %>, <%= customer.state %>
+                        <br />
+                        Pincode - <%= customer.pincode %> &nbsp;&nbsp;
                         <br />
                     </p>
-                    <p>PHONE: 1234567890 &nbsp;&nbsp;</p>
-                    <p>GST No : 10AAACE4623J1Z5</p>
+                    <p>PHONE: <%= customer.phone %> &nbsp;&nbsp;</p>
+                    <p>GST No : <%= customer.gstNumber %></p>
                 </div>
             </div>
-
+            <br />
             <table>
                 <thead>
                     <tr>
                         <th>Sl No</th>
-                        <th>Description</th>
                         <th>HSN/SAC No</th>
                         <th>Sph</th>
                         <th>Cyl</th>
@@ -101,13 +107,10 @@
                         <th>Add</th>
                         <th>Qty</th>
                         <th>Rate</th>
-                        <th>Taxable Value</th>
                         <th colspan="2">CGST</th>
-                        <th colspan="2">SGST/UTGST</th>
+                        <th colspan="2">SGST</th>
                     </tr>
                     <tr>
-                        <td></td>
-                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -124,42 +127,46 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>1</td>
-                        <td>Spex Short 1.50 Titus</td>
-                        <td>90015000</td>
-                        <td>+ 01.50</td>
-                        <td>- 00.75</td>
-                        <td>80</td>
-                        <td>+ 01.75</td>
-                        <td>1</td>
-                        <td>535.00</td>
-                        <td>535.00</td>
-                        <td>6</td>
-                        <td>32.10</td>
-                        <td>6</td>
-                        <td>32.10</td>
+                        <td><%= 1 %></td>
+                        <td><%= orders.products.hsn %></td>
+                        <td><%= orders.r.sph %></td>
+                        <td><%= orders.r.cyl %></td>
+                        <td><%= orders.r.axis %></td>
+                        <td><%= orders.r.add %></td>
+                        <td><%= 1 %></td>
+                        <td><%= orders.products.wlp / 2 %></td>
+                        <td><%= orders.products.cgst %></td>
+                        <td>
+                            <%= orders.products.wlp + ((orders.products.cgst *
+                            orders.products.wlp)/100) %>
+                        </td>
+                        <td><%= orders.sgst %></td>
+                        <%= orders.products.wlp /2 + ((orders.products.sgst *
+                        orders.products.wlp)/100) %>
                     </tr>
                     <tr>
-                        <td>2</td>
-                        <td>Spex Short 1.50 Titus</td>
-                        <td>90015000</td>
-                        <td>+ 04.00</td>
-                        <td>- 01.00</td>
-                        <td>85</td>
-                        <td>+ 01.75</td>
-                        <td>1</td>
-                        <td>535.00</td>
-                        <td>535.00</td>
-                        <td>6</td>
-                        <td>32.10</td>
-                        <td>6</td>
-                        <td>32.10</td>
+                        <td></td>
+                        <td><%= orders.products.hsn %></td>
+                        <td><%= orders.l.sph %></td>
+                        <td><%= orders.l.cyl %></td>
+                        <td><%= orders.l.axis %></td>
+                        <td><%= orders.l.add %></td>
+                        <td><%= 1 %></td>
+                        <td><%= orders.products.wlp / 2 %></td>
+                        <td><%= orders.products.cgst %></td>
+                        <td>
+                            <%= orders.products.wlp + ((orders.products.cgst *
+                            orders.products.wlp)/100) %>
+                        </td>
+                        <td><%= orders.sgst %></td>
+                        <%= orders.products.wlp + ((orders.products.sgst *
+                        orders.products.wlp)/100) %>
                     </tr>
+
                     <tr class="line_total">
-                        <td colspan="2"></td>
+                        <td colspan="1"></td>
                         <td colspan="5">Line Total</td>
-                        <td colspan="2">2</td>
-                        <td colspan="2">1070.00</td>
+                        <td colspan="4">2</td>
                         <td colspan="2">64.20</td>
                         <td>64.20</td>
                     </tr>
@@ -169,18 +176,14 @@
                             One Thousand One Hundred Ninety Eight RUPEES
                         </td>
                         <td colspan="2">DC Total</td>
-                        <td>1198.40</td>
+                        <td>
+                            <%= orders.products.wlp + (((orders.products.sgst +
+                            orders.products.cgst) * orders.products.wlp)/100) %>
+                        </td>
                     </tr>
                 </tbody>
             </table>
             <div class="footer">
-                <div class="footer_div">
-                    <b>REF: EYE N EYE</b>
-                    <br />
-                    <br />
-                    <br />
-                    <b>Authorised Signatory</b>
-                </div>
                 <div class="footer_division">
                     <b>NOTE:</b>
                     <b
@@ -194,9 +197,12 @@
                     </b>
                 </div>
                 <div class="footer_div">
-                    <b>Essilor India Pvt Ltd.</b>
-                    <b>Authorised Signatory</b>
+                    <b><%= user.shopName %></b>
                 </div>
+            </div>
+            <div class="tableTop" style="margin-top: 30px">
+                <b></b>
+                <b>Authorised Signatory</b>
             </div>
         </section>
     </body>

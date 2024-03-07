@@ -5,6 +5,7 @@ import Select from "@/components/Select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import html2pdf from "html2pdf.js";
 import {
     Table,
     TableBody,
@@ -66,6 +67,24 @@ const OrderTable = () => {
             });
         },
     });
+
+    const handleGenerateChallan = async (id: string) => {
+        let data = await fetch("/api/challans", {
+            method: "POST",
+            body: JSON.stringify({
+                orderID: id,
+            }),
+        });
+        data = await data.json();
+        data = (data as any).data;
+        await html2pdf(data, {
+            margin: 10,
+            filename: "challan.pdf",
+            image: { type: "jpeg", quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+        });
+    };
 
     const handleChangeStatus = async (id: string, status: string) => {
         await changeStatus({ id, status });
@@ -188,6 +207,16 @@ const OrderTable = () => {
                                                     }}
                                                 >
                                                     Delete
+                                                </Button>
+                                                <Button
+                                                    className="bg-[#F2F2F2] text-[#000000] hover:bg-[#E5E5E5] hover:text-[#000000] h-8 z-[5]"
+                                                    onClick={() => {
+                                                        handleGenerateChallan(
+                                                            item._id
+                                                        );
+                                                    }}
+                                                >
+                                                    Generate Challan
                                                 </Button>
                                             </div>
                                         </TableCell>

@@ -37,6 +37,6 @@ const ChallanSchema = new Schema(
 );
 
 const Challan =
-    mongoose.models.Challan || mongoose.model("Challans", ChallanSchema);
+    mongoose.models.Challan || mongoose.model("Challan", ChallanSchema);
 
 export default Challan;

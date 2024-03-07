@@ -16,24 +16,6 @@ type ShowCustomerDetailsProps = {
 };
 
 const ShowCustomerDetails = (props: ShowCustomerDetailsProps) => {
-    const handleGenerateChallan = async () => {
-        let data = await fetch("/api/challans", {
-            method: "POST",
-            body: JSON.stringify({
-                customer: props.customer._id,
-            }),
-        });
-        data = await data.json();
-        data = (data as any).data;
-        await html2pdf(data, {
-            margin: 10,
-            filename: "challan.pdf",
-            image: { type: "jpeg", quality: 0.98 },
-            html2canvas: { scale: 2 },
-            jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-        });
-    };
-
     const handleGenerateInvoice = async () => {
         let data = await fetch("/api/invoices", {
             method: "POST",
@@ -126,15 +108,9 @@ const ShowCustomerDetails = (props: ShowCustomerDetailsProps) => {
                     <div className="w-full mt-4 flex justify-between items-center ">
                         <button
                             className="bg-primary text-white px-4 py-2 rounded-md"
-                            onClick={handleGenerateChallan}
-                        >
-                            Generate Invoice
-                        </button>
-                        <button
-                            className="bg-primary text-white px-4 py-2 rounded-md"
                             onClick={handleGenerateInvoice}
                         >
-                            Generate Todays Challan
+                            Generate Invoice
                         </button>
                     </div>
                 </div>
