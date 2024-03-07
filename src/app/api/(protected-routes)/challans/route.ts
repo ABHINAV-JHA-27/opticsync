@@ -7,6 +7,7 @@ import User from "@/models/user";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import ejs from "ejs";
 import { NextRequest, NextResponse } from "next/server";
+import path from "path";
 
 export async function POST(req: NextRequest) {
     const { isAuthenticated, getUser } = getKindeServerSession();
@@ -66,7 +67,9 @@ export async function POST(req: NextRequest) {
         challanNumber: RandomChallanNumber(user.shopName, customer.name),
     };
 
-    const challanHtml = await ejs.renderFile("@/views/challan.ejs", {
+    const ejsFilePath = path.resolve("./src/views/challan.ejs");
+
+    const challanHtml = await ejs.renderFile(ejsFilePath, {
         challanNumber: challanData.challanNumber,
         date: challanData.date.toLocaleDateString(),
         customer,
