@@ -66,12 +66,6 @@ export async function POST(req: NextRequest) {
         challanNumber: RandomChallanNumber(user.shopName, customer.name),
     };
 
-    const challan = new Challan(challanData);
-    await challan.save();
-
-    orders.status = "delivered";
-    await orders.save();
-
     const challanHtml = await ejs.renderFile("src/views/challan.ejs", {
         challanNumber: challanData.challanNumber,
         date: challanData.date.toLocaleDateString(),
@@ -80,6 +74,21 @@ export async function POST(req: NextRequest) {
         user,
         total: orders.products.wlp,
     });
+
+    const prevChallan = await Challan.findOne({ orders: orders._id });
+
+    if (prevChallan) {
+        return NextResponse.json({
+            data: challanHtml,
+            status: 200,
+        });
+    }
+
+    const challan = new Challan(challanData);
+    await challan.save();
+
+    orders.status = "delivered";
+    await orders.save();
 
     return NextResponse.json({
         data: challanHtml,

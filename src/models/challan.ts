@@ -8,12 +8,11 @@ const ChallanSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: "User",
         },
-        orders: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: "Order",
-            },
-        ],
+        orders: {
+            type: Schema.Types.ObjectId,
+            ref: "Order",
+        },
+
         total: {
             type: Number,
             required: true,
