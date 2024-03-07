@@ -13,6 +13,8 @@ import { Input } from "@/components/ui/input";
 import { DropDown } from "@/components/DropDown";
 import Select from "@/components/Select";
 import { DatePicker } from "@/components/DatePicker";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createPayment } from "@/services/payments";
 
 type ShowCustomerDetailsProps = {
     isOpen: boolean;
@@ -114,12 +116,18 @@ const ShowCustomerDetails = (props: ShowCustomerDetailsProps) => {
             </DialogContent>
             <AddPaymentModal
                 isOpen={addPaymentModal}
-                onClose={() => setAddPaymentModal(false)}
+                onClose={() => {
+                    setAddPaymentModal(false);
+                    props.onClose();
+                }}
                 customer={props.customer}
             />
             <GenerateInvoiceModal
                 isOpen={generateInvoiceModal}
-                onClose={() => setGenerateInvoiceModal(false)}
+                onClose={() => {
+                    setGenerateInvoiceModal(false);
+                    props.onClose();
+                }}
                 customer={props.customer}
             />
         </Dialog>
@@ -131,6 +139,7 @@ const AddPaymentModal = (props: {
     onClose: () => void;
     customer: any;
 }) => {
+    const queryClient = useQueryClient();
     const [paymentMode, setPaymentMode] = useState<"cash" | "cheque" | "upi">(
         "cash"
     );
@@ -138,8 +147,24 @@ const AddPaymentModal = (props: {
     const [date, setDate] = useState(new Date());
 
     const handleAddPayment = async () => {
+        await createPaymentMutation({
+            amount,
+            date,
+            paymentMode,
+            customer: props.customer._id,
+        });
         props.onClose();
     };
+
+    const { mutate: createPaymentMutation } = useMutation({
+        mutationFn: createPayment,
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ["customers"],
+            });
+            props.onClose();
+        },
+    });
 
     return (
         <Dialog
@@ -200,7 +225,7 @@ const GenerateInvoiceModal = (props: {
     const [endDate, setEndDate] = useState(new Date());
 
     const handleGenerateInvoice = async () => {
-        let data = await fetch("/api/invoices", {
+        let data = await fetch("/api/invoice", {
             method: "POST",
             body: JSON.stringify({
                 customer: props.customer._id,
@@ -210,6 +235,7 @@ const GenerateInvoiceModal = (props: {
         });
         data = await data.json();
         data = (data as any).data;
+
         await html2pdf(data, {
             margin: 10,
             filename: "invoice.pdf",
