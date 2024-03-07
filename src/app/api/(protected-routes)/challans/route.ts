@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
         challanNumber: RandomChallanNumber(user.shopName, customer.name),
     };
 
-    const challanHtml = await ejs.renderFile("src/views/challan.ejs", {
+    const challanHtml = await ejs.renderFile("@/views/challan.ejs", {
         challanNumber: challanData.challanNumber,
         date: challanData.date.toLocaleDateString(),
         customer,
