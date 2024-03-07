@@ -75,6 +75,7 @@ const ProductTable = () => {
                     <Table>
                         <TableHeader>
                             <TableRow>
+                                <TableHead>HSN</TableHead>
                                 <TableHead>Name</TableHead>
                                 <TableHead>Company</TableHead>
                                 <TableHead>WLP</TableHead>
@@ -85,6 +86,7 @@ const ProductTable = () => {
                         <TableBody>
                             {productsData.map((item: any) => (
                                 <TableRow>
+                                    <TableCell>{item.hsn || "N/A"}</TableCell>
                                     <TableCell>{item.name}</TableCell>
                                     <TableCell>{item.company}</TableCell>
                                     <TableCell>{item.wlp}</TableCell>

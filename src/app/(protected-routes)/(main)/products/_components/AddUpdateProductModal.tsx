@@ -48,12 +48,14 @@ const AddUpdateProductModal = (props: AddProductModalProps) => {
         },
     });
 
+    const [productHSN, setProductHSN] = useState("");
     const [productName, setProductName] = useState("");
     const [productCompany, setProductCompany] = useState("");
     const [productSrp, setProductSrp] = useState("");
     const [productWlp, setProductWlp] = useState("");
 
     const reset = () => {
+        setProductHSN("");
         setProductName("");
         setProductCompany("");
         setProductSrp("");
@@ -68,6 +70,7 @@ const AddUpdateProductModal = (props: AddProductModalProps) => {
                 company: productCompany,
                 srp: productSrp,
                 wlp: productWlp,
+                hsn: productHSN,
             });
         } else {
             create({
@@ -75,8 +78,10 @@ const AddUpdateProductModal = (props: AddProductModalProps) => {
                 company: productCompany,
                 srp: productSrp,
                 wlp: productWlp,
+                hsn: productHSN,
             });
         }
+
         if (isSuccessCreate || isSuccessUpdate) {
             reset();
             props.onClose();
@@ -91,6 +96,7 @@ const AddUpdateProductModal = (props: AddProductModalProps) => {
             setProductCompany(props.data.company);
             setProductSrp(props.data.srp);
             setProductWlp(props.data.wlp);
+            setProductHSN(props.data.hsn);
         } else {
             reset();
         }
@@ -151,6 +157,17 @@ const AddUpdateProductModal = (props: AddProductModalProps) => {
                                 }}
                             />
                         </div>
+                    </div>
+                    <div className="w-full mt-2">
+                        <span className="text-xs font-semibold">
+                            Product HSN
+                        </span>
+                        <Input
+                            value={productHSN}
+                            onChange={(e) => {
+                                setProductHSN(e.target.value);
+                            }}
+                        />
                     </div>
                     <div className="w-full mt-4 flex justify-end">
                         <button

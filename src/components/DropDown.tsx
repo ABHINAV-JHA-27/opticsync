@@ -22,6 +22,7 @@ type DropDownProps = {
     data: string[];
     value: string;
     onChange: (value: string) => void;
+    placeholder?: string;
 };
 
 export function DropDown(props: DropDownProps) {
@@ -43,7 +44,7 @@ export function DropDown(props: DropDownProps) {
             <PopoverContent className="w-[200px] p-0">
                 <Command>
                     <CommandInput
-                        placeholder="Search framework..."
+                        placeholder={props.placeholder || "Search..."}
                         value={props.value}
                     />
                     <CommandEmpty>No data found.</CommandEmpty>

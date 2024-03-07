@@ -53,6 +53,7 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
     const [status, setStatus] = useState("pending");
     const [product, setProduct] = useState<string>("");
     const [customer, setCustomer] = useState<string>("");
+    const [note, setNote] = useState<string>("");
 
     const { data: productsData } = useQuery({
         queryKey: ["products"],
@@ -65,8 +66,6 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
     });
 
     const handleOrderSave = async () => {
-        console.log("product selected", product);
-        console.log("customer selected", customer);
         let data = {
             r: {
                 sph: rSph,
@@ -223,6 +222,7 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
                                 )}
                                 value={customer}
                                 onChange={(e: string) => setCustomer(e)}
+                                placeholder="Select Customer"
                             />
                         </div>
                         <div className="w-1/2">
@@ -235,8 +235,16 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
                                 onChange={(e: string) => {
                                     setProduct(e);
                                 }}
+                                placeholder="Select Product"
                             />
                         </div>
+                    </div>
+                    <div className="w-full mt-2">
+                        <span className="text-xs font-bold">Note</span>
+                        <Input
+                            value={note}
+                            onChange={(e) => setNote(e.target.value)}
+                        />
                     </div>
                     <div className="w-full mt-4 flex justify-end">
                         <button
