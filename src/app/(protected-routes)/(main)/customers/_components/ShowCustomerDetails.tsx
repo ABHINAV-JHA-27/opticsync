@@ -23,25 +23,6 @@ type ShowCustomerDetailsProps = {
 const ShowCustomerDetails = (props: ShowCustomerDetailsProps) => {
     const [addPaymentModal, setAddPaymentModal] = useState(false);
     const [generateInvoiceModal, setGenerateInvoiceModal] = useState(false);
-    const handleGenerateInvoice = async () => {
-        let data = await fetch("/api/invoices", {
-            method: "POST",
-            body: JSON.stringify({
-                customer: props.customer._id,
-                startDate: new Date(),
-                endDate: new Date(),
-            }),
-        });
-        data = await data.json();
-        data = (data as any).data;
-        await html2pdf(data, {
-            margin: 10,
-            filename: "invoice.pdf",
-            image: { type: "jpeg", quality: 0.98 },
-            html2canvas: { scale: 2 },
-            jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-        });
-    };
 
     return (
         <Dialog
@@ -134,16 +115,22 @@ const ShowCustomerDetails = (props: ShowCustomerDetailsProps) => {
             <AddPaymentModal
                 isOpen={addPaymentModal}
                 onClose={() => setAddPaymentModal(false)}
+                customer={props.customer}
             />
             <GenerateInvoiceModal
                 isOpen={generateInvoiceModal}
                 onClose={() => setGenerateInvoiceModal(false)}
+                customer={props.customer}
             />
         </Dialog>
     );
 };
 
-const AddPaymentModal = (props: { isOpen: boolean; onClose: () => void }) => {
+const AddPaymentModal = (props: {
+    isOpen: boolean;
+    onClose: () => void;
+    customer: any;
+}) => {
     const [paymentMode, setPaymentMode] = useState<"cash" | "cheque" | "upi">(
         "cash"
     );
@@ -207,6 +194,7 @@ const AddPaymentModal = (props: { isOpen: boolean; onClose: () => void }) => {
 const GenerateInvoiceModal = (props: {
     isOpen: boolean;
     onClose: () => void;
+    customer: any;
 }) => {
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
@@ -215,7 +203,7 @@ const GenerateInvoiceModal = (props: {
         let data = await fetch("/api/invoices", {
             method: "POST",
             body: JSON.stringify({
-                // customer: props.customer._id,
+                customer: props.customer._id,
                 startDate: new Date(),
                 endDate: new Date(),
             }),
