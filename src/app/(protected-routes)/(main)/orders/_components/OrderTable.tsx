@@ -194,7 +194,8 @@ const OrderTable = () => {
                                             <div className="flex flex-row items-center gap-x-4">
                                                 <Button
                                                     className="bg-[#F2F2F2] text-[#000000] hover:bg-[#E5E5E5] hover:text-[#000000] w-20 h-8 z-[5]"
-                                                    onClick={() => {
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
                                                         handleEdit(item._id);
                                                     }}
                                                 >
@@ -202,7 +203,8 @@ const OrderTable = () => {
                                                 </Button>
                                                 <Button
                                                     className="bg-[#F2F2F2] text-[#000000] hover:bg-[#E5E5E5] hover:text-[#000000] w-20 h-8 z-[5]"
-                                                    onClick={() => {
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
                                                         handleDelete(item._id);
                                                     }}
                                                 >
@@ -210,7 +212,8 @@ const OrderTable = () => {
                                                 </Button>
                                                 <Button
                                                     className="bg-[#F2F2F2] text-[#000000] hover:bg-[#E5E5E5] hover:text-[#000000] h-8 z-[5]"
-                                                    onClick={() => {
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
                                                         handleGenerateChallan(
                                                             item._id
                                                         );

@@ -79,7 +79,7 @@ const CustomerTable = () => {
             {isLoading && <div>Loading...</div>}
             {error && <div>Error: {error.message}</div>}
             {customersData && customersData.length > 0 ? (
-                <ScrollArea className="w-full h-[50vh] mt-4 rounded-md">
+                <ScrollArea className="w-full h-[50vh] mt-4 rounded-md z-[2]">
                     <Table>
                         <TableHeader>
                             <TableRow>
@@ -124,7 +124,8 @@ const CustomerTable = () => {
                                             <div className="flex flex-row items-center gap-x-4">
                                                 <Button
                                                     className="bg-[#F2F2F2] text-[#000000] hover:bg-[#E5E5E5] hover:text-[#000000] w-20 h-8 z-[5]"
-                                                    onClick={() => {
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
                                                         handleEdit(item._id);
                                                     }}
                                                 >
@@ -132,7 +133,8 @@ const CustomerTable = () => {
                                                 </Button>
                                                 <Button
                                                     className="bg-[#F2F2F2] text-[#000000] hover:bg-[#E5E5E5] hover:text-[#000000] w-20 h-8 z-[5]"
-                                                    onClick={() => {
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
                                                         handleDelete(item._id);
                                                     }}
                                                 >
