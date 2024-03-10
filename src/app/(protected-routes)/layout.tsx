@@ -10,7 +10,7 @@ export default async function RootLayout({
     const { isAuthenticated } = getKindeServerSession();
 
     if (!(await isAuthenticated())) {
-        redirect("/api/auth/login?post_login_redirect_url=/dashboard");
+        redirect("/api/auth/login");
     }
 
     return (

@@ -1,5 +1,6 @@
 "use client";
 
+import Loader from "@/components/Loader";
 import { Input } from "@/components/ui/input";
 import { createUser } from "@/services/user";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -20,6 +21,11 @@ export default function Page() {
     const [phone, setphone] = useState("");
     const [alternatePhone, setAlternatePhone] = useState("");
     const [gstNumber, setGstNumber] = useState("");
+    const [bankAccount, setBankAccount] = useState("");
+    const [ifscCode, setIfscCode] = useState("");
+    const [branch, setBranch] = useState("");
+    const [accountHolderName, setAccountHolderName] = useState("");
+    const [bankName, setBankName] = useState("");
 
     const { error, data: user } = useQuery({
         queryKey: ["user"],
@@ -32,13 +38,17 @@ export default function Page() {
         }
     }, [user]);
 
-    const { mutate, isPending, isError, isSuccess } = useMutation({
+    const { mutate, isPending } = useMutation({
         mutationKey: ["user"],
         mutationFn: createUser,
+        onSuccess: () => {
+            router.replace("/dashboard");
+        },
+        onError: () => {},
     });
 
-    const handleOnboard = () => {
-        mutate({
+    const handleOnboard = async () => {
+        await mutate({
             name,
             shopName,
             addressLine1,
@@ -50,8 +60,12 @@ export default function Page() {
             phone,
             alternatePhone,
             gstNumber,
+            bankName,
+            bankAccountNumber: bankAccount,
+            ifscCode,
+            bankAccountHolderName: accountHolderName,
+            bankBranch: branch,
         });
-        router.replace("/dashboard");
     };
 
     return (
@@ -190,20 +204,81 @@ export default function Page() {
                         onChange={(e) => setEmail(e.target.value)}
                     />
                 </div>
+                <div className="flex flex-row items-center gap-x-3 w-full">
+                    <div className="w-1/2">
+                        <span className="text-[#0F1035] text-lg font-bold">
+                            Bank Account
+                        </span>
+                        <Input
+                            placeholder="Enter your name"
+                            className="bg-white"
+                            value={bankAccount}
+                            onChange={(e) => setBankAccount(e.target.value)}
+                        />
+                    </div>
+                    <div className="w-1/2">
+                        <span className="text-[#0F1035] text-lg font-bold">
+                            Ifsc Code
+                        </span>
+                        <Input
+                            placeholder="Enter your name"
+                            className="bg-white"
+                            value={ifscCode}
+                            onChange={(e) => setIfscCode(e.target.value)}
+                        />
+                    </div>
+                </div>
+                <div className="flex flex-row items-center gap-x-3 w-full">
+                    <div className="w-1/2">
+                        <span className="text-[#0F1035] text-lg font-bold">
+                            Branch
+                        </span>
+                        <Input
+                            placeholder="Enter your name"
+                            className="bg-white"
+                            value={branch}
+                            onChange={(e) => setBranch(e.target.value)}
+                        />
+                    </div>
+                    <div className="w-1/2">
+                        <span className="text-[#0F1035] text-lg font-bold">
+                            Account Holder Name
+                        </span>
+                        <Input
+                            placeholder="Enter your name"
+                            className="bg-white"
+                            value={accountHolderName}
+                            onChange={(e) =>
+                                setAccountHolderName(e.target.value)
+                            }
+                        />
+                    </div>
+                </div>
+                <div className="w-1/2">
+                    <span className="text-[#0F1035] text-lg font-bold">
+                        Bank Name
+                    </span>
+                    <Input
+                        placeholder="Enter your name"
+                        className="bg-white"
+                        value={bankName}
+                        onChange={(e) => setBankName(e.target.value)}
+                    />
+                </div>
                 <div className="w-full mt-4 flex justify-end">
                     <button
                         className="bg-primary text-white px-4 py-2 rounded-md"
                         onClick={handleOnboard}
                     >
-                        {isPending ? "Loading..." : "Onboard"}
+                        {isPending ? (
+                            <div className="flex items-center justify-center">
+                                <Loader heavy />
+                            </div>
+                        ) : (
+                            "Onboard"
+                        )}
                     </button>
                 </div>
-
-                {isError && (
-                    <div className="text-red-500 text-center">
-                        Something went wrong
-                    </div>
-                )}
             </div>
         </div>
     );

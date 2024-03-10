@@ -39,7 +39,9 @@ export async function POST(req: NextRequest) {
             message: "User already exists",
         });
     }
-    await User.create({ ...data, kindeUserId: kindeUser?.id });
+    console.log(data);
+    const newUser = new User({ ...data, kindeUserId: kindeUser?.id });
+    await newUser.save();
     return NextResponse.json({
         status: 200,
         message: "Success",
