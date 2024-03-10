@@ -23,6 +23,7 @@ type DropDownProps = {
     value: string;
     onChange: (value: string) => void;
     placeholder?: string;
+    for?: string;
 };
 
 export function DropDown(props: DropDownProps) {
@@ -37,38 +38,48 @@ export function DropDown(props: DropDownProps) {
                     aria-expanded={open}
                     className="w-[200px] justify-between"
                 >
-                    {props.value !== "" ? props.value : "Select framework..."}
+                    {props.value !== "" ? props.value : props.placeholder}
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[200px] p-0">
                 <Command>
-                    <CommandInput
-                        placeholder={props.placeholder || "Search..."}
-                        value={props.value}
-                    />
-                    <CommandEmpty>No data found.</CommandEmpty>
                     <CommandGroup>
-                        {props.data.map((item) => (
-                            <CommandItem
-                                key={item}
-                                value={item}
-                                onSelect={(currentValue) => {
-                                    props.onChange(item);
-                                    setOpen(false);
-                                }}
-                            >
-                                <Check
-                                    className={cn(
-                                        "mr-2 h-4 w-4 text-black",
-                                        props.value === item
-                                            ? "opacity-100"
-                                            : "opacity-0"
-                                    )}
+                        {props.data.length > 0 ? (
+                            <>
+                                <CommandInput
+                                    placeholder={
+                                        "Search a " + (props.for || "option")
+                                    }
+                                    value={props.value}
                                 />
-                                {item}
+                                {props.data.map((item) => (
+                                    <CommandItem
+                                        key={item}
+                                        value={item}
+                                        onSelect={(currentValue) => {
+                                            props.onChange(item);
+                                            setOpen(false);
+                                        }}
+                                    >
+                                        <Check
+                                            className={cn(
+                                                "mr-2 h-4 w-4 text-black",
+                                                props.value === item
+                                                    ? "opacity-100"
+                                                    : "opacity-0"
+                                            )}
+                                        />
+                                        {item}
+                                    </CommandItem>
+                                ))}
+                            </>
+                        ) : (
+                            <CommandItem disabled>
+                                No data found. Add a {props.for || "option"} to
+                                see it here.
                             </CommandItem>
-                        ))}
+                        )}
                     </CommandGroup>
                 </Command>
             </PopoverContent>
