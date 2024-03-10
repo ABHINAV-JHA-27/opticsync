@@ -38,6 +38,9 @@ const ProductTable = () => {
                 queryKey: ["products"],
             });
         },
+        onError: (error) => {
+            console.log(error);
+        },
     });
 
     const [openAddProductModal, setOpenAddProductModal] = useState(false);

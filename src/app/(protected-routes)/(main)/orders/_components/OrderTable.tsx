@@ -57,6 +57,9 @@ const OrderTable = () => {
                 queryKey: ["orders"],
             });
         },
+        onError: (error) => {
+            console.log(error);
+        },
     });
 
     const { mutate: changeStatus } = useMutation({
@@ -65,6 +68,9 @@ const OrderTable = () => {
             queryclient.invalidateQueries({
                 queryKey: ["orders"],
             });
+        },
+        onError: (error) => {
+            console.log(error);
         },
     });
 

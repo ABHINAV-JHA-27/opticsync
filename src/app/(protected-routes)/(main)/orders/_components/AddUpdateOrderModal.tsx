@@ -30,6 +30,9 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
             });
             props.onClose();
         },
+        onError: (error) => {
+            console.log(error);
+        },
     });
 
     const { mutate: update, isPending: isPendingUpdate } = useMutation({
@@ -40,6 +43,9 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
                 queryKey: ["orders"],
             });
             props.onClose();
+        },
+        onError: (error) => {
+            console.log(error);
         },
     });
 

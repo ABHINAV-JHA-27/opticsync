@@ -37,6 +37,9 @@ const CustomerTable = () => {
                 queryKey: ["customers"],
             });
         },
+        onError: (error) => {
+            console.log(error);
+        },
     });
 
     const [openAddCustomerModal, setOpenAddCustomerModal] = useState(false);

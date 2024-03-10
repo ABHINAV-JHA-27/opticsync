@@ -164,6 +164,9 @@ const AddPaymentModal = (props: {
             });
             props.onClose();
         },
+        onError: (error) => {
+            console.log(error);
+        },
     });
 
     return (

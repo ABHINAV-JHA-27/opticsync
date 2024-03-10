@@ -44,7 +44,9 @@ export default function Page() {
         onSuccess: () => {
             router.replace("/dashboard");
         },
-        onError: () => {},
+        onError: (error) => {
+            console.log(error);
+        },
     });
 
     const handleOnboard = async () => {
