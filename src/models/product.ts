@@ -12,7 +12,7 @@ const ProductSchema = new Schema(
             type: String,
             required: true,
         },
-        wlp: {
+        price: {
             type: Number,
             required: true,
         },
@@ -35,6 +35,7 @@ const ProductSchema = new Schema(
         user: {
             type: Schema.Types.ObjectId,
             ref: "User",
+            required: true,
         },
     },
     {

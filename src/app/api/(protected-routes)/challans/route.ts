@@ -62,13 +62,13 @@ export async function POST(req: NextRequest) {
     const challanData = {
         user: user._id,
         orders: orders,
-        total: orders.products.wlp,
+        total: orders.products.price,
         customer: customer,
         date: new Date(),
         challanNumber: RandomChallanNumber(user.shopName, customer.name),
         totalAfterTax:
-            orders.products.wlp +
-            (orders.products.wlp *
+            orders.products.price +
+            (orders.products.price *
                 (orders.products.cgst + orders.products.sgst)) /
                 100,
     };
@@ -81,18 +81,18 @@ export async function POST(req: NextRequest) {
         customer,
         orders,
         user,
-        totalBeforeTax: orders.products.wlp,
+        totalBeforeTax: orders.products.price,
         cgst: orders.products.cgst,
         sgst: orders.products.sgst,
         totalAfterTax:
-            orders.products.wlp +
-            (orders.products.wlp *
+            orders.products.price +
+            (orders.products.price *
                 (orders.products.cgst + orders.products.sgst)) /
                 100,
         ref: orders.ref,
         amountInWords: numberToWords(
-            orders.products.wlp +
-                (orders.products.wlp *
+            orders.products.price +
+                (orders.products.price *
                     (orders.products.cgst + orders.products.sgst)) /
                     100
         ),

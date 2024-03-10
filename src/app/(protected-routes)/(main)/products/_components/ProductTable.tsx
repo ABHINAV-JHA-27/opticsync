@@ -89,7 +89,7 @@ const ProductTable = () => {
                                     <TableCell>{item.hsn || "N/A"}</TableCell>
                                     <TableCell>{item.name}</TableCell>
                                     <TableCell>{item.company}</TableCell>
-                                    <TableCell>{item.wlp}</TableCell>
+                                    <TableCell>{item.price}</TableCell>
                                     <TableCell>{item.srp}</TableCell>
                                     <TableCell>
                                         <div className="flex flex-row items-center gap-x-4">

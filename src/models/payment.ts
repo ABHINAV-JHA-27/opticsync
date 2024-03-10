@@ -6,10 +6,12 @@ const PaymentSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
         ref: "User",
+        required: true,
     },
     customer: {
         type: Schema.Types.ObjectId,
         ref: "Customer",
+        required: true,
     },
     amount: {
         type: Number,
@@ -21,6 +23,7 @@ const PaymentSchema = new Schema({
     },
     paymentMode: {
         type: String,
+        enum: ["cash", "cheque", "upi", "neft", "rtgs", "other"],
         required: true,
     },
 });

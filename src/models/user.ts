@@ -32,6 +32,38 @@ const UserSchema = new Schema({
     email: {
         type: String,
     },
+    city: {
+        type: String,
+        required: true,
+    },
+    state: {
+        type: String,
+        required: true,
+    },
+    pincode: {
+        type: String,
+        required: true,
+    },
+    bankName: {
+        type: String,
+        required: true,
+    },
+    bankBranch: {
+        type: String,
+        required: true,
+    },
+    bankAccountNumber: {
+        type: String,
+        required: true,
+    },
+    ifscCode: {
+        type: String,
+        required: true,
+    },
+    bankAccountHolderName: {
+        type: String,
+        required: true,
+    },
     kindeUserId: {
         type: String,
     },

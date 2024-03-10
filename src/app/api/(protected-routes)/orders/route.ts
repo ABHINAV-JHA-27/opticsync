@@ -73,7 +73,7 @@ export async function POST(req: NextRequest) {
 
     const customer = await Customer.findById(data.customer);
     const product = await Product.findById(data.products);
-    customer.currentBalance = customer?.currentBalance + product?.wlp;
+    customer.currentBalance = customer?.currentBalance + product?.price;
 
     const order = new Order({
         ...data,

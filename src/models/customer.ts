@@ -48,6 +48,7 @@ const CustomerSchema = new Schema(
         user: {
             type: Schema.Types.ObjectId,
             ref: "User",
+            required: true,
         },
         currentBalance: {
             type: Number,

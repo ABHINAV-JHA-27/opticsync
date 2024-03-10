@@ -2,16 +2,20 @@ import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
-const ChallanSchema = new Schema(
+const InvoiceSchema = new Schema(
     {
         user: {
             type: Schema.Types.ObjectId,
             ref: "User",
+            required: true,
         },
-        orders: {
-            type: Schema.Types.ObjectId,
-            ref: "Order",
-        },
+        challans: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Challan",
+                required: true,
+            },
+        ],
         total: {
             type: Number,
             required: true,
@@ -24,7 +28,15 @@ const ChallanSchema = new Schema(
             type: Date,
             required: true,
         },
-        challanNumber: {
+        startDate: {
+            type: Date,
+            required: true,
+        },
+        endDate: {
+            type: Date,
+            required: true,
+        },
+        invoiceNumber: {
             type: String,
             required: true,
         },
@@ -38,7 +50,5 @@ const ChallanSchema = new Schema(
     }
 );
 
-const Challan =
-    mongoose.models.Challan || mongoose.model("Challan", ChallanSchema);
-
-export default Challan;
+const Invoice =
+    mongoose.models.Invoice || mongoose.model("Invoice", InvoiceSchema);

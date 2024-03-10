@@ -7,26 +7,27 @@ const OrderSchema = new Schema(
         r: {
             sph: {
                 type: String,
-                required: true,
             },
             cyl: {
                 type: String,
-                required: true,
             },
-            axis: { type: String, required: true },
+            axis: { type: String },
             add: { type: String },
         },
         l: {
             sph: {
                 type: String,
-                required: true,
             },
             cyl: {
                 type: String,
-                required: true,
             },
-            axis: { type: String, required: true },
+            axis: { type: String },
             add: { type: String },
+        },
+        type: {
+            type: String,
+            enum: ["stock", "rx", "fitting"],
+            required: true,
         },
         status: {
             type: String,
@@ -36,14 +37,17 @@ const OrderSchema = new Schema(
         user: {
             type: Schema.Types.ObjectId,
             ref: "User",
+            required: true,
         },
         products: {
             type: Schema.Types.ObjectId,
             ref: "Product",
+            required: true,
         },
         customer: {
             type: Schema.Types.ObjectId,
             ref: "Customer",
+            required: true,
         },
         challan: {
             type: Schema.Types.ObjectId,
