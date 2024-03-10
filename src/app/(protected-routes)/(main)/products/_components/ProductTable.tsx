@@ -16,6 +16,7 @@ import { useState } from "react";
 import AddUpdateProductModal from "./AddUpdateProductModal";
 import Lottie from "lottie-react";
 import * as NoDataAnimation from "@/assets/lottie/NoDataFound.json";
+import Loader from "@/components/Loader";
 
 const ProductTable = () => {
     const queryclient = useQueryClient();
@@ -32,6 +33,7 @@ const ProductTable = () => {
     const { mutate: deleteCustomerMutation } = useMutation({
         mutationFn: deleteProduct,
         onSuccess: () => {
+            setDeletingId("");
             queryclient.invalidateQueries({
                 queryKey: ["products"],
             });
@@ -40,6 +42,7 @@ const ProductTable = () => {
 
     const [openAddProductModal, setOpenAddProductModal] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState<any>(null);
+    const [deletingId, setDeletingId] = useState<string>("");
 
     const handleEdit = async (id: string) => {
         const product = productsData.find((product: any) => product._id === id);
@@ -48,6 +51,7 @@ const ProductTable = () => {
     };
 
     const handleDelete = async (id: string) => {
+        setDeletingId(id);
         await deleteCustomerMutation(id);
     };
 
@@ -78,8 +82,8 @@ const ProductTable = () => {
                                 <TableHead>HSN</TableHead>
                                 <TableHead>Name</TableHead>
                                 <TableHead>Company</TableHead>
-                                <TableHead>WLP</TableHead>
-                                <TableHead>SRP</TableHead>
+                                <TableHead>Price</TableHead>
+                                <TableHead>GST</TableHead>
                                 <TableHead></TableHead>
                             </TableRow>
                         </TableHeader>
@@ -90,7 +94,9 @@ const ProductTable = () => {
                                     <TableCell>{item.name}</TableCell>
                                     <TableCell>{item.company}</TableCell>
                                     <TableCell>{item.price}</TableCell>
-                                    <TableCell>{item.srp}</TableCell>
+                                    <TableCell>
+                                        {item.cgst + item.sgst} %
+                                    </TableCell>
                                     <TableCell>
                                         <div className="flex flex-row items-center gap-x-4">
                                             <Button
@@ -109,7 +115,13 @@ const ProductTable = () => {
                                                     handleDelete(item._id);
                                                 }}
                                             >
-                                                Delete
+                                                {deletingId === item._id ? (
+                                                    <div className="flex items-center justify-center">
+                                                        <Loader heavy />
+                                                    </div>
+                                                ) : (
+                                                    "Delete"
+                                                )}
                                             </Button>
                                         </div>
                                     </TableCell>

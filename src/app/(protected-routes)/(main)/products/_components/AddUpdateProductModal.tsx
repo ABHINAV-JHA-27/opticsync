@@ -1,7 +1,7 @@
+import Loader from "@/components/Loader";
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
@@ -18,77 +18,72 @@ type AddProductModalProps = {
 
 const AddUpdateProductModal = (props: AddProductModalProps) => {
     const queryClient = useQueryClient();
-    const {
-        mutate: create,
-        isPending: isPendingCreate,
-        isSuccess: isSuccessCreate,
-        isError: isErrorCreate,
-    } = useMutation({
+    const { mutate: create, isPending: isPendingCreate } = useMutation({
         mutationFn: createProduct,
         mutationKey: ["products"],
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ["products"],
             });
+            reset();
+            props.onClose();
+        },
+        onError: (error) => {
+            console.log(error);
         },
     });
 
-    const {
-        mutate: update,
-        isPending: isPendingUpdate,
-        isSuccess: isSuccessUpdate,
-        isError: isErrorUpdate,
-    } = useMutation({
+    const { mutate: update, isPending: isPendingUpdate } = useMutation({
         mutationFn: updateProduct,
         mutationKey: ["products"],
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ["products"],
             });
+            reset();
+            props.onClose();
+        },
+        onError: (error) => {
+            console.log(error);
         },
     });
 
     const [productHSN, setProductHSN] = useState("");
+    const [productIndex, setProductIndex] = useState("");
     const [productName, setProductName] = useState("");
     const [productCompany, setProductCompany] = useState("");
-    const [productSrp, setProductSrp] = useState("");
     const [productWlp, setProductWlp] = useState("");
+    const [productCGst, setProductCGst] = useState(6);
+    const [productSGst, setProductSGst] = useState(6);
 
     const reset = () => {
         setProductHSN("");
         setProductName("");
         setProductCompany("");
-        setProductSrp("");
         setProductWlp("");
+        setProductCGst(6);
+        setProductSGst(6);
+        setProductIndex("");
     };
 
     const handleProductSave = () => {
+        const data = {
+            name: productName,
+            company: productCompany,
+            price: productWlp,
+            hsn: productHSN,
+            cgst: productCGst,
+            sgst: productSGst,
+            index: productIndex,
+        };
+
         if (props.data) {
             update({
                 id: props.data?._id,
-                value: {
-                    name: productName,
-                    company: productCompany,
-                    srp: productSrp,
-                    wlp: productWlp,
-                    hsn: productHSN,
-                },
+                value: data,
             });
         } else {
-            create({
-                name: productName,
-                company: productCompany,
-                srp: productSrp,
-                wlp: productWlp,
-                hsn: productHSN,
-            });
-        }
-
-        if (isSuccessCreate || isSuccessUpdate) {
-            reset();
-            props.onClose();
-        } else if (isErrorCreate || isErrorUpdate) {
-            console.log("Error");
+            create(data);
         }
     };
 
@@ -96,9 +91,11 @@ const AddUpdateProductModal = (props: AddProductModalProps) => {
         if (props.data) {
             setProductName(props.data.name);
             setProductCompany(props.data.company);
-            setProductSrp(props.data.srp);
-            setProductWlp(props.data.wlp);
+            setProductWlp(props.data.price);
             setProductHSN(props.data.hsn);
+            setProductCGst(props.data.cgst);
+            setProductSGst(props.data.sgst);
+            setProductIndex(props.data.index);
         } else {
             reset();
         }
@@ -119,6 +116,17 @@ const AddUpdateProductModal = (props: AddProductModalProps) => {
                 </DialogHeader>
                 <div className="w-full mt-2">
                     <div className="w-full">
+                        <span className="text-xs font-semibold">
+                            Product HSN
+                        </span>
+                        <Input
+                            value={productHSN}
+                            onChange={(e) => {
+                                setProductHSN(e.target.value);
+                            }}
+                        />
+                    </div>
+                    <div className="w-full mt-2">
                         <span className="text-xs font-semibold">
                             Product Name
                         </span>
@@ -142,16 +150,18 @@ const AddUpdateProductModal = (props: AddProductModalProps) => {
                     </div>
                     <div className="w-full flex flex-row items-center mt-2 gap-x-2">
                         <div className="w-1/2">
-                            <span className="text-xs font-semibold">SRP</span>
+                            <span className="text-xs font-semibold">
+                                Product Index
+                            </span>
                             <Input
-                                value={productSrp}
+                                value={productIndex}
                                 onChange={(e) => {
-                                    setProductSrp(e.target.value);
+                                    setProductIndex(e.target.value);
                                 }}
                             />
                         </div>
                         <div className="w-1/2">
-                            <span className="text-xs font-semibold">WLP</span>
+                            <span className="text-xs font-semibold">Price</span>
                             <Input
                                 value={productWlp}
                                 onChange={(e) => {
@@ -160,27 +170,49 @@ const AddUpdateProductModal = (props: AddProductModalProps) => {
                             />
                         </div>
                     </div>
-                    <div className="w-full mt-2">
-                        <span className="text-xs font-semibold">
-                            Product HSN
-                        </span>
-                        <Input
-                            value={productHSN}
-                            onChange={(e) => {
-                                setProductHSN(e.target.value);
-                            }}
-                        />
+                    <div className="w-full flex flex-row items-center mt-2 gap-x-2">
+                        <div className="w-1/2">
+                            <span className="text-xs font-semibold">
+                                Product CGST
+                            </span>
+                            <Input
+                                value={productCGst}
+                                onChange={(e) => {
+                                    setProductCGst(
+                                        parseInt(e.target.value) || 0
+                                    );
+                                }}
+                            />
+                        </div>
+                        <div className="w-1/2">
+                            <span className="text-xs font-semibold">
+                                Product SGST
+                            </span>
+                            <Input
+                                value={productSGst}
+                                onChange={(e) => {
+                                    setProductSGst(
+                                        parseInt(e.target.value) || 0
+                                    );
+                                }}
+                            />
+                        </div>
                     </div>
+
                     <div className="w-full mt-4 flex justify-end">
                         <button
                             className="bg-primary text-white px-4 py-2 rounded-md"
                             onClick={handleProductSave}
                         >
-                            {isPendingCreate || isPendingUpdate
-                                ? "Saving..."
-                                : props.data
-                                ? "Update"
-                                : "Save"}
+                            {isPendingCreate || isPendingUpdate ? (
+                                <div className="flex items-center justify-center">
+                                    <Loader heavy />
+                                </div>
+                            ) : props.data ? (
+                                "Update"
+                            ) : (
+                                "Save"
+                            )}
                         </button>
                     </div>
                 </div>

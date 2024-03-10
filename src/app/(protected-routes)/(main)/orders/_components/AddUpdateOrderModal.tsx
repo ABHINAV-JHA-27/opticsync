@@ -1,4 +1,5 @@
 import { DropDown } from "@/components/DropDown";
+import Loader from "@/components/Loader";
 import {
     Dialog,
     DialogContent,
@@ -251,11 +252,15 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
                             className="bg-primary text-white px-4 py-2 rounded-md"
                             onClick={handleOrderSave}
                         >
-                            {isPendingCreate || isPendingUpdate
-                                ? "Saving..."
-                                : props.data
-                                ? "Update Order"
-                                : "Add Order"}
+                            {isPendingCreate || isPendingUpdate ? (
+                                <div className="flex items-center justify-center">
+                                    <Loader heavy />
+                                </div>
+                            ) : props.data ? (
+                                "Update Order"
+                            ) : (
+                                "Add Order"
+                            )}
                         </button>
                     </div>
                 </div>

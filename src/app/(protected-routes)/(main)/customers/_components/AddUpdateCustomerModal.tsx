@@ -1,3 +1,4 @@
+import Loader from "@/components/Loader";
 import {
     Dialog,
     DialogContent,
@@ -259,11 +260,15 @@ const AddUpdateCustomerModal = (props: AddUpdateCustomerModalProps) => {
                             className="bg-primary text-white px-4 py-2 rounded-md"
                             onClick={handleCustomerSave}
                         >
-                            {isPendingCreate || isPendingUpdate
-                                ? "Saving..."
-                                : props.data
-                                ? "Update Customer"
-                                : "Add Customer"}
+                            {isPendingCreate || isPendingUpdate ? (
+                                <div className="flex items-center justify-center">
+                                    <Loader heavy />
+                                </div>
+                            ) : props.data ? (
+                                "Update Customer"
+                            ) : (
+                                "Add Customer"
+                            )}
                         </button>
                     </div>
                 </div>
