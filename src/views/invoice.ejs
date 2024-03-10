@@ -189,33 +189,20 @@
                         <tr class="borderBottom">
                             <td>Round off</td>
                             <td>
-                                <% if (totalAfterTax.toString().split(".")[1] >
-                                50) { %> <%= (100 -
-                                totalAfterTax.toString().split(".")[1]) %> <% }
-                                else { %> <%= (50 -
-                                totalAfterTax.toString().split(".")[1]) %> <% }
-                                %>
+                                <%= Math.round(totalAfterTax) - totalAfterTax %>
                             </td>
                         </tr>
                         <tr>
                             <td><b>Total</b></td>
-                            <td>
-                                <%= totalAfterTax %> <% if
-                                (totalAfterTax.toString().split(".")[1] > 50) {
-                                %> <%= (100 -
-                                totalAfterTax.toString().split(".")[1]) %> <% }
-                                else { %> <%= (50 -
-                                totalAfterTax.toString().split(".")[1]) %> <% }
-                                %>
-                            </td>
+                            <td><%= Math.round(totalAfterTax) %></td>
                         </tr>
                         <tr class="borderBottom">
                             <td>Received</td>
-                            <td>0.00</td>
+                            <td><%= payment %></td>
                         </tr>
                         <tr class="borderBottom">
                             <td>Balance</td>
-                            <td>71,702.00</td>
+                            <td><%= totalAfterTax - payment %></td>
                         </tr>
                     </tbody>
                 </table>
@@ -229,10 +216,11 @@
                     </p>
                     <p class="purpleBg">Bank details:</p>
                     <p>
-                        Bank Name: HDFC BANK, RAJENDRA NAGAR <br />
-                        Bank Account No.: 50200066675072 <br />
-                        Bank IFSC code: HDFC0002851 <br />
-                        Account Holder's Name: OPTICAL EXPRESS
+                        Bank Name: <%= user.bankName %>, <%= user.bankBranch %>
+                        <br />
+                        Bank Account No.: <%= user. bankAccountNumber %> <br />
+                        Bank IFSC code: <%= user.ifscCode %> <br />
+                        Account Holder's Name: <%= user.bankAccountHolderName %>
                     </p>
                 </div>
                 <div class="signature borderBox">
