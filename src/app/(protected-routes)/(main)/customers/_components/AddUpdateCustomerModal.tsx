@@ -2,7 +2,6 @@ import Loader from "@/components/Loader";
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog";
@@ -20,34 +19,33 @@ type AddUpdateCustomerModalProps = {
 const AddUpdateCustomerModal = (props: AddUpdateCustomerModalProps) => {
     const queryClient = useQueryClient();
 
-    const {
-        mutate: create,
-        isPending: isPendingCreate,
-        isSuccess: isSuccessCreate,
-        isError: isErrorCreate,
-    } = useMutation({
+    const { mutate: create, isPending: isPendingCreate } = useMutation({
         mutationFn: createCustomer,
         mutationKey: ["customers"],
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ["customers"],
             });
+            reset();
+            props.onClose();
+        },
+        onError: (error) => {
+            console.log(error);
         },
     });
 
-    const {
-        mutate: update,
-        isPending: isPendingUpdate,
-        isSuccess: isSuccessUpdate,
-        isError: isErrorUpdate,
-    } = useMutation({
+    const { mutate: update, isPending: isPendingUpdate } = useMutation({
         mutationFn: updateCustomer,
         mutationKey: ["customers"],
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ["customers"],
             });
+            reset();
             props.onClose();
+        },
+        onError: (error) => {
+            console.log(error);
         },
     });
 
@@ -76,39 +74,26 @@ const AddUpdateCustomerModal = (props: AddUpdateCustomerModalProps) => {
     };
 
     const handleCustomerSave = () => {
+        const data = {
+            name: customerName,
+            phone: customerPhone,
+            addressLine1: customerAddressLine1,
+            addressLine2: customerAddressLine2,
+            city: customerCity,
+            state: customerState,
+            pincode: customerPincode,
+            shopName: customerShopName,
+            alternatePhone: customerAlternatePhone,
+            gstNumber: customerGstNumber,
+        };
+
         if (props.data) {
             update({
                 id: props.data?._id,
-                name: customerName,
-                phone: customerPhone,
-                addressLine1: customerAddressLine1,
-                addressLine2: customerAddressLine2,
-                city: customerCity,
-                state: customerState,
-                pincode: customerPincode,
-                shopName: customerShopName,
-                alternatePhone: customerAlternatePhone,
-                gstNumber: customerGstNumber,
+                ...data,
             });
         } else {
-            create({
-                name: customerName,
-                phone: customerPhone,
-                addressLine1: customerAddressLine1,
-                addressLine2: customerAddressLine2,
-                city: customerCity,
-                state: customerState,
-                pincode: customerPincode,
-                shopName: customerShopName,
-                alternatePhone: customerAlternatePhone,
-                gstNumber: customerGstNumber,
-            });
-        }
-        if (isSuccessCreate || isSuccessUpdate) {
-            reset();
-            props.onClose();
-        } else if (isErrorCreate || isErrorUpdate) {
-            console.log("Error");
+            create(data);
         }
     };
 
