@@ -49,6 +49,7 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
         },
     });
 
+    const [ref, setRef] = useState("");
     const [rSph, setRSph] = useState("");
     const [rCyl, setRCyl] = useState("");
     const [rAxis, setRAxis] = useState("");
@@ -61,6 +62,7 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
     const [product, setProduct] = useState<string>("");
     const [customer, setCustomer] = useState<string>("");
     const [note, setNote] = useState<string>("");
+    const [type, setType] = useState("stock");
 
     const { data: productsData } = useQuery({
         queryKey: ["products"],
@@ -92,6 +94,9 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
             customer: await customersData.find((cust: any) => {
                 return cust.shopName == customer;
             })?._id,
+            note: note,
+            ref: ref,
+            type: type.toLowerCase(),
         };
 
         if (props.data) {
@@ -117,6 +122,9 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
         setStatus("pending");
         setProduct("");
         setCustomer("");
+        setNote("");
+        setRef("");
+        setType("stock");
     };
 
     useEffect(() => {
@@ -139,6 +147,9 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
                     (cust: any) => cust._id == props.data.customer
                 )?.shopName
             );
+            setNote(props.data.note);
+            setRef(props.data.ref);
+            setType(props.data.type);
         } else {
             reset();
         }
@@ -157,6 +168,26 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
                         {props.data ? "Update Order" : "Add Order"}
                     </DialogTitle>
                 </DialogHeader>
+                <div className="flex flex-row items-center gap-x-2 w-full mt-2">
+                    <div className="w-1/2">
+                        <span className="text-xs font-bold">Ref</span>
+                        <Input
+                            value={ref}
+                            onChange={(e) => setRef(e.target.value)}
+                        />
+                    </div>
+                    <div className="w-1/2">
+                        <span className="text-xs font-bold">Type</span>
+                        <DropDown
+                            data={["Stock", "Rx", "Fitting"]}
+                            value={type}
+                            onChange={(e: string) => {
+                                setType(e);
+                            }}
+                            placeholder="Select Type of Order"
+                        />
+                    </div>
+                </div>
                 <div className="w-full mt-2">
                     <span className="font-bold">Right Eye</span>
                     <div className="flex flex-row items-center gap-x-2 w-full mt-1 mb-2">

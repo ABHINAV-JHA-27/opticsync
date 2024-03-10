@@ -38,6 +38,18 @@ const ShowOrderDetails = (props: ShowOrderDetailsProps) => {
                 <DialogHeader>
                     <DialogTitle>Order Details</DialogTitle>
                 </DialogHeader>
+                <div className="flex flex-row items-center gap-x-2 w-full mt-2">
+                    <div className="w-1/2">
+                        <span className="text-xs font-bold">Ref</span>
+                        <br />
+                        <span className="text-xs">{props.order?.ref}</span>
+                    </div>
+                    <div className="w-1/2">
+                        <span className="text-xs font-bold">Type</span>
+                        <br />
+                        <span className="text-xs">{props.order?.type}</span>
+                    </div>
+                </div>
                 <div className="w-full mt-2">
                     <span className="font-bold">Right Eye</span>
                     <div className="flex flex-row items-center gap-x-2 w-full mt-1 mb-2">
@@ -127,6 +139,11 @@ const ShowOrderDetails = (props: ShowOrderDetailsProps) => {
                             </span>
                         </div>
                     </div>
+                </div>
+                <div className="w-full mt-2">
+                    <span className="text-xs font-bold">Note</span>
+                    <br />
+                    <span className="text-xs">{props.order?.note}</span>
                 </div>
             </DialogContent>
         </Dialog>

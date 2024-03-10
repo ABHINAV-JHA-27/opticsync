@@ -6,7 +6,6 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
     Command,
-    CommandEmpty,
     CommandGroup,
     CommandInput,
     CommandItem,
@@ -28,6 +27,7 @@ type DropDownProps = {
 
 export function DropDown(props: DropDownProps) {
     const [open, setOpen] = useState(false);
+    const [search, setSearch] = useState("");
 
     return (
         <Popover open={open} onOpenChange={setOpen}>
@@ -51,28 +51,35 @@ export function DropDown(props: DropDownProps) {
                                     placeholder={
                                         "Search a " + (props.for || "option")
                                     }
-                                    value={props.value}
+                                    value={search}
+                                    onValueChange={setSearch}
                                 />
-                                {props.data.map((item) => (
-                                    <CommandItem
-                                        key={item}
-                                        value={item}
-                                        onSelect={(currentValue) => {
-                                            props.onChange(item);
-                                            setOpen(false);
-                                        }}
-                                    >
-                                        <Check
-                                            className={cn(
-                                                "mr-2 h-4 w-4 text-black",
-                                                props.value === item
-                                                    ? "opacity-100"
-                                                    : "opacity-0"
-                                            )}
-                                        />
-                                        {item}
-                                    </CommandItem>
-                                ))}
+                                {props.data
+                                    .filter((item) => {
+                                        return item
+                                            .toLowerCase()
+                                            .includes(search.toLowerCase());
+                                    })
+                                    .map((item) => (
+                                        <CommandItem
+                                            key={item}
+                                            value={item}
+                                            onSelect={(currentValue) => {
+                                                props.onChange(item);
+                                                setOpen(false);
+                                            }}
+                                        >
+                                            <Check
+                                                className={cn(
+                                                    "mr-2 h-4 w-4 text-black",
+                                                    props.value === item
+                                                        ? "opacity-100"
+                                                        : "opacity-0"
+                                                )}
+                                            />
+                                            {item}
+                                        </CommandItem>
+                                    ))}
                             </>
                         ) : (
                             <CommandItem disabled>
