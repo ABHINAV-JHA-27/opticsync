@@ -29,6 +29,10 @@ const ChallanSchema = new Schema(
             type: String,
             required: true,
         },
+        totalAfterTax: {
+            type: Number,
+            required: true,
+        },
     },
     {
         timestamps: true,

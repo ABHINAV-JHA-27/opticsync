@@ -66,32 +66,14 @@ export async function POST(req: NextRequest) {
         customer: customer,
         date: new Date(),
         challanNumber: RandomChallanNumber(user.shopName, customer.name),
-    };
-
-    const ejsFilePath = path.resolve("./src/views/challan.ejs");
-
-    console.log({
-        challanNumber: challanData.challanNumber,
-        date: challanData.date.toLocaleDateString(),
-        customer,
-        orders,
-        user,
-        totalBeforeTax: orders.products.wlp,
-        cgst: orders.products.cgst,
-        sgst: orders.products.sgst,
         totalAfterTax:
             orders.products.wlp +
             (orders.products.wlp *
                 (orders.products.cgst + orders.products.sgst)) /
                 100,
-        ref: orders.ref,
-        amountInWords: numberToWords(
-            orders.products.wlp +
-                (orders.products.wlp *
-                    (orders.products.cgst + orders.products.sgst)) /
-                    100
-        ),
-    });
+    };
+
+    const ejsFilePath = path.resolve("./src/views/challan.ejs");
 
     const challanHtml = await ejs.renderFile(ejsFilePath, {
         challanNumber: challanData.challanNumber,

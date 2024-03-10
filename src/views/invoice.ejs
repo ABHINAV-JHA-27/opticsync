@@ -82,7 +82,7 @@
             }
             .threePartition {
                 display: grid;
-                grid-template-columns: 1fr 1fr 1fr;
+                grid-template-columns: 1fr 1fr;
                 .borderBox {
                     border: 1px solid black;
                 }
@@ -97,47 +97,41 @@
         <p class="title">Tax Invoice</p>
         <div class="invoice">
             <div class="head_section">
-                <b>Optical Express</b>
+                <b> <%= user.shopName %> </b>
                 <p>
-                    Kazipur Road No. 4 Near Arvind Mahila College
+                    <%= user.addressLine1 %> <%= user.addressLine2 %> <%=
+                    user.city %>, <%= user.state %>
                     <br />
-                    Patna 800004
+                    Phone no.: <%= user.phone %>
                     <br />
-                    Phone no.: 9386645444 Email: opticalexpressbihar@gmail.com
-                    <br />
-                    GSTIN: 10AERPJ8778H2Z0, State: 10-Bihar
+                    GSTIN: <%= user.gstNumber %>
                 </p>
             </div>
             <div class="flexContainer">
-                <div>
+                <div style="width: 50vw">
                     <div class="purpleBg">
                         <p>Bill To:</p>
                     </div>
                     <div>
-                        <b>NEW Durga optical</b>
+                        <b><%= customer.shopName %></b>
                         <p>
-                            SHASHI PALACE HOLDING NO. 308 C/O MANMIT KUMAR
+                            <%= customer.addressLine1 %> <%=
+                            customer.addressLine2 %> <%= customer.city %>, <%=
+                            customer.state %>
                             <br />
-                            NALA ROAD
-                            <br />
-                            Contact No.: 9939954600
-                            <br />
-                            GSTIN Number: 10BMYPK9344L1ZE
-                            <br />
-                            State: 10-Bihar
                         </p>
+                        <p>PHONE: <%= customer.phone %> &nbsp;&nbsp;</p>
+                        <p>GST No : <%= customer.gstNumber %></p>
                     </div>
                 </div>
                 <div class="rightSection">
                     <p>
-                        Place of Supply: 10-Bihar
+                        Place of Supply: <%= customer.state %>
                         <br />
                         <span>
-                            <b>
-                                Invoice No.: 2023-24/48
-                                <br />
-                                Date: 29-08-2023
-                            </b>
+                            <b> Invoice No.: <%= invoiceNumber %> </b>
+                            <br />
+                            <p>Date: <%= date %></p>
                         </span>
                     </p>
                 </div>
@@ -145,120 +139,23 @@
             <table>
                 <thead>
                     <tr class="purpleBg">
-                        <th>#</th>
-                        <th>Item name</th>
-                        <th>HSN/ SAC</th>
-                        <th>Quantity</th>
-                        <th>Unit</th>
-                        <th>Price/Unit</th>
-                        <th>Taxable Amount</th>
-                        <th>CGST</th>
-                        <th>SGST</th>
+                        <th>S No</th>
+                        <th>Challan Number</th>
                         <th>Amount</th>
+                        <th>Taxable Amount</th>
                     </tr>
                 </thead>
                 <tbody>
+                    <% for (let i = 0; i < challans.length; i++) { %>
                     <tr>
-                        <td>1</td>
-                        <td>1.50 Crizal easy pro</td>
-                        <td>90015000</td>
-                        <td>9</td>
-                        <td>Prs</td>
-                        <td>930.00</td>
-                        <td>8370.00</td>
-                        <td>
-                            502.20
-                            <br />
-                            (6.0%)
-                        </td>
-                        <td>
-                            502.20
-                            <br />
-                            (6.0%)
-                        </td>
-                        <td>9,374.40</td>
+                        <td><%= i + 1 %></td>
+                        <td><%= challans[i].challanNumber %></td>
+                        <td><%= challans[i].total %></td>
+                        <td><%= challans[i].totalAfterTax %></td>
                     </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>1.50 Crizal easy pro</td>
-                        <td>90015000</td>
-                        <td>9</td>
-                        <td>Prs</td>
-                        <td>930.00</td>
-                        <td>8370.00</td>
-                        <td>
-                            502.20
-                            <br />
-                            (6.0%)
-                        </td>
-                        <td>
-                            502.20
-                            <br />
-                            (6.0%)
-                        </td>
-                        <td>9,374.40</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>1.50 Crizal easy pro</td>
-                        <td>90015000</td>
-                        <td>9</td>
-                        <td>Prs</td>
-                        <td>930.00</td>
-                        <td>8370.00</td>
-                        <td>
-                            502.20
-                            <br />
-                            (6.0%)
-                        </td>
-                        <td>
-                            502.20
-                            <br />
-                            (6.0%)
-                        </td>
-                        <td>9,374.40</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>1.50 Crizal easy pro</td>
-                        <td>90015000</td>
-                        <td>9</td>
-                        <td>Prs</td>
-                        <td>930.00</td>
-                        <td>8370.00</td>
-                        <td>
-                            502.20
-                            <br />
-                            (6.0%)
-                        </td>
-                        <td>
-                            502.20
-                            <br />
-                            (6.0%)
-                        </td>
-                        <td>9,374.40</td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>1.50 Crizal easy pro</td>
-                        <td>90015000</td>
-                        <td>9</td>
-                        <td>Prs</td>
-                        <td>930.00</td>
-                        <td>8370.00</td>
-                        <td>
-                            502.20
-                            <br />
-                            (6.0%)
-                        </td>
-                        <td>
-                            502.20
-                            <br />
-                            (6.0%)
-                        </td>
-                        <td>9,374.40</td>
-                    </tr>
-                    <tr class="totalRow">
+                    <% } %>
+
+                    <!-- <tr class="totalRow">
                         <td></td>
                         <td>Total</td>
                         <td></td>
@@ -269,33 +166,17 @@
                         <td>3,841</td>
                         <td>3,841</td>
                         <td>71,702.40</td>
-                    </tr>
+                    </tr> -->
                 </tbody>
             </table>
             <div class="flexContainer">
-                <table class="noBorderTable">
-                    <thead class="purpleBg">
-                        <th>Tax type</th>
-                        <th>Taxable amount</th>
-                        <th>Rate</th>
-                        <th>Tax amount</th>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>CGST</td>
-                            <td>64,020</td>
-                            <td>6.0%</td>
-                            <td>3,841</td>
-                        </tr>
-                        <tr>
-                            <td>CGST</td>
-                            <td>64,020</td>
-                            <td>6.0%</td>
-                            <td>3,841</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table class="noBorderTable">
+                <div style="width: 50vw; flex-direction: column; display: flex">
+                    <p class="purpleBg">Invoice Amount In Words</p>
+                    <p><%= amountInWords %> Rupees Only</p>
+                    <p class="purpleBg">Payment Mode</p>
+                    <p>Credit</p>
+                </div>
+                <table class="noBorderTable" style="width: 50vw">
                     <thead class="purpleBg">
                         <th>Amounts</th>
                         <th></th>
@@ -303,15 +184,30 @@
                     <tbody>
                         <tr>
                             <td>Sub Total</td>
-                            <td>71,702.40</td>
+                            <td><%= totalAfterTax %></td>
                         </tr>
                         <tr class="borderBottom">
                             <td>Round off</td>
-                            <td>-0.40</td>
+                            <td>
+                                <% if (totalAfterTax.toString().split(".")[1] >
+                                50) { %> <%= (100 -
+                                totalAfterTax.toString().split(".")[1]) %> <% }
+                                else { %> <%= (50 -
+                                totalAfterTax.toString().split(".")[1]) %> <% }
+                                %>
+                            </td>
                         </tr>
                         <tr>
                             <td><b>Total</b></td>
-                            <td>71,702.00</td>
+                            <td>
+                                <%= totalAfterTax %> <% if
+                                (totalAfterTax.toString().split(".")[1] > 50) {
+                                %> <%= (100 -
+                                totalAfterTax.toString().split(".")[1]) %> <% }
+                                else { %> <%= (50 -
+                                totalAfterTax.toString().split(".")[1]) %> <% }
+                                %>
+                            </td>
                         </tr>
                         <tr class="borderBottom">
                             <td>Received</td>
@@ -323,17 +219,6 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
-            <div class="flexContainer">
-                <div class="border">
-                    <p class="purpleBg">Invoice Amount In Words</p>
-                    <p>
-                        Seventy One Thousand Seven Hundred and Two Rupees only
-                    </p>
-                    <p class="purpleBg">Payment Mode</p>
-                    <p>Credit</p>
-                </div>
-                <div class="border"></div>
             </div>
             <div class="threePartition">
                 <div class="borderBox">
@@ -350,13 +235,11 @@
                         Account Holder's Name: OPTICAL EXPRESS
                     </p>
                 </div>
-                <div class="qr_image borderBox">
-                    <img src="qr.png" />
-                    <p>UPI</p>
-                </div>
                 <div class="signature borderBox">
-                    <p>For, OPTICAL EXPRESS</p>
-                    <img />
+                    <p>For, <%= user.shopName %></p>
+                    <br />
+                    <br />
+                    <br />
                     <p>Authorised Signatory</p>
                 </div>
             </div>

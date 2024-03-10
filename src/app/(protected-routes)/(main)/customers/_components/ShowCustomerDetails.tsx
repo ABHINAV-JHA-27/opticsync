@@ -229,11 +229,13 @@ const GenerateInvoiceModal = (props: {
             method: "POST",
             body: JSON.stringify({
                 customer: props.customer._id,
-                startDate: new Date(),
-                endDate: new Date(),
+                startDate: startDate,
+                endDate: endDate,
             }),
         });
+
         data = await data.json();
+
         data = (data as any).data;
 
         await html2pdf(data, {
