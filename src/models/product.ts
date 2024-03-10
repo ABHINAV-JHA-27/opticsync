@@ -16,15 +16,21 @@ const ProductSchema = new Schema(
             type: Number,
             required: true,
         },
-        srp: {
-            type: Number,
-            required: true,
-        },
         hsn: {
             type: String,
         },
         index: {
             type: String,
+        },
+        cgst: {
+            type: Number,
+            required: true,
+            default: 6,
+        },
+        sgst: {
+            type: Number,
+            required: true,
+            default: 6,
         },
         user: {
             type: Schema.Types.ObjectId,

@@ -8,6 +8,7 @@ import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import ejs from "ejs";
 import { NextRequest, NextResponse } from "next/server";
 import path from "path";
+import numberToWords from "@/lib/numberToWord";
 
 export async function POST(req: NextRequest) {
     const { isAuthenticated, getUser } = getKindeServerSession();
@@ -69,13 +70,50 @@ export async function POST(req: NextRequest) {
 
     const ejsFilePath = path.resolve("./src/views/challan.ejs");
 
+    console.log({
+        challanNumber: challanData.challanNumber,
+        date: challanData.date.toLocaleDateString(),
+        customer,
+        orders,
+        user,
+        totalBeforeTax: orders.products.wlp,
+        cgst: orders.products.cgst,
+        sgst: orders.products.sgst,
+        totalAfterTax:
+            orders.products.wlp +
+            (orders.products.wlp *
+                (orders.products.cgst + orders.products.sgst)) /
+                100,
+        ref: orders.ref,
+        amountInWords: numberToWords(
+            orders.products.wlp +
+                (orders.products.wlp *
+                    (orders.products.cgst + orders.products.sgst)) /
+                    100
+        ),
+    });
+
     const challanHtml = await ejs.renderFile(ejsFilePath, {
         challanNumber: challanData.challanNumber,
         date: challanData.date.toLocaleDateString(),
         customer,
         orders,
         user,
-        total: orders.products.wlp,
+        totalBeforeTax: orders.products.wlp,
+        cgst: orders.products.cgst,
+        sgst: orders.products.sgst,
+        totalAfterTax:
+            orders.products.wlp +
+            (orders.products.wlp *
+                (orders.products.cgst + orders.products.sgst)) /
+                100,
+        ref: orders.ref,
+        amountInWords: numberToWords(
+            orders.products.wlp +
+                (orders.products.wlp *
+                    (orders.products.cgst + orders.products.sgst)) /
+                    100
+        ),
     });
 
     const prevChallan = await Challan.findOne({ orders: orders._id });

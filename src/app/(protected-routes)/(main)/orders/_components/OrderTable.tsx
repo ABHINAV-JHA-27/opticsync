@@ -156,6 +156,8 @@ const OrderTable = () => {
                                                     "Pending",
                                                     "Ordered",
                                                     "Delivered",
+                                                    "Cancelled",
+                                                    "Received",
                                                 ]}
                                                 value={
                                                     item.status

@@ -64,3 +64,5 @@ function inWords(num) {
             : "";
     return str;
 }
+
+export default inWords;

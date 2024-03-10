@@ -55,16 +55,6 @@ const OrderSchema = new Schema(
         ref: {
             type: String,
         },
-        cgst: {
-            type: Number,
-            required: true,
-            default: 6,
-        },
-        sgst: {
-            type: Number,
-            required: true,
-            default: 6,
-        },
     },
     {
         timestamps: true,

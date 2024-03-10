@@ -17,7 +17,7 @@ type SelectProps = {
 const Select = (props: SelectProps) => {
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger>
+            <DropdownMenuTrigger className="outline-none">
                 <div
                     className={`rounded-[20px] p-[6px] px-[15px] border-[2px] border-[#EFEFF3] text-[14px] font-[500] font-DMSans  bg-[#FFFFFF] outline-none flex flex-row items-center gap-x-3 ${
                         props.classname ? props.classname : ""
@@ -34,9 +34,11 @@ const Select = (props: SelectProps) => {
             <DropdownMenuContent>
                 {props.data.map((item) => (
                     <DropdownMenuItem
-                        onClick={() => {
+                        onClick={(e) => {
+                            e.stopPropagation();
                             props.onChange(item);
                         }}
+                        className="outline-none"
                     >
                         {item}
                     </DropdownMenuItem>
