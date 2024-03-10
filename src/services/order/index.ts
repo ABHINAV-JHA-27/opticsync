@@ -22,7 +22,8 @@ export const changeOrderStatus = async (data: any) => {
             },
             body: JSON.stringify({ status: data.status.toLowerCase() }),
         });
-        return response.json();
+        const resp = await response.json();
+        return resp;
     } catch (error) {
         return error;
     }
@@ -37,7 +38,8 @@ export const createOrder = async (data: any) => {
             },
             body: JSON.stringify(data),
         });
-        return response.json();
+        const resp = await response.json();
+        return resp;
     } catch (error) {
         return error;
     }
@@ -52,7 +54,8 @@ export const updateOrder = async (data: any) => {
             },
             body: JSON.stringify(data.value),
         });
-        return response.json();
+        const resp = await response.json();
+        return resp;
     } catch (error) {
         return error;
     }
@@ -63,7 +66,8 @@ export const deleteOrder = async (id: string) => {
         const response = await fetch(`/api/orders/${id}`, {
             method: "DELETE",
         });
-        return response.json();
+        const resp = await response.json();
+        return resp;
     } catch (error) {
         return error;
     }

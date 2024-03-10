@@ -66,11 +66,13 @@ const AddUpdateProductModal = (props: AddProductModalProps) => {
         if (props.data) {
             update({
                 id: props.data?._id,
-                name: productName,
-                company: productCompany,
-                srp: productSrp,
-                wlp: productWlp,
-                hsn: productHSN,
+                value: {
+                    name: productName,
+                    company: productCompany,
+                    srp: productSrp,
+                    wlp: productWlp,
+                    hsn: productHSN,
+                },
             });
         } else {
             create({

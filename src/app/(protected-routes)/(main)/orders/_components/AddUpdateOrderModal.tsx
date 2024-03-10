@@ -90,7 +90,7 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
         if (props.data) {
             update({
                 id: props.data?._id,
-                ...data,
+                value: { ...data },
             });
         } else {
             create(data);
