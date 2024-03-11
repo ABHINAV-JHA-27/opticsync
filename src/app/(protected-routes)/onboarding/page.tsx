@@ -73,213 +73,205 @@ export default function Page() {
     return (
         <div className="h-screen w-full p-[18px] bg-[#0A0A0A]">
             <div className="bg-[#ffffff] w-full h-full rounded-2xl p-[20px] border-[2px] border-[#EFEFF3]">
-                <div className="flex flex-row items-center gap-x-3 w-full">
-                    <div className="w-1/2">
-                        <span className="text-[#0F1035] text-lg font-bold">
-                            Name
-                        </span>
-                        <Input
-                            placeholder="Enter your name"
-                            className="bg-white"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                        />
-                    </div>
-                    <div className="w-1/2">
-                        <span className="text-[#0F1035] text-lg font-bold">
-                            Shop Name
-                        </span>
-                        <Input
-                            placeholder="Enter your name"
-                            className="bg-white"
-                            value={shopName}
-                            onChange={(e) => setShopName(e.target.value)}
-                        />
-                    </div>
-                </div>
-                <div className="flex flex-row items-center gap-x-3 w-full">
-                    <div className="w-1/2">
-                        <span className="text-[#0F1035] text-lg font-bold">
-                            Address Line 1
-                        </span>
-                        <Input
-                            placeholder="Enter your name"
-                            className="bg-white"
-                            value={addressLine1}
-                            onChange={(e) => setAddressLine1(e.target.value)}
-                        />
-                        <span className="text-[#0F1035] text-lg font-bold">
-                            Address Line 2
-                        </span>
-                        <Input
-                            placeholder="Enter your name"
-                            className="bg-white"
-                            value={addressLine2}
-                            onChange={(e) => setAddressLine2(e.target.value)}
-                        />
-                    </div>
-                    <div className="w-1/2">
-                        <div className="flex flex-row items-center gap-x-3 w-full">
-                            <div className="w-1/2">
-                                <span className="text-[#0F1035] text-lg font-bold">
-                                    City
-                                </span>
-                                <Input
-                                    placeholder="Enter your name"
-                                    className="bg-white"
-                                    value={city}
-                                    onChange={(e) => setCity(e.target.value)}
-                                />
-                            </div>{" "}
-                            <div className="w-1/2">
-                                <span className="text-[#0F1035] text-lg font-bold">
-                                    State
-                                </span>
-                                <Input
-                                    placeholder="Enter your name"
-                                    className="bg-white"
-                                    value={state}
-                                    onChange={(e) => setState(e.target.value)}
-                                />
-                            </div>
+                <div className="h-[100%] p-4 mt- w-full">
+                    <div className="w-full flex flex-row gap-x-2">
+                        <div className="w-1/2">
+                            <span className="text-l font-[500]">Name</span>
+                            <input
+                                type="text"
+                                className="w-full p-2 border border-gray-300 rounded-md"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                            />
                         </div>
-                        <div className="flex flex-row items-center gap-x-3 w-full">
-                            <div className="w-1/2">
-                                <span className="text-[#0F1035] text-lg font-bold">
-                                    Pincode
-                                </span>
-                                <Input
-                                    placeholder="Enter your name"
-                                    className="bg-white"
-                                    value={pincode}
-                                    onChange={(e) => setPincode(e.target.value)}
-                                />
-                            </div>
-                            <div className="w-1/2">
-                                <span className="text-[#0F1035] text-lg font-bold">
-                                    Gst Number
-                                </span>
-                                <Input
-                                    placeholder="Enter your name"
-                                    className="bg-white"
-                                    value={gstNumber}
-                                    onChange={(e) =>
-                                        setGstNumber(e.target.value)
-                                    }
-                                />
-                            </div>
+                        <div className="w-1/2">
+                            <span className="text-l font-[500]">Shop Name</span>
+                            <input
+                                type="text"
+                                className="w-full p-2 border border-gray-300 rounded-md"
+                                value={shopName}
+                                onChange={(e) => setShopName(e.target.value)}
+                            />
                         </div>
                     </div>
-                </div>
-                <div className="flex flex-row items-center gap-x-3 w-full">
-                    <div className="w-1/2">
-                        <span className="text-[#0F1035] text-lg font-bold">
-                            Mobile Number
-                        </span>
-                        <Input
-                            placeholder="Enter your name"
-                            className="bg-white"
-                            value={phone}
-                            onChange={(e) => setphone(e.target.value)}
-                        />
+                    <div className="w-full flex flex-row gap-x-2 mt-2">
+                        <div className="w-1/2">
+                            <span className="text-l font-[500]">
+                                Address Line 1
+                            </span>
+                            <input
+                                type="text"
+                                className="w-full p-2 border border-gray-300 rounded-md"
+                                value={addressLine1}
+                                onChange={(e) =>
+                                    setAddressLine1(e.target.value)
+                                }
+                            />
+                        </div>
+                        <div className="w-1/2">
+                            <span className="text-l font-[500]">
+                                Address Line 1
+                            </span>
+                            <input
+                                type="text"
+                                className="w-full p-2 border border-gray-300 rounded-md"
+                                value={addressLine2}
+                                onChange={(e) =>
+                                    setAddressLine2(e.target.value)
+                                }
+                            />
+                        </div>
                     </div>
-                    <div className="w-1/2">
-                        <span className="text-[#0F1035] text-lg font-bold">
-                            Alternate Mobile Number
-                        </span>
-                        <Input
-                            placeholder="Enter your name"
-                            className="bg-white"
-                            value={alternatePhone}
-                            onChange={(e) => setAlternatePhone(e.target.value)}
-                        />
+                    <div className="w-full flex flex-row gap-x-2 mt-2">
+                        <div className="w-1/3">
+                            <span className="text-l font-[500]">City</span>
+                            <input
+                                type="text"
+                                className="w-full p-2 border border-gray-300 rounded-md"
+                                value={city}
+                                onChange={(e) => setCity(e.target.value)}
+                            />
+                        </div>
+                        <div className="w-1/3">
+                            <span className="text-l font-[500]">State</span>
+                            <input
+                                type="text"
+                                className="w-full p-2 border border-gray-300 rounded-md"
+                                value={state}
+                                onChange={(e) => setState(e.target.value)}
+                            />
+                        </div>
+                        <div className="w-1/3">
+                            <span className="text-l font-[500]">Pincode</span>
+                            <input
+                                type="text"
+                                className="w-full p-2 border border-gray-300 rounded-md"
+                                value={pincode}
+                                onChange={(e) => setPincode(e.target.value)}
+                            />
+                        </div>
                     </div>
-                </div>
-                <div className="w-1/2">
-                    <span className="text-[#0F1035] text-lg font-bold">
-                        Email
-                    </span>
-                    <Input
-                        placeholder="Enter your name"
-                        className="bg-white"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                </div>
-                <div className="flex flex-row items-center gap-x-3 w-full">
-                    <div className="w-1/2">
-                        <span className="text-[#0F1035] text-lg font-bold">
-                            Bank Account
-                        </span>
-                        <Input
-                            placeholder="Enter your name"
-                            className="bg-white"
-                            value={bankAccount}
-                            onChange={(e) => setBankAccount(e.target.value)}
-                        />
+                    <div className="w-full flex flex-row gap-x-2 mt-2">
+                        <div className="w-1/2">
+                            <span className="text-l font-[500]">
+                                GST Number
+                            </span>
+                            <input
+                                type="text"
+                                className="w-full p-2 border border-gray-300 rounded-md"
+                                value={gstNumber}
+                                onChange={(e) => setGstNumber(e.target.value)}
+                            />
+                        </div>
+                        <div className="w-1/2">
+                            <span className="text-l font-[500]">
+                                Email Address
+                            </span>
+                            <input
+                                type="text"
+                                className="w-full p-2 border border-gray-300 rounded-md"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                        </div>
                     </div>
-                    <div className="w-1/2">
-                        <span className="text-[#0F1035] text-lg font-bold">
-                            Ifsc Code
-                        </span>
-                        <Input
-                            placeholder="Enter your name"
-                            className="bg-white"
-                            value={ifscCode}
-                            onChange={(e) => setIfscCode(e.target.value)}
-                        />
+                    <div className="w-full flex flex-row gap-x-2 mt-2">
+                        <div className="w-1/2">
+                            <span className="text-l font-[500]">
+                                Phone Number
+                            </span>
+                            <input
+                                type="text"
+                                className="w-full p-2 border border-gray-300 rounded-md"
+                                value={phone}
+                                onChange={(e) => setphone(e.target.value)}
+                            />
+                        </div>
+                        <div className="w-1/2">
+                            <span className="text-l font-[500]">
+                                Alternate Phone Number
+                            </span>
+                            <input
+                                type="text"
+                                className="w-full p-2 border border-gray-300 rounded-md"
+                                value={alternatePhone}
+                                onChange={(e) =>
+                                    setAlternatePhone(e.target.value)
+                                }
+                            />
+                        </div>
                     </div>
-                </div>
-                <div className="flex flex-row items-center gap-x-3 w-full">
-                    <div className="w-1/2">
-                        <span className="text-[#0F1035] text-lg font-bold">
-                            Branch
-                        </span>
-                        <Input
-                            placeholder="Enter your name"
-                            className="bg-white"
-                            value={branch}
-                            onChange={(e) => setBranch(e.target.value)}
-                        />
+                    <div className="w-full flex flex-row gap-x-2 mt-2">
+                        <div className="w-1/2">
+                            <span className="text-l font-[500]">Bank Name</span>
+                            <input
+                                type="text"
+                                className="w-full p-2 border border-gray-300 rounded-md"
+                                value={bankName}
+                                onChange={(e) => setBankName(e.target.value)}
+                            />
+                        </div>
+                        <div className="w-1/2">
+                            <span className="text-l font-[500]">
+                                Bank Account Holder Name
+                            </span>
+                            <input
+                                type="text"
+                                className="w-full p-2 border border-gray-300 rounded-md"
+                                value={accountHolderName}
+                                onChange={(e) =>
+                                    setAccountHolderName(e.target.value)
+                                }
+                            />
+                        </div>
                     </div>
-                    <div className="w-1/2">
-                        <span className="text-[#0F1035] text-lg font-bold">
-                            Account Holder Name
-                        </span>
-                        <Input
-                            placeholder="Enter your name"
-                            className="bg-white"
-                            value={accountHolderName}
-                            onChange={(e) =>
-                                setAccountHolderName(e.target.value)
-                            }
-                        />
+                    <div className="w-full flex flex-row gap-x-2 mt-2">
+                        <div className="w-1/3">
+                            <span className="text-l font-[500]">
+                                Bank Account Number
+                            </span>
+                            <input
+                                type="text"
+                                className="w-full p-2 border border-gray-300 rounded-md"
+                                value={bankAccount}
+                                onChange={(e) => setBankAccount(e.target.value)}
+                            />
+                        </div>
+                        <div className="w-1/3">
+                            <span className="text-l font-[500]">
+                                Bank Branch
+                            </span>
+                            <input
+                                type="text"
+                                className="w-full p-2 border border-gray-300 rounded-md"
+                                value={branch}
+                                onChange={(e) => setBranch(e.target.value)}
+                            />
+                        </div>
+                        <div className="w-1/3">
+                            <span className="text-l font-[500]">IFSC Code</span>
+                            <input
+                                type="text"
+                                className="w-full p-2 border border-gray-300 rounded-md"
+                                value={ifscCode}
+                                onChange={(e) => setIfscCode(e.target.value)}
+                            />
+                        </div>
                     </div>
-                </div>
-                <div className="w-1/2">
-                    <span className="text-[#0F1035] text-lg font-bold">
-                        Bank Name
-                    </span>
-                    <Input
-                        placeholder="Enter your name"
-                        className="bg-white"
-                        value={bankName}
-                        onChange={(e) => setBankName(e.target.value)}
-                    />
-                </div>
-                <div className="w-full mt-4 flex justify-end">
-                    <button
-                        className="bg-primary text-white px-4 py-2 rounded-md"
-                        onClick={handleOnboard}
-                    >
-                        {isPending ? (
-                            <div className="flex items-center justify-center">
-                                <Loader heavy />
-                            </div>
-                        ) : (
-                            "Onboard"
-                        )}
-                    </button>
+                    <div className="w-full flex justify-end mt-4">
+                        <button
+                            className="bg-primary text-white px-4 py-2 rounded-md"
+                            onClick={handleOnboard}
+                        >
+                            {isPending ? (
+                                <div className="flex items-center justify-center">
+                                    <Loader heavy />
+                                </div>
+                            ) : (
+                                "Onboard"
+                            )}
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
