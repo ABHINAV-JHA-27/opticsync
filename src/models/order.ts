@@ -13,10 +13,6 @@ const OrderSchema = new Schema(
             },
             axis: { type: String },
             add: { type: String },
-            isPresent: {
-                type: Boolean,
-                default: true,
-            },
         },
         l: {
             sph: {
@@ -27,10 +23,11 @@ const OrderSchema = new Schema(
             },
             axis: { type: String },
             add: { type: String },
-            isPresent: {
-                type: Boolean,
-                default: true,
-            },
+        },
+        quantity: {
+            type: Number,
+            enum: [1, 2],
+            required: true,
         },
         type: {
             type: String,
