@@ -79,7 +79,14 @@ export async function GET(req: NextRequest) {
 
     await dbConnection();
 
-    const payments = await Payment.find();
+    const payments = await Payment.find({});
+
+    if (!payments) {
+        return NextResponse.json({
+            status: 404,
+            message: "Payments not found",
+        });
+    }
 
     return NextResponse.json({
         status: 200,

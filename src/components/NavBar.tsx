@@ -31,6 +31,16 @@ const NavBar = () => {
                     Stocks
                 </span>
             )}
+            {pathname === "/profile" && (
+                <span className="text-[36px] font-[600] leading-none">
+                    Profile
+                </span>
+            )}
+            {pathname === "/payment" && (
+                <span className="text-[36px] font-[600] leading-none">
+                    Payments
+                </span>
+            )}
         </div>
     );
 };
