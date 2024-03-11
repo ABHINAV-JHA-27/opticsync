@@ -83,6 +83,7 @@ const ProductTable = () => {
                         <TableHeader>
                             <TableRow>
                                 <TableHead>HSN</TableHead>
+                                <TableHead>Index</TableHead>
                                 <TableHead>Name</TableHead>
                                 <TableHead>Company</TableHead>
                                 <TableHead>Price</TableHead>
@@ -94,6 +95,7 @@ const ProductTable = () => {
                             {productsData.map((item: any) => (
                                 <TableRow>
                                     <TableCell>{item.hsn || "N/A"}</TableCell>
+                                    <TableCell>{item.index || "-"}</TableCell>
                                     <TableCell>{item.name}</TableCell>
                                     <TableCell>{item.company}</TableCell>
                                     <TableCell>{item.price}</TableCell>

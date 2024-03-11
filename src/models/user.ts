@@ -64,6 +64,10 @@ const UserSchema = new Schema({
         type: String,
         required: true,
     },
+    challanNumber: {
+        type: String,
+        default: "1",
+    },
     kindeUserId: {
         type: String,
     },

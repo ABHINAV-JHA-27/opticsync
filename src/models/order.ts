@@ -13,6 +13,10 @@ const OrderSchema = new Schema(
             },
             axis: { type: String },
             add: { type: String },
+            isPresent: {
+                type: Boolean,
+                default: true,
+            },
         },
         l: {
             sph: {
@@ -23,10 +27,14 @@ const OrderSchema = new Schema(
             },
             axis: { type: String },
             add: { type: String },
+            isPresent: {
+                type: Boolean,
+                default: true,
+            },
         },
         type: {
             type: String,
-            enum: ["stock", "rx", "fitting"],
+            enum: ["stock", "rx"],
             required: true,
         },
         status: {
@@ -58,6 +66,16 @@ const OrderSchema = new Schema(
         },
         ref: {
             type: String,
+        },
+        additional: {
+            service: {
+                type: String,
+                enum: ["fitting"],
+            },
+            serviceId: {
+                type: Schema.Types.ObjectId,
+                ref: "Product",
+            },
         },
     },
     {
