@@ -73,9 +73,9 @@ export async function POST(req: NextRequest) {
 
     const customer = await Customer.findById(data.customer);
     const product = await Product.findById(data.products);
-    // const price = product?.price *
-    // const productCost = product?.price * data.quantity;
-    customer.currentBalance = customer?.currentBalance + product?.price;
+    const price = (product?.price * data.quantity) / 2;
+    const productCost = price + ((product?.sgst + product?.cgst) * price) / 100;
+    customer.currentBalance = customer?.currentBalance + productCost;
 
     const order = new Order({
         ...data,

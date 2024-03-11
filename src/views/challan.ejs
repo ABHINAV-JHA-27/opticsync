@@ -80,7 +80,7 @@
                     <p>GST No : <%= user.gstNumber %></p>
                 </div>
                 <div class="container-section">
-                    <b>Cust: <%= customer.shopName %></b>
+                    <b><%= customer.shopName %></b>
                     <p>
                         <%= customer.addressLine1 %>
                         <br />
@@ -96,7 +96,12 @@
                 </div>
             </div>
             <br />
-            <p>Ref : <%= ref %></p>
+            <div style="display: flex; align-items: center; width: 100%">
+                <p style="width: 50%"><b>Ref</b>&nbsp;:&nbsp;<%= ref %></p>
+                <p style="width: 50%">
+                    <b>Product Name</b>&nbsp;:&nbsp;<%= orders.products.name %>
+                </p>
+            </div>
             <table>
                 <thead>
                     <tr>
@@ -127,6 +132,7 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <% if (orders.quantity == 2) { %>
                     <tr>
                         <td><%= 1 %></td>
                         <td><%= orders.products.hsn %></td>
@@ -135,11 +141,15 @@
                         <td><%= orders.r.axis %></td>
                         <td><%= orders.r.add %></td>
                         <td><%= 1 %></td>
-                        <td><%= totalBeforeTax / 4 %></td>
+                        <td><%= totalBeforeTax / 2 %></td>
                         <td><%= cgst %></td>
-                        <td><%= totalAfterTax / 4 %></td>
+                        <td>
+                            <%= (totalBeforeTax * orders.products.cgst) / 200 %>
+                        </td>
                         <td><%= sgst %></td>
-                        <td><%= totalAfterTax / 4 %></td>
+                        <td>
+                            <%= (totalBeforeTax * orders.products.sgst) / 200 %>
+                        </td>
                     </tr>
                     <tr>
                         <td>2</td>
@@ -149,19 +159,29 @@
                         <td><%= orders.l.axis %></td>
                         <td><%= orders.l.add %></td>
                         <td><%= 1 %></td>
-                        <td><%= totalBeforeTax / 4 %></td>
+                        <td><%= totalBeforeTax / 2 %></td>
                         <td><%= cgst %></td>
-                        <td><%=totalAfterTax / 4 %></td>
+                        <td>
+                            <%= (totalBeforeTax * orders.products.cgst) / 200 %>
+                        </td>
                         <td><%= sgst %></td>
-                        <td><%= totalAfterTax / 4 %></td>
+                        <td>
+                            <%= (totalBeforeTax * orders.products.sgst) / 200 %>
+                        </td>
                     </tr>
-
                     <tr class="line_total">
                         <td colspan="1"></td>
                         <td colspan="5">Line Total</td>
-                        <td colspan="3">2</td>
-                        <td colspan="2"><%= totalAfterTax / 2 %></td>
-                        <td><%= totalAfterTax / 2 %></td>
+                        <td><%= orders.quantity %></td>
+                        <td colspan="2"><%= totalBeforeTax %></td>
+                        <td colspan="2">
+                            <%= ((totalBeforeTax * orders.products.cgst) / 200)
+                            * orders.quantity %>
+                        </td>
+                        <td>
+                            <%= ((totalBeforeTax * orders.products.sgst) / 200)
+                            * orders.quantity %>
+                        </td>
                     </tr>
                     <tr>
                         <td></td>
@@ -169,6 +189,87 @@
                         <td colspan="2">DC Total</td>
                         <td><%= totalAfterTax %></td>
                     </tr>
+                    <% } %> <% if (orders.quantity == 1 && orders.r.sph ===
+                    "0.00" && orders.r.cyl === "0.00") { %>
+                    <tr>
+                        <td>1</td>
+                        <td><%= orders.products.hsn %></td>
+                        <td><%= orders.l.sph %></td>
+                        <td><%= orders.l.cyl %></td>
+                        <td><%= orders.l.axis %></td>
+                        <td><%= orders.l.add %></td>
+                        <td><%= 1 %></td>
+                        <td><%= totalBeforeTax %></td>
+                        <td><%= cgst %></td>
+                        <td>
+                            <%= (totalBeforeTax * orders.products.cgst) / 100 %>
+                        </td>
+                        <td><%= sgst %></td>
+                        <td>
+                            <%= (totalBeforeTax * orders.products.sgst) / 100 %>
+                        </td>
+                    </tr>
+                    <tr class="line_total">
+                        <td colspan="1"></td>
+                        <td colspan="5">Line Total</td>
+                        <td><%= orders.quantity %></td>
+                        <td colspan="2"><%= totalBeforeTax %></td>
+                        <td colspan="2">
+                            <%= ((totalBeforeTax * orders.products.cgst) / 100)
+                            * orders.quantity %>
+                        </td>
+                        <td>
+                            <%= ((totalBeforeTax * orders.products.sgst) / 100)
+                            * orders.quantity %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td colspan="10"><%= amountInWords %> Rupees Only</td>
+                        <td colspan="2">DC Total</td>
+                        <td><%= totalAfterTax %></td>
+                    </tr>
+                    <% } %> <% if (orders.quantity == 1 && orders.l.sph ===
+                    "0.00" && orders.l.cyl === "0.00") { %>
+                    <tr>
+                        <td><%= 1 %></td>
+                        <td><%= orders.products.hsn %></td>
+                        <td><%= orders.r.sph %></td>
+                        <td><%= orders.r.cyl %></td>
+                        <td><%= orders.r.axis %></td>
+                        <td><%= orders.r.add %></td>
+                        <td><%= 1 %></td>
+                        <td><%= totalBeforeTax %></td>
+                        <td><%= cgst %></td>
+                        <td>
+                            <%= (totalBeforeTax * orders.products.cgst) / 100 %>
+                        </td>
+                        <td><%= sgst %></td>
+                        <td>
+                            <%= (totalBeforeTax * orders.products.sgst) / 100 %>
+                        </td>
+                    </tr>
+                    <tr class="line_total">
+                        <td colspan="1"></td>
+                        <td colspan="5">Line Total</td>
+                        <td><%= orders.quantity %></td>
+                        <td colspan="2"><%= totalBeforeTax %></td>
+                        <td colspan="2">
+                            <%= ((totalBeforeTax * orders.products.cgst) / 100)
+                            * orders.quantity %>
+                        </td>
+                        <td>
+                            <%= ((totalBeforeTax * orders.products.sgst) / 100)
+                            * orders.quantity %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td colspan="10"><%= amountInWords %> Rupees Only</td>
+                        <td colspan="2">DC Total</td>
+                        <td><%= totalAfterTax %></td>
+                    </tr>
+                    <% } %>
                 </tbody>
             </table>
             <div class="footer">

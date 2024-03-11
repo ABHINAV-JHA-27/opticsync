@@ -62,6 +62,13 @@ function inWords(num) {
               (a[Number(n[5])] || b[n[5][0]] + " " + a[n[5][1]]) +
               "only "
             : "";
+
+    let strArr = str.split(" ");
+    strArr = strArr.map((val) => {
+        return val.charAt(0).toUpperCase() + val.slice(1);
+    });
+    str = strArr.join(" ");
+
     return str;
 }
 

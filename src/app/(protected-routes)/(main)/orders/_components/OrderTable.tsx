@@ -5,7 +5,6 @@ import Select from "@/components/Select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import html2pdf from "html2pdf.js";
 import {
     Table,
     TableBody,
@@ -18,6 +17,7 @@ import { getCustomers } from "@/services/customer";
 import { changeOrderStatus, deleteOrder, getOrder } from "@/services/order";
 import { getProducts } from "@/services/product";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import html2pdf from "html2pdf.js";
 import Lottie from "lottie-react";
 import { useState } from "react";
 import AddUpdateOrderModal from "./AddUpdateOrderModal";
@@ -83,6 +83,7 @@ const OrderTable = () => {
         });
         data = await data.json();
         data = (data as any).data;
+
         await html2pdf(data, {
             margin: 10,
             filename: "challan.pdf",
@@ -141,12 +142,26 @@ const OrderTable = () => {
                         <TableBody>
                             {orderData
                                 .filter((order: any) => {
-                                    // if (
-                                    //     order.name
-                                    //         .toLowerCase()
-                                    //         .includes(search.toLowerCase())
-                                    // ) {
-                                    // }
+                                    if (
+                                        customersData
+                                            ?.find(
+                                                (cust: any) =>
+                                                    cust?._id === order.customer
+                                            )
+                                            ?.shopName.toLowerCase()
+                                            .includes(search.toLowerCase()) ||
+                                        productsData
+                                            ?.find(
+                                                (pr: any) =>
+                                                    pr?._id === order.products
+                                            )
+                                            ?.name.toLowerCase()
+                                            .includes(search.toLowerCase()) ||
+                                        order.note
+                                            .toLowerCase()
+                                            .includes(search.toLowerCase())
+                                    ) {
+                                    }
                                     return order;
                                 })
                                 .map((item: any) => (
@@ -197,7 +212,7 @@ const OrderTable = () => {
                                                 )?.shopName
                                             }
                                         </TableCell>
-                                        <TableCell>{item.srp}</TableCell>
+                                        <TableCell>{item.note}</TableCell>
                                         <TableCell>
                                             <div className="flex flex-row items-center gap-x-4">
                                                 <Button

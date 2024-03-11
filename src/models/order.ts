@@ -7,9 +7,11 @@ const OrderSchema = new Schema(
         r: {
             sph: {
                 type: String,
+                default: "0.00",
             },
             cyl: {
                 type: String,
+                default: "0.00",
             },
             axis: { type: String },
             add: { type: String },
@@ -17,9 +19,11 @@ const OrderSchema = new Schema(
         l: {
             sph: {
                 type: String,
+                default: "0.00",
             },
             cyl: {
                 type: String,
+                default: "0.00",
             },
             axis: { type: String },
             add: { type: String },

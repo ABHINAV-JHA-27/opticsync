@@ -33,6 +33,15 @@ export async function POST(req: NextRequest) {
         });
     }
 
+    let invNumber = user.invoiceNumber;
+    const currentDate = new Date();
+    if (currentDate.getMonth() === 3 && currentDate.getDate() === 1) {
+        if (user.lastAprilInvoiceNumber == 1) {
+            user.lastAprilInvoiceNumber += 1;
+            invNumber = 1;
+        }
+    }
+
     const data = await req.json();
 
     if (!data) {
@@ -72,10 +81,7 @@ export async function POST(req: NextRequest) {
         user: user,
         date: new Date().toLocaleDateString(),
         total: challans.reduce((acc, curr) => acc + curr.total, 0).toFixed(2),
-        invoiceNumber: RandomInvoiceNumber(
-            user.shopName,
-            challans[0]?.customer.name
-        ),
+        invoiceNumber: RandomInvoiceNumber(user.shopName, invNumber),
         amountInWords: numberToWords(
             challans.reduce((acc, curr) => acc + curr.totalAfterTax, 0)
         ),
@@ -86,6 +92,9 @@ export async function POST(req: NextRequest) {
             .reduce((acc, curr) => acc + curr.amount, 0)
             .toFixed(2),
     });
+
+    // user.invoiceNumber += 1;
+    // await user.save();
 
     return NextResponse.json({
         data: invoiceHtml,

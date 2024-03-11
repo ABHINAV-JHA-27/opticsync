@@ -29,6 +29,7 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
                 queryKey: ["orders"],
             });
             props.onClose();
+            reset();
         },
         onError: (error) => {
             console.log(error);
@@ -43,6 +44,7 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
                 queryKey: ["orders"],
             });
             props.onClose();
+            reset();
         },
         onError: (error) => {
             console.log(error);
@@ -75,7 +77,7 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
     });
 
     const handleOrderSave = async () => {
-        let data = {
+        let data: any = {
             r: {
                 sph: rSph,
                 cyl: rCyl,
@@ -97,7 +99,24 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
             note: note,
             ref: ref,
             type: type.toLowerCase(),
+            quantity: 2,
         };
+
+        if (rSph === "" && rCyl === "") {
+            let { r, ...rest } = data;
+            data = {
+                ...rest,
+                quantity: 1,
+            };
+        }
+
+        if (lSph === "" && lCyl === "") {
+            let { l, ...rest } = data;
+            data = {
+                ...rest,
+                quantity: 1,
+            };
+        }
 
         if (props.data) {
             update({
@@ -107,7 +126,6 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
         } else {
             create(data);
         }
-        reset();
     };
 
     const reset = () => {
@@ -179,7 +197,7 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
                     <div className="w-1/2">
                         <span className="text-xs font-bold">Type</span>
                         <DropDown
-                            data={["Stock", "Rx", "Fitting"]}
+                            data={["Stock", "Rx"]}
                             value={type}
                             onChange={(e: string) => {
                                 setType(e);
@@ -267,11 +285,13 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
                             <span className="text-xs font-bold">Product</span>
                             <DropDown
                                 data={productsData?.map(
-                                    (product: any) => product.name
+                                    (product: any) =>
+                                        product.name + " : " + product.company
                                 )}
                                 value={product}
                                 onChange={(e: string) => {
-                                    setProduct(e);
+                                    let val = e.split(" : ")[0];
+                                    setProduct(val);
                                 }}
                                 placeholder="Select Product"
                             />

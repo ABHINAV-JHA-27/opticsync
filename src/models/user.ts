@@ -65,8 +65,20 @@ const UserSchema = new Schema({
         required: true,
     },
     challanNumber: {
-        type: String,
-        default: "1",
+        type: Number,
+        default: 1,
+    },
+    lastAprilChallanNumber: {
+        type: Number,
+        default: 1,
+    },
+    invoiceNumber: {
+        type: Number,
+        default: 1,
+    },
+    lastAprilInvoiceNumber: {
+        type: Number,
+        default: 1,
     },
     kindeUserId: {
         type: String,

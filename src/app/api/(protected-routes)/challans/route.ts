@@ -42,6 +42,15 @@ export async function POST(req: NextRequest) {
         });
     }
 
+    let chNumber = user.challanNumber;
+    const currentDate = new Date();
+    if (currentDate.getMonth() === 3 && currentDate.getDate() === 1) {
+        if (user.lastAprilChallanNumber == 1) {
+            user.lastAprilChallanNumber += 1;
+            chNumber = 1;
+        }
+    }
+
     const orders = await Order.findById(data.orderID).populate("products");
 
     if (!orders) {
@@ -59,41 +68,38 @@ export async function POST(req: NextRequest) {
         });
     }
 
+    const ejsFilePath = path.resolve("./src/views/challan.ejs");
+
+    const beforeTax = (orders.products.price * orders.quantity) / 2;
+
     const challanData = {
         user: user._id,
         orders: orders,
-        total: orders.products.price,
+        total: beforeTax,
         customer: customer,
         date: new Date(),
-        challanNumber: RandomChallanNumber(user.shopName, customer.name),
+        challanNumber: RandomChallanNumber(user.shopName, chNumber),
         totalAfterTax:
-            orders.products.price +
-            (orders.products.price *
-                (orders.products.cgst + orders.products.sgst)) /
-                100,
+            beforeTax +
+            (beforeTax * (orders.products.cgst + orders.products.sgst)) / 100,
     };
-
-    const ejsFilePath = path.resolve("./src/views/challan.ejs");
 
     const challanHtml = await ejs.renderFile(ejsFilePath, {
         challanNumber: challanData.challanNumber,
-        date: challanData.date.toLocaleDateString(),
+        date: new Date().toLocaleDateString(),
         customer,
         orders,
         user,
-        totalBeforeTax: orders.products.price,
+        totalBeforeTax: beforeTax,
         cgst: orders.products.cgst,
         sgst: orders.products.sgst,
         totalAfterTax:
-            orders.products.price +
-            (orders.products.price *
-                (orders.products.cgst + orders.products.sgst)) /
-                100,
+            beforeTax +
+            (beforeTax * (orders.products.cgst + orders.products.sgst)) / 100,
         ref: orders.ref,
         amountInWords: numberToWords(
-            orders.products.price +
-                (orders.products.price *
-                    (orders.products.cgst + orders.products.sgst)) /
+            beforeTax +
+                (beforeTax * (orders.products.cgst + orders.products.sgst)) /
                     100
         ),
     });
@@ -109,6 +115,9 @@ export async function POST(req: NextRequest) {
 
     const challan = new Challan(challanData);
     await challan.save();
+
+    user.challanNumber = chNumber + 1;
+    await user.save();
 
     orders.status = "delivered";
     await orders.save();

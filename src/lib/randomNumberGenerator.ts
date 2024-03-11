@@ -1,36 +1,37 @@
-import { v4 as uuidv4 } from "uuid";
+export const RandomChallanNumber = (user: string, challanNo: number) => {
+    let fiscalyear = "";
+    let today = new Date();
+    if (today.getMonth() + 1 <= 3) {
+        fiscalyear = today.getFullYear() - 1 + "-" + today.getFullYear();
+    } else {
+        fiscalyear = today.getFullYear() + "-" + (today.getFullYear() + 1);
+    }
 
-export const RandomChallanNumber = (user: string, customer: string) => {
     const user_initials = user
         .split(" ")
         .map((name) => name[0])
         .join("")
         .toUpperCase();
-    const customer_initials = customer
-        .split(" ")
-        .map((name) => name[0])
-        .join("")
-        .toUpperCase();
-    const uuid = uuidv4();
-    let challanNumber = uuid.replace(/-/g, "").substring(0, 8);
-    challanNumber = `${user_initials}/CH/${customer_initials}/${challanNumber}`;
+
+    let challanNumber = `${user_initials}/CH/${fiscalyear}/${challanNo}`;
     return challanNumber;
 };
 
-export const RandomInvoiceNumber = (user: string, customer: string) => {
+export const RandomInvoiceNumber = (user: string, invNo: number) => {
+    let fiscalyear = "";
+    let today = new Date();
+    if (today.getMonth() + 1 <= 3) {
+        fiscalyear = today.getFullYear() - 1 + "-" + today.getFullYear();
+    } else {
+        fiscalyear = today.getFullYear() + "-" + (today.getFullYear() + 1);
+    }
+
     const user_initials = user
         .split(" ")
         .map((name) => name[0])
         .join("")
         .toUpperCase();
-    const customer_initials = customer
-        .split(" ")
-        .map((name) => name[0])
-        .join("")
-        .toUpperCase();
 
-    const uuid = uuidv4();
-    let invoiceNumber = uuid.replace(/-/g, "").substring(0, 8);
-    invoiceNumber = `${user_initials}/INV/${customer_initials}/${invoiceNumber}`;
+    let invoiceNumber = `${user_initials}/INV/${fiscalyear}/${invNo}`;
     return invoiceNumber;
 };
