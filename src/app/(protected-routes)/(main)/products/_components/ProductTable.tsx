@@ -1,6 +1,5 @@
 "use client";
 
-import * as NoDataAnimation from "@/assets/lottie/NoDataFound.json";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -12,14 +11,18 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { getProducts } from "@/services/product";
-import { useQuery } from "@tanstack/react-query";
-import Lottie from "lottie-react";
+import { createProduct, deleteProduct, getProducts } from "@/services/product";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import AddUpdateProductModal from "./AddUpdateProductModal";
+import Lottie from "lottie-react";
+import * as NoDataAnimation from "@/assets/lottie/NoDataFound.json";
 import Loader from "@/components/Loader";
+import DeleteModal from "@/components/DeleteModal";
 
 const ProductTable = () => {
+    const queryclient = useQueryClient();
+
     const {
         data: productsData,
         isLoading,
@@ -29,13 +32,54 @@ const ProductTable = () => {
         queryFn: getProducts,
     });
 
+    const { mutate: create } = useMutation({
+        mutationFn: createProduct,
+        mutationKey: ["products"],
+        onSuccess: () => {
+            queryclient.invalidateQueries({
+                queryKey: ["products"],
+            });
+        },
+        onError: (error) => {
+            console.log(error);
+        },
+    });
+
+    const { mutate: deleteCustomerMutation, isPending: isDeleting } =
+        useMutation({
+            mutationFn: deleteProduct,
+            onSuccess: () => {
+                setDeletingId("");
+                queryclient.invalidateQueries({
+                    queryKey: ["products"],
+                });
+            },
+            onError: (error) => {
+                console.log(error);
+            },
+        });
+
     const [openAddProductModal, setOpenAddProductModal] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState<any>(null);
+    const [deletingId, setDeletingId] = useState<string>("");
+    const [confirmDeleteModal, setConfirmDeleteModal] = useState(false);
 
     const handleEdit = async (id: string) => {
         const product = productsData.find((product: any) => product._id === id);
         setSelectedProduct(product);
         setOpenAddProductModal(true);
+    };
+
+    const handleDelete = async () => {
+        setConfirmDeleteModal(false);
+        await deleteCustomerMutation(deletingId);
+    };
+
+    const handleDuplicate = async (id: string) => {
+        const product = productsData.find((product: any) => product._id === id);
+        let { _id, ...rest } = product;
+        rest = { ...rest, name: `${rest.name} (Copy)` };
+        await create(rest);
     };
 
     return (
@@ -88,26 +132,37 @@ const ProductTable = () => {
                                                 className="bg-[#F2F2F2] text-[#000000] hover:bg-[#E5E5E5] hover:text-[#000000] w-20 h-8 z-[5]"
                                                 onClick={(e) => {
                                                     e.stopPropagation();
+                                                    handleDuplicate(item._id);
+                                                }}
+                                            >
+                                                Duplicate
+                                            </Button>
+                                            <Button
+                                                className="bg-[#F2F2F2] text-[#000000] hover:bg-[#E5E5E5] hover:text-[#000000] w-20 h-8 z-[5]"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
                                                     handleEdit(item._id);
                                                 }}
                                             >
                                                 Edit
                                             </Button>
-                                            {/* <Button
+                                            <Button
                                                 className="bg-[#F2F2F2] text-[#000000] hover:bg-[#E5E5E5] hover:text-[#000000] w-20 h-8 z-[5]"
                                                 onClick={(e) => {
                                                     e.stopPropagation();
-                                                    handleDelete(item._id);
+                                                    setDeletingId(item._id);
+                                                    setConfirmDeleteModal(true);
                                                 }}
                                             >
-                                                {deletingId === item._id ? (
+                                                {deletingId === item._id &&
+                                                isDeleting ? (
                                                     <div className="flex items-center justify-center">
                                                         <Loader heavy />
                                                     </div>
                                                 ) : (
                                                     "Delete"
                                                 )}
-                                            </Button> */}
+                                            </Button>
                                         </div>
                                     </TableCell>
                                 </TableRow>
@@ -135,6 +190,14 @@ const ProductTable = () => {
                     setSelectedProduct(null);
                 }}
                 data={selectedProduct}
+            />
+            <DeleteModal
+                isOpen={confirmDeleteModal}
+                onClose={() => {
+                    setDeletingId("");
+                    setConfirmDeleteModal(false);
+                }}
+                onDelete={handleDelete}
             />
         </>
     );
