@@ -17,6 +17,8 @@ import Lottie from "lottie-react";
 import { useState } from "react";
 import AddUpdateCustomerModal from "./AddUpdateCustomerModal";
 import ShowCustomerDetails from "./ShowCustomerDetails";
+import DeleteModal from "@/components/DeleteModal";
+import Loader from "@/components/Loader";
 
 const CustomerTable = () => {
     const queryclient = useQueryClient();
@@ -30,23 +32,26 @@ const CustomerTable = () => {
         queryFn: getCustomers,
     });
 
-    const { mutate: deleteCustomerMutation } = useMutation({
-        mutationFn: deleteCustomer,
-        onSuccess: () => {
-            queryclient.invalidateQueries({
-                queryKey: ["customers"],
-            });
-        },
-        onError: (error) => {
-            console.log(error);
-        },
-    });
+    const { mutate: deleteCustomerMutation, isPending: isDeleting } =
+        useMutation({
+            mutationFn: deleteCustomer,
+            onSuccess: () => {
+                queryclient.invalidateQueries({
+                    queryKey: ["customers"],
+                });
+            },
+            onError: (error) => {
+                console.log(error);
+            },
+        });
 
     const [openAddCustomerModal, setOpenAddCustomerModal] = useState(false);
     const [openShowCustomerDetails, setOpenShowCustomerDetails] =
         useState(false);
     const [selectedCustomer, setSelectedCustomer] = useState<any>(null);
     const [search, setSearch] = useState("");
+    const [confirmDeleteModal, setConfirmDeleteModal] = useState(false);
+    const [deletingId, setDeletingId] = useState("");
 
     const handleEdit = async (id: string) => {
         const customer = customersData.find(
@@ -56,8 +61,9 @@ const CustomerTable = () => {
         setOpenAddCustomerModal(true);
     };
 
-    const handleDelete = async (id: string) => {
-        await deleteCustomerMutation(id);
+    const handleDelete = async () => {
+        setConfirmDeleteModal(false);
+        await deleteCustomerMutation(deletingId);
     };
 
     return (
@@ -138,10 +144,20 @@ const CustomerTable = () => {
                                                     className="bg-[#F2F2F2] text-[#000000] hover:bg-[#E5E5E5] hover:text-[#000000] w-20 h-8 z-[5]"
                                                     onClick={(e) => {
                                                         e.stopPropagation();
-                                                        handleDelete(item._id);
+                                                        setDeletingId(item._id);
+                                                        setConfirmDeleteModal(
+                                                            true
+                                                        );
                                                     }}
                                                 >
-                                                    Delete
+                                                    {deletingId === item._id &&
+                                                    isDeleting ? (
+                                                        <div className="flex items-center justify-center">
+                                                            <Loader heavy />
+                                                        </div>
+                                                    ) : (
+                                                        "Delete"
+                                                    )}
                                                 </Button>
                                             </div>
                                         </TableCell>
@@ -178,6 +194,14 @@ const CustomerTable = () => {
                     setSelectedCustomer(null);
                 }}
                 customer={selectedCustomer}
+            />
+            <DeleteModal
+                isOpen={confirmDeleteModal}
+                onClose={() => {
+                    setDeletingId("");
+                    setConfirmDeleteModal(false);
+                }}
+                onDelete={handleDelete}
             />
         </>
     );

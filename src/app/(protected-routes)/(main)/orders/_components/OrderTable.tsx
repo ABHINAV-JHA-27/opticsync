@@ -22,6 +22,8 @@ import Lottie from "lottie-react";
 import { useState } from "react";
 import AddUpdateOrderModal from "./AddUpdateOrderModal";
 import ShowOrderDetails from "./ShowOrderDetails";
+import DeleteModal from "@/components/DeleteModal";
+import Loader from "@/components/Loader";
 
 const OrderTable = () => {
     const queryclient = useQueryClient();
@@ -49,8 +51,10 @@ const OrderTable = () => {
     const [openShowOrderDetails, setOpenShowOrderDetails] = useState(false);
     const [search, setSearch] = useState("");
     const [selectedOrder, setSelectedOrder] = useState<any>(null);
+    const [confirmDeleteModal, setConfirmDeleteModal] = useState(false);
+    const [deletingId, setDeletingId] = useState("");
 
-    const { mutate: deleteOrderMutation } = useMutation({
+    const { mutate: deleteOrderMutation, isPending: isDeleting } = useMutation({
         mutationFn: deleteOrder,
         onSuccess: () => {
             queryclient.invalidateQueries({
@@ -103,8 +107,9 @@ const OrderTable = () => {
         setOpenAddOrderModal(true);
     };
 
-    const handleDelete = async (id: string) => {
-        await deleteOrderMutation(id);
+    const handleDelete = async () => {
+        setConfirmDeleteModal(false);
+        await deleteOrderMutation(deletingId);
     };
 
     return (
@@ -228,10 +233,20 @@ const OrderTable = () => {
                                                     className="bg-[#F2F2F2] text-[#000000] hover:bg-[#E5E5E5] hover:text-[#000000] w-20 h-8 z-[5]"
                                                     onClick={(e) => {
                                                         e.stopPropagation();
-                                                        handleDelete(item._id);
+                                                        setDeletingId(item._id);
+                                                        setConfirmDeleteModal(
+                                                            true
+                                                        );
                                                     }}
                                                 >
-                                                    Delete
+                                                    {deletingId === item._id &&
+                                                    isDeleting ? (
+                                                        <div className="flex items-center justify-center">
+                                                            <Loader heavy />
+                                                        </div>
+                                                    ) : (
+                                                        "Delete"
+                                                    )}
                                                 </Button>
                                                 <Button
                                                     className="bg-[#F2F2F2] text-[#000000] hover:bg-[#E5E5E5] hover:text-[#000000] h-8 z-[5]"
@@ -279,6 +294,14 @@ const OrderTable = () => {
                     setSelectedOrder(null);
                 }}
                 order={selectedOrder}
+            />
+            <DeleteModal
+                isOpen={confirmDeleteModal}
+                onClose={() => {
+                    setDeletingId("");
+                    setConfirmDeleteModal(false);
+                }}
+                onDelete={handleDelete}
             />
         </>
     );
