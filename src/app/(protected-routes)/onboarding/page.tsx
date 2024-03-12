@@ -1,13 +1,14 @@
 "use client";
 
 import Loader from "@/components/Loader";
-import { Input } from "@/components/ui/input";
 import { createUser } from "@/services/user";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 
 export default function Page() {
+    const { user: kindeUser } = useKindeBrowserClient();
     const router = useRouter();
 
     const [name, setName] = useState("");
@@ -35,6 +36,10 @@ export default function Page() {
     useEffect(() => {
         if (user && user.data.length > 0) {
             router.push("/dashboard");
+        } else {
+            if (kindeUser) {
+                setEmail(kindeUser.email || "");
+            }
         }
     }, [user]);
 
@@ -172,6 +177,7 @@ export default function Page() {
                                 className="w-full p-2 border border-gray-300 rounded-md"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
+                                disabled={true}
                             />
                         </div>
                     </div>

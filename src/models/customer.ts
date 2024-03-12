@@ -29,7 +29,6 @@ const CustomerSchema = new Schema(
         },
         pincode: {
             type: String,
-            required: true,
         },
         phone: {
             type: String,
@@ -43,7 +42,6 @@ const CustomerSchema = new Schema(
         },
         gstNumber: {
             type: String,
-            required: true,
         },
         user: {
             type: Schema.Types.ObjectId,

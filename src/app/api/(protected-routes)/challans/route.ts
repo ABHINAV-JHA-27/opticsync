@@ -84,6 +84,36 @@ export async function POST(req: NextRequest) {
             (beforeTax * (orders.products.cgst + orders.products.sgst)) / 100,
     };
 
+    const prevChallan = await Challan.findOne({ orders: orders._id });
+
+    if (prevChallan) {
+        const challanHtml = await ejs.renderFile(ejsFilePath, {
+            challanNumber: prevChallan.challanNumber,
+            date: new Date().toLocaleDateString(),
+            customer,
+            orders,
+            user,
+            totalBeforeTax: beforeTax,
+            cgst: orders.products.cgst,
+            sgst: orders.products.sgst,
+            totalAfterTax:
+                beforeTax +
+                (beforeTax * (orders.products.cgst + orders.products.sgst)) /
+                    100,
+            ref: orders.ref,
+            amountInWords: numberToWords(
+                beforeTax +
+                    (beforeTax *
+                        (orders.products.cgst + orders.products.sgst)) /
+                        100
+            ),
+        });
+        return NextResponse.json({
+            data: challanHtml,
+            status: 200,
+        });
+    }
+
     const challanHtml = await ejs.renderFile(ejsFilePath, {
         challanNumber: challanData.challanNumber,
         date: new Date().toLocaleDateString(),
@@ -103,15 +133,6 @@ export async function POST(req: NextRequest) {
                     100
         ),
     });
-
-    const prevChallan = await Challan.findOne({ orders: orders._id });
-
-    if (prevChallan) {
-        return NextResponse.json({
-            data: challanHtml,
-            status: 200,
-        });
-    }
 
     const challan = new Challan(challanData);
     await challan.save();

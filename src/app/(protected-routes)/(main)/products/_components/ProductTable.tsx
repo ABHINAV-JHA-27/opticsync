@@ -1,5 +1,6 @@
 "use client";
 
+import * as NoDataAnimation from "@/assets/lottie/NoDataFound.json";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -11,17 +12,14 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { deleteProduct, getProducts } from "@/services/product";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getProducts } from "@/services/product";
+import { useQuery } from "@tanstack/react-query";
+import Lottie from "lottie-react";
 import { useState } from "react";
 import AddUpdateProductModal from "./AddUpdateProductModal";
-import Lottie from "lottie-react";
-import * as NoDataAnimation from "@/assets/lottie/NoDataFound.json";
 import Loader from "@/components/Loader";
 
 const ProductTable = () => {
-    const queryclient = useQueryClient();
-
     const {
         data: productsData,
         isLoading,
@@ -31,32 +29,13 @@ const ProductTable = () => {
         queryFn: getProducts,
     });
 
-    const { mutate: deleteCustomerMutation } = useMutation({
-        mutationFn: deleteProduct,
-        onSuccess: () => {
-            setDeletingId("");
-            queryclient.invalidateQueries({
-                queryKey: ["products"],
-            });
-        },
-        onError: (error) => {
-            console.log(error);
-        },
-    });
-
     const [openAddProductModal, setOpenAddProductModal] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState<any>(null);
-    const [deletingId, setDeletingId] = useState<string>("");
 
     const handleEdit = async (id: string) => {
         const product = productsData.find((product: any) => product._id === id);
         setSelectedProduct(product);
         setOpenAddProductModal(true);
-    };
-
-    const handleDelete = async (id: string) => {
-        setDeletingId(id);
-        await deleteCustomerMutation(id);
     };
 
     return (
@@ -114,7 +93,7 @@ const ProductTable = () => {
                                             >
                                                 Edit
                                             </Button>
-                                            <Button
+                                            {/* <Button
                                                 className="bg-[#F2F2F2] text-[#000000] hover:bg-[#E5E5E5] hover:text-[#000000] w-20 h-8 z-[5]"
                                                 onClick={(e) => {
                                                     e.stopPropagation();
@@ -128,7 +107,7 @@ const ProductTable = () => {
                                                 ) : (
                                                     "Delete"
                                                 )}
-                                            </Button>
+                                            </Button> */}
                                         </div>
                                     </TableCell>
                                 </TableRow>

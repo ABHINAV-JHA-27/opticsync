@@ -195,7 +195,7 @@ export default function Page() {
                     <input
                         type="text"
                         className="w-full p-2 border border-gray-300 rounded-md"
-                        disabled={!editing}
+                        disabled={true}
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
