@@ -1,5 +1,7 @@
 import dbConnection from "@/lib/dbConnect";
+import Customer from "@/models/customer";
 import Order from "@/models/order";
+import Product from "@/models/product";
 import User from "@/models/user";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
@@ -86,6 +88,31 @@ export async function DELETE(
             data: "Order not found",
         });
     }
+
+    const product = await Product.findById(order?.products);
+
+    if (!product) {
+        return NextResponse.json({
+            status: 404,
+            data: "Product not found",
+        });
+    }
+
+    const customer = await Customer.findById(order?.customer);
+
+    if (!customer) {
+        return NextResponse.json({
+            status: 404,
+            data: "Customer not found",
+        });
+    }
+
+    const price = (product.price * order.quantity) / 2;
+    const finalPrice = price + ((product.cgst + product.sgst) * price) / 100;
+
+    customer.currentBalance -= finalPrice;
+    console.log("==> ", customer);
+    await customer.save();
 
     return NextResponse.json({
         status: 200,
