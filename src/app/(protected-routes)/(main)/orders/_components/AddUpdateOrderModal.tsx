@@ -203,6 +203,7 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
                                 setType(e);
                             }}
                             placeholder="Select Type of Order"
+                            disabled={props.data ? true : false}
                         />
                     </div>
                 </div>
@@ -279,6 +280,7 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
                                 value={customer}
                                 onChange={(e: string) => setCustomer(e)}
                                 placeholder="Select Customer"
+                                disabled={props.data ? true : false}
                             />
                         </div>
                         <div className="w-1/2">
@@ -294,6 +296,7 @@ const AddUpdateOrderModal = (props: AddUpdateOrderModalProps) => {
                                     setProduct(val);
                                 }}
                                 placeholder="Select Product"
+                                disabled={props.data ? true : false}
                             />
                         </div>
                     </div>

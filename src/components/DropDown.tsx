@@ -23,6 +23,7 @@ type DropDownProps = {
     onChange: (value: string) => void;
     placeholder?: string;
     for?: string;
+    disabled?: boolean;
 };
 
 export function DropDown(props: DropDownProps) {
@@ -37,6 +38,7 @@ export function DropDown(props: DropDownProps) {
                     role="combobox"
                     aria-expanded={open}
                     className="w-[200px] justify-between"
+                    disabled={props.disabled || false}
                 >
                     {props.value !== "" ? props.value : props.placeholder}
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
