@@ -238,6 +238,12 @@ const OrderTable = () => {
                                                             true
                                                         );
                                                     }}
+                                                    disabled={
+                                                        isDeleting ||
+                                                        item.status ===
+                                                            "delivered" ||
+                                                        item.challan
+                                                    }
                                                 >
                                                     {deletingId === item._id &&
                                                     isDeleting ? (

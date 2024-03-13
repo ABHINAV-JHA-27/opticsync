@@ -141,6 +141,7 @@ export async function POST(req: NextRequest) {
     await user.save();
 
     orders.status = "delivered";
+    orders.challan = challan._id;
     await orders.save();
 
     return NextResponse.json({
