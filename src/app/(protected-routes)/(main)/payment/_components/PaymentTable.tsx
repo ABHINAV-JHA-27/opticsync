@@ -49,7 +49,7 @@ const PaymentTable = () => {
             {paymentsData && paymentsData.length > 0 ? (
                 <ScrollArea className="w-full h-[50vh] mt-4 rounded-md">
                     <Table>
-                        <TableHeader>
+                        <TableHeader className="z-[10]">
                             <TableRow>
                                 <TableHead>Date</TableHead>
                                 <TableHead>Customer</TableHead>

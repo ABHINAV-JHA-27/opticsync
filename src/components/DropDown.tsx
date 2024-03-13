@@ -2,7 +2,7 @@
 
 import { Check, ChevronsUpDown } from "lucide-react";
 import { useState } from "react";
-
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import {
     Command,
@@ -54,32 +54,34 @@ export function DropDown(props: DropDownProps) {
                                     value={search}
                                     onValueChange={setSearch}
                                 />
-                                {props.data
-                                    .filter((item) => {
-                                        return item
-                                            .toLowerCase()
-                                            .includes(search.toLowerCase());
-                                    })
-                                    .map((item) => (
-                                        <CommandItem
-                                            key={item}
-                                            value={item}
-                                            onSelect={(currentValue) => {
-                                                props.onChange(item);
-                                                setOpen(false);
-                                            }}
-                                        >
-                                            <Check
-                                                className={cn(
-                                                    "mr-2 h-4 w-4 text-black",
-                                                    props.value === item
-                                                        ? "opacity-100"
-                                                        : "opacity-0"
-                                                )}
-                                            />
-                                            {item}
-                                        </CommandItem>
-                                    ))}
+                                <ScrollArea className="max-h-[25vh] overflow-auto">
+                                    {props.data
+                                        .filter((item) => {
+                                            return item
+                                                .toLowerCase()
+                                                .includes(search.toLowerCase());
+                                        })
+                                        .map((item) => (
+                                            <CommandItem
+                                                key={item}
+                                                value={item}
+                                                onSelect={(currentValue) => {
+                                                    props.onChange(item);
+                                                    setOpen(false);
+                                                }}
+                                            >
+                                                <Check
+                                                    className={cn(
+                                                        "mr-2 h-4 w-4 text-black",
+                                                        props.value === item
+                                                            ? "opacity-100"
+                                                            : "opacity-0"
+                                                    )}
+                                                />
+                                                {item}
+                                            </CommandItem>
+                                        ))}
+                                </ScrollArea>
                             </>
                         ) : (
                             <CommandItem disabled>

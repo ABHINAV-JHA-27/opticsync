@@ -90,7 +90,7 @@ const CustomerTable = () => {
             {customersData && customersData.length > 0 ? (
                 <ScrollArea className="w-full h-[50vh] mt-4 rounded-md z-[2]">
                     <Table>
-                        <TableHeader>
+                        <TableHeader className="z-[10]">
                             <TableRow>
                                 <TableHead>Name</TableHead>
                                 <TableHead>Shop</TableHead>

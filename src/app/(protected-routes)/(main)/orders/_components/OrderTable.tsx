@@ -135,7 +135,7 @@ const OrderTable = () => {
             {orderData && orderData.length > 0 ? (
                 <ScrollArea className="w-full h-[50vh] mt-4 rounded-md">
                     <Table>
-                        <TableHeader>
+                        <TableHeader className="z-[10]">
                             <TableRow>
                                 <TableHead>Status</TableHead>
                                 <TableHead>Product</TableHead>
