@@ -79,7 +79,7 @@ export async function POST(req: NextRequest) {
         challans: challans,
         customer: challans[0]?.customer,
         user: user,
-        date: new Date().toLocaleDateString(),
+        date: new Date().toLocaleDateString("en-GB"),
         total: challans.reduce((acc, curr) => acc + curr.total, 0).toFixed(2),
         invoiceNumber: RandomInvoiceNumber(user.shopName, invNumber),
         amountInWords: numberToWords(

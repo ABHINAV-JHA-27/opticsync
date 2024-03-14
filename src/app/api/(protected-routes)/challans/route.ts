@@ -89,7 +89,7 @@ export async function POST(req: NextRequest) {
     if (prevChallan) {
         const challanHtml = await ejs.renderFile(ejsFilePath, {
             challanNumber: prevChallan.challanNumber,
-            date: new Date().toLocaleDateString(),
+            date: new Date().toLocaleDateString("en-GB"),
             customer,
             orders,
             user,
@@ -116,7 +116,7 @@ export async function POST(req: NextRequest) {
 
     const challanHtml = await ejs.renderFile(ejsFilePath, {
         challanNumber: challanData.challanNumber,
-        date: new Date().toLocaleDateString(),
+        date: new Date().toLocaleDateString("en-GB"),
         customer,
         orders,
         user,
