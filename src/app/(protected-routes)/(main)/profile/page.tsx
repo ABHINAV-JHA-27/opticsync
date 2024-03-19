@@ -1,6 +1,6 @@
 "use client";
 
-import Loader from "@/components/Loader";
+import Loader from "@/components/common/Loader";
 import { cn } from "@/lib/utils";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";

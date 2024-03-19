@@ -17,8 +17,8 @@ import Lottie from "lottie-react";
 import { useState } from "react";
 import AddUpdateCustomerModal from "./AddUpdateCustomerModal";
 import ShowCustomerDetails from "./ShowCustomerDetails";
-import DeleteModal from "@/components/DeleteModal";
-import Loader from "@/components/Loader";
+import DeleteModal from "@/components/common/DeleteModal";
+import Loader from "@/components/common/Loader";
 
 const CustomerTable = () => {
     const queryclient = useQueryClient();

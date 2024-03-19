@@ -10,9 +10,9 @@ import {
 } from "@/components/ui/dialog";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import { DropDown } from "@/components/DropDown";
-import Select from "@/components/Select";
-import { DatePicker } from "@/components/DatePicker";
+import { DropDown } from "@/components/common/DropDown";
+import Select from "@/components/common/Select";
+import { DatePicker } from "@/components/common/DatePicker";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createPayment } from "@/services/payments";
 

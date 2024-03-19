@@ -17,8 +17,8 @@ import { useState } from "react";
 import AddUpdateProductModal from "./AddUpdateProductModal";
 import Lottie from "lottie-react";
 import * as NoDataAnimation from "@/assets/lottie/NoDataFound.json";
-import Loader from "@/components/Loader";
-import DeleteModal from "@/components/DeleteModal";
+import Loader from "@/components/common/Loader";
+import DeleteModal from "@/components/common/DeleteModal";
 
 const ProductTable = () => {
     const queryclient = useQueryClient();

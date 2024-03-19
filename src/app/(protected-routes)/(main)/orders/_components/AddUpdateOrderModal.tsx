@@ -1,5 +1,5 @@
-import { DropDown } from "@/components/DropDown";
-import Loader from "@/components/Loader";
+import { DropDown } from "@/components/common/DropDown";
+import Loader from "@/components/common/Loader";
 import {
     Dialog,
     DialogContent,

@@ -1,7 +1,7 @@
 "use client";
 
 import * as NoDataAnimation from "@/assets/lottie/NoDataFound.json";
-import Select from "@/components/Select";
+import Select from "@/components/common/Select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -22,8 +22,8 @@ import Lottie from "lottie-react";
 import { useState } from "react";
 import AddUpdateOrderModal from "./AddUpdateOrderModal";
 import ShowOrderDetails from "./ShowOrderDetails";
-import DeleteModal from "@/components/DeleteModal";
-import Loader from "@/components/Loader";
+import DeleteModal from "@/components/common/DeleteModal";
+import Loader from "@/components/common/Loader";
 
 const OrderTable = () => {
     const queryclient = useQueryClient();
